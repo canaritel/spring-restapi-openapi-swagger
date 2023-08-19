@@ -6,7 +6,7 @@ Para el desarrollo de este proyecto se han seguido buenas prácticas y 'Clean Co
 
 ## Capturas de Pantalla
 
-![image](https://github.com/canaritel/spring-restapi-openapi-swagger/assets/57302177/024be2ce-f354-4e9e-845e-bc60de9104f6)
+![image](https://github.com/canaritel/spring-restapi-openapi-swagger/assets/57302177/ebf216a6-3201-4bbf-ab63-adf70b615cf8)
 
 ![image](https://github.com/canaritel/spring-restapi-openapi-swagger/assets/57302177/2b8bee9e-e65b-4037-ba8b-7b38fe97db6e)
 
