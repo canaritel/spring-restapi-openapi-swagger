@@ -274,23 +274,53 @@ public class taskControllerGet {
                               name = "Solicitud incorrecta",
                               description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
                               value = VALUE_ERROR_400
-                       )})),
-      @ApiResponse(
-             responseCode = "404",
-             description = "No se encontraron tareas con el estado proporcionado.",
-             content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = TaskDto.class),
-                    examples = {
-                       @ExampleObject(
-                              name = "Tareas no encontradas",
-                              description = "No se encontraron tareas con el estado proporcionado.",
-                              value = VALUE_ERROR_404
                        )}))
    })
    @GetMapping("/status/{status}")
    public ResponseEntity<List<TaskDto>> getAllByTaskStatus(@PathVariable("status") TaskStatus status) {
       List<TaskDto> tasks = service.getAllByTaskStatus(status);
+      return new ResponseEntity<>(tasks, HttpStatus.OK);
+   }
+
+   // ********************************************************************************************************
+   /**
+    * Obtiene todas las tareas según su estado de completitud.
+    *
+    * @param isCompleted Estado de completitud de las tareas a obtener.
+    * @return Una respuesta que contiene la lista de objetos tarea correspondientes al estado de completitud.
+    * @apiNote Este endpoint devuelve una lista de todas las tareas que coinciden con el estado de completitud proporcionado.
+    */
+   @ApiResponses(value = {
+      @ApiResponse(
+             responseCode = "200",
+             description = "Tareas obtenidas exitosamente por completitud.",
+             content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = TaskDto.class),
+                    examples = {
+                       @ExampleObject(
+                              name = "Obtención de tareas por estado",
+                              description = """
+                                 Se obtiene un objeto de tipo listado de tareas finalizadas o no finalizadas. 
+                                 'True' para las finalizadas, y 'FALSE' para las no finalizadas.""",
+                              value = VALUE_OK
+                       )})),
+      @ApiResponse(
+             responseCode = "400",
+             description = "Solicitud incorrecta.",
+             content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = TaskDto.class),
+                    examples = {
+                       @ExampleObject(
+                              name = "Solicitud incorrecta",
+                              description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
+                              value = VALUE_ERROR_400
+                       )}))
+   })
+   @GetMapping("/completed/{isCompleted}")
+   public ResponseEntity<List<TaskDto>> getTasksByCompletionStatus(@PathVariable("isCompleted") Boolean isCompleted) {
+      List<TaskDto> tasks = service.getTasksByCompletionStatus(isCompleted);
       return new ResponseEntity<>(tasks, HttpStatus.OK);
    }
 

@@ -126,6 +126,26 @@ public class TaskService {
       }
    }
 
+   public List<TaskDto> getTasksByCompletionStatus(boolean isCompleted) {
+      try {
+
+         List<Task> tasks;
+
+         if (isCompleted) {
+            tasks = repository.findByIsCompletedTrue();
+         } else {
+            tasks = repository.findByIsCompletedFalse();
+         }
+
+         return convertToDtoList(tasks);
+
+      } catch (TaskException ex) {
+         throw ex;
+      } catch (Exception ex) {
+         throw new TaskException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
+   }
+
    @Transactional
    public TaskDto updateTask(Long id, TaskDto taskDto) {
       try {
