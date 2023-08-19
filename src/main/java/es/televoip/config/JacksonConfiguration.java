@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 /*
 // Lo aplicamos directamente en application.properties !!!
+//
 @Configuration
 public class JacksonConfiguration {
 
