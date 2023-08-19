@@ -2,6 +2,7 @@
 
 ## Descripción
 Esta API proporciona una solución robusta y flexible para gestionar tareas utilizando el framework Spring Boot. Ofrece una serie de endpoints que permiten la creación, actualización, consulta y eliminación de tareas, así como la capacidad de ordenar, paginar y filtrar las tareas según diversos criterios. La API se documenta automáticamente mediante la especificación OPENAPI y Swagger, lo que facilita su comprensión y uso.
+Para el desarrollo de este proyecto se han seguido buenas prácticas y 'Clean Code'.
 
 ## Capturas de Pantalla
 
@@ -22,6 +23,8 @@ Esta API proporciona una solución robusta y flexible para gestionar tareas util
 - Swagger (OpenAPI): La documentación de la API se genera automáticamente con Swagger, permitiendo una exploración y comprensión sencilla de los endpoints.
 - Patrón de Repositorio: El acceso a la base de datos se gestiona a través de repositorios, garantizando una separación clara entre la lógica de negocio y la persistencia.
 - Validación de Datos: Se aplican anotaciones de validación en las clases DTO para asegurar la integridad de los datos.
+- Patrón Builder: Utilizado para crear objetos complejos con múltiples parámetros de configuración de manera clara y legible.
+- Principios de Clean Code: El código sigue los principios de "Clean Code" para garantizar la legibilidad, la simplicidad y la facilidad de mantenimiento. Se enfatiza en la claridad de los nombres de variables, funciones y clases, así como en la separación de responsabilidades y la minimización de la complejidad.
 
 ## Instrucciones de Uso
 
