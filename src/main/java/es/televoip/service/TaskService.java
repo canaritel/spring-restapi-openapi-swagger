@@ -51,12 +51,14 @@ public class TaskService {
    @Transactional(readOnly = true)
    public TaskDto getTask(Long id) {
       try {
+
          Optional<Task> optionalTask = repository.findById(id);
          if (optionalTask.isPresent()) {
             return mapper.toDto(optionalTask.get());
          } else {
             throw new TaskException(HttpStatus.NOT_FOUND, "Tarea no encontrada con ID: " + id);
          }
+
       } catch (TaskException ex) {
          throw ex;
       } catch (Exception ex) {
@@ -69,9 +71,7 @@ public class TaskService {
       try {
 
          List<Task> tasks = repository.findAll();
-         return tasks.stream()
-                .map(mapper::toDto)
-                .collect(Collectors.toList());
+         return convertToDtoList(tasks);
 
       } catch (TaskException ex) {
          throw ex;
@@ -86,9 +86,7 @@ public class TaskService {
 
          Sort sort = Sort.by(new Sort.Order(sortOrder, sortBy.getFieldName()));
          List<Task> tasks = repository.findAll(sort);
-         return tasks.stream() // se utiliza stream() y collect(Collectors.toList()) para convertirlo en una lista de DTO
-                .map(mapper::toDto)
-                .collect(Collectors.toList());
+         return convertToDtoList(tasks);
 
       } catch (TaskException ex) {
          throw ex;
@@ -119,9 +117,7 @@ public class TaskService {
       try {
 
          List<Task> tasks = repository.findAllByTaskStatus(status);
-         return tasks.stream()
-                .map(mapper::toDto)
-                .collect(Collectors.toList());
+         return convertToDtoList(tasks);
 
       } catch (TaskException ex) {
          throw ex;
@@ -230,7 +226,6 @@ public class TaskService {
 
          repository.findById(id)
                 .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, "Tarea no encontrada con ID: " + id));
-
          repository.deleteById(id);
 
       } catch (TaskException ex) { // Lo pongo antes del Exception final para poder capturar mis excepciones
@@ -238,6 +233,13 @@ public class TaskService {
       } catch (Exception ex) {
          throw new TaskException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
       }
+   }
+
+   // Método auxiliar para convertir una lista de entidades a DTOs
+   private List<TaskDto> convertToDtoList(List<Task> tasks) {
+      return tasks.stream() // se utiliza stream() y collect(Collectors.toList()) para convertirlo en una lista de DTO
+             .map(mapper::toDto)
+             .collect(Collectors.toList());
    }
 
 }
