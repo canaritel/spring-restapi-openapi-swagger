@@ -319,7 +319,7 @@ public class taskControllerGet {
                        )}))
    })
    @GetMapping("/completed/{isCompleted}")
-   public ResponseEntity<List<TaskDto>> getTasksByCompletionStatus(@PathVariable("isCompleted") Boolean isCompleted) {
+   public ResponseEntity<List<TaskDto>> getTasksByCompletion(@PathVariable("isCompleted") Boolean isCompleted) {
       List<TaskDto> tasks = service.getTasksByCompletionStatus(isCompleted);
       return new ResponseEntity<>(tasks, HttpStatus.OK);
    }
