@@ -243,7 +243,8 @@ public class taskController {
    })
    @GetMapping("/sortedAndPaginated")
    public ResponseEntity<Page<TaskDto>> getAllTasksSortedAndPaginated(@RequestParam TaskSortField sortBy,
-          @RequestParam Sort.Direction sortOrder, @RequestParam int page, @RequestParam int size) {
+          @RequestParam Sort.Direction sortOrder, @RequestParam(defaultValue = "0") int page,
+          @RequestParam(defaultValue = "20") int size) {
       Page<TaskDto> taskPage = service.getAllTasksSortedAndPaginated(sortBy, sortOrder, page, size);
       return new ResponseEntity<>(taskPage, HttpStatus.OK);
    }
