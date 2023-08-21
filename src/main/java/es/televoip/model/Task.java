@@ -48,7 +48,6 @@ public class Task {
    @Column(nullable = true, updatable = false)
    private LocalDateTime taskDateCreation; // la zona horaria la coge del fichero application.properties
 
-   @FutureOrPresent(message = "La fecha debe ser igual o mayor a la fecha actual")
    @Column(nullable = true, updatable = true)
    private LocalDateTime taskDateFinished; // la zona horaria la coge del fichero application.properties
 

@@ -50,7 +50,6 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
-
         
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -62,7 +61,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-             
+                    
         <!-- Librería para el uso de Swagger 3 -->   
         <dependency>
             <groupId>org.springdoc</groupId>
@@ -84,6 +83,23 @@
         </dependency>
         <!-- Fin dependencias MapStruct -->
         
+        <!-- Dependencias de JUnit y Mockito -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+           
     </dependencies>
 
     <build>
