@@ -60,6 +60,11 @@ public class taskControllerGet {
           + "\"message\": \"La tarea no cumple las validaciones.\""
           + "}";
 
+   final String VALUE_ERROR_204 = "{"
+          + "\"status\": \"error\","
+          + "\"message\": \"Esta lista de tareas está vacía.\""
+          + "}";
+
    // ********************************************************************************************************
    /**
     * getTask: Obtiene una tarea por su ID.
@@ -320,7 +325,47 @@ public class taskControllerGet {
    })
    @GetMapping("/completed/{isCompleted}")
    public ResponseEntity<List<TaskDto>> getTasksByCompletion(@PathVariable("isCompleted") Boolean isCompleted) {
-      List<TaskDto> tasks = service.getTasksByCompletionStatus(isCompleted);
+      List<TaskDto> tasks = service.getAllTasksByCompletionStatus(isCompleted);
+      return new ResponseEntity<>(tasks, HttpStatus.OK);
+   }
+
+   // ********************************************************************************************************
+   /**
+    * findTasksByTitleContaining: Obtiene todas las tareas que contienen un título específico.
+    *
+    * @param title Título a buscar en las tareas.
+    * @return Respuesta con la lista de objetos tarea que contienen el título proporcionado.
+    * @apiNote Devuelve una lista de todas las tareas que contienen el título especificado.
+    */
+   @ApiResponses(value = {
+      @ApiResponse(
+             responseCode = "200",
+             description = "Tareas obtenidas exitosamente por título.",
+             content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = TaskDto.class),
+                    examples = {
+                       @ExampleObject(
+                              name = "Obtención de tareas por título",
+                              description = "Se obtiene un objeto de tipo listado de tareas que contienen el título especificado.",
+                              value = VALUE_OK
+                       )})),
+      @ApiResponse(
+             responseCode = "400",
+             description = "Solicitud incorrecta.",
+             content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = TaskDto.class),
+                    examples = {
+                       @ExampleObject(
+                              name = "Solicitud incorrecta",
+                              description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
+                              value = VALUE_ERROR_400
+                       )}))
+   })
+   @GetMapping("/all/titles/{title}")
+   public ResponseEntity<List<TaskDto>> findTasksByTitleContaining(@PathVariable("title") String title) {
+      List<TaskDto> tasks = service.getAllTasksByTitleContaining(title);
       return new ResponseEntity<>(tasks, HttpStatus.OK);
    }
 

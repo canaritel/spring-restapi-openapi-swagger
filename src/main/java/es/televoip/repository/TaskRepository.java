@@ -19,7 +19,10 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
    public List<Task> findAllByTaskStatus(TaskStatus status);
 
    public List<Task> findByIsCompletedTrue();
-   
+
    public List<Task> findByIsCompletedFalse();
+
+   @Query("SELECT t FROM Task t WHERE LOWER(t.title) LIKE LOWER(CONCAT('%', :title, '%'))")
+   List<Task> findByTitleContainingIgnoreCase(String title);
 
 }

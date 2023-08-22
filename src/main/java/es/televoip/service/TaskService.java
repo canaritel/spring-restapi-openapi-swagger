@@ -31,24 +31,6 @@ public class TaskService {
    }
 
    @Transactional(readOnly = true)
-   public TaskDto createTask(TaskDto taskDto) {
-      try {
-
-         Task task = mapper.toEntity(taskDto);
-         if (task.getTaskDateCreation() == null) {
-            task.setTaskDateCreation(LocalDateTime.now());
-         }
-         Task createdTask = repository.save(task);
-         return mapper.toDto(createdTask);
-
-      } catch (TaskException ex) {
-         throw ex;
-      } catch (Exception ex) {
-         throw new TaskException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
-      }
-   }
-
-   @Transactional(readOnly = true)
    public TaskDto getTask(Long id) {
       try {
 
@@ -113,6 +95,20 @@ public class TaskService {
    }
 
    @Transactional(readOnly = true)
+   public List<TaskDto> getAllTasksByTitleContaining(String title) {
+      try {
+
+         List<Task> tasks = repository.findByTitleContainingIgnoreCase(title);
+         return convertToDtoList(tasks);
+
+      } catch (TaskException ex) {
+         throw ex;
+      } catch (Exception ex) {
+         throw new TaskException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
+   }
+
+   @Transactional(readOnly = true)
    public List<TaskDto> getAllByTaskStatus(TaskStatus status) {
       try {
 
@@ -126,7 +122,8 @@ public class TaskService {
       }
    }
 
-   public List<TaskDto> getTasksByCompletionStatus(boolean isCompleted) {
+   @Transactional(readOnly = true)
+   public List<TaskDto> getAllTasksByCompletionStatus(boolean isCompleted) {
       try {
 
          List<Task> tasks;
@@ -138,6 +135,48 @@ public class TaskService {
          }
 
          return convertToDtoList(tasks);
+
+      } catch (TaskException ex) {
+         throw ex;
+      } catch (Exception ex) {
+         throw new TaskException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
+   }
+
+   @Transactional
+   public TaskDto createTask(TaskDto taskDto) {
+      try {
+
+         Task task = mapper.toEntity(taskDto);
+         if (task.getTaskDateCreation() == null) {
+            task.setTaskDateCreation(LocalDateTime.now());
+         }
+         Task createdTask = repository.save(task);
+         return mapper.toDto(createdTask);
+
+      } catch (TaskException ex) {
+         throw ex;
+      } catch (Exception ex) {
+         throw new TaskException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
+   }
+
+   @Transactional
+   public List<TaskDto> createAllTasks(List<TaskDto> taskDtos) {
+      try {
+
+         List<Task> tasks = taskDtos.stream() // convierte la lista taskDtos en un flujo (stream) de elementos
+                .map(mapper::toEntity) // convierte cada elemento de la lista taskDtos en un objeto Task
+                .peek(action -> {
+                   /* permite realizar una acción en cada elemento del flujo sin cambiar los elementos mismos  */
+                   if (action.getTaskDateCreation() == null) {
+                      action.setTaskDateCreation(LocalDateTime.now());
+                   }
+                })
+                .collect(Collectors.toList()); // crea una lista de objetos Task
+
+         List<Task> createdTasks = repository.saveAll(tasks);
+         return convertToDtoList(createdTasks);
 
       } catch (TaskException ex) {
          throw ex;
