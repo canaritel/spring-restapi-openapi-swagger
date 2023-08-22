@@ -112,7 +112,7 @@ public class taskControllerGet {
                        )}))
    })
    @GetMapping("/{id}")
-   public ResponseEntity<TaskDto> getTask(@PathVariable Long id) {
+   public ResponseEntity<TaskDto> getTask(@PathVariable("id") Long id) {
       TaskDto taskDto = service.getTask(id);
       if (taskDto != null) {
          return new ResponseEntity<>(taskDto, HttpStatus.OK);
@@ -363,10 +363,14 @@ public class taskControllerGet {
                               value = VALUE_ERROR_400
                        )}))
    })
-   @GetMapping("/all/titles/{title}")
+   @GetMapping("/alltitles/{title}")
    public ResponseEntity<List<TaskDto>> findTasksByTitleContaining(@PathVariable("title") String title) {
       List<TaskDto> tasks = service.getAllTasksByTitleContaining(title);
-      return new ResponseEntity<>(tasks, HttpStatus.OK);
+      if (tasks.isEmpty()) {
+         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+      } else {
+         return new ResponseEntity<>(tasks, HttpStatus.OK);
+      }
    }
 
 }
