@@ -4,10 +4,10 @@ import es.televoip.model.Task;
 import es.televoip.model.enums.TaskStatus;
 import es.televoip.repository.TaskRepository;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +15,9 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class TodoApiSpringApplication {
+
+   @Value("${spring.datasource.url}")
+   private String dataSourceUrl;
 
    public static void main(String[] args) {
       SpringApplication.run(TodoApiSpringApplication.class, args);
@@ -42,8 +45,6 @@ public class TodoApiSpringApplication {
                    .taskStatus(TaskStatus.ON_TIME)
                    .isCompleted(false)
                    .taskDateCreation(LocalDateTime.now())
-                   .logDateCreated(OffsetDateTime.now())
-                   .logLastUpdated(OffsetDateTime.now())
                    .build();
 
             Task task2 = Task.builder()
@@ -53,8 +54,6 @@ public class TodoApiSpringApplication {
                    .taskStatus(TaskStatus.ON_TIME)
                    .isCompleted(false)
                    .taskDateCreation(LocalDateTime.now())
-                   .logDateCreated(OffsetDateTime.now())
-                   .logLastUpdated(OffsetDateTime.now())
                    .build();
 
             Task task3 = Task.builder()
@@ -64,12 +63,12 @@ public class TodoApiSpringApplication {
                    .taskStatus(TaskStatus.ON_TIME)
                    .isCompleted(false)
                    .taskDateCreation(LocalDateTime.now())
-                   .logDateCreated(OffsetDateTime.now())
-                   .logLastUpdated(OffsetDateTime.now())
                    .build();
 
             repository.saveAll(Arrays.asList(task1, task2, task3));
          }
+         
+         System.out.println("************************   DataSource URL: " + dataSourceUrl);
       };
    }
 

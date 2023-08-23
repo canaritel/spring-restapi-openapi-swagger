@@ -1,14 +1,9 @@
 package es.televoip;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import es.televoip.controller.taskControllerGet;
-import es.televoip.controller.taskControllerPatch;
-import es.televoip.controller.taskControllerPostAndDelete;
 import es.televoip.model.Task;
-import es.televoip.model.dto.TaskDto;
 import es.televoip.model.enums.TaskStatus;
 import es.televoip.repository.TaskRepository;
-import es.televoip.service.TaskService;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,7 +12,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,18 +19,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
-@SpringBootTest
+@SpringBootTest(properties = "spring.config.location=classpath:application-test.properties")
 @AutoConfigureMockMvc
+//@WebMvcTest -> Se utiliza para realizar pruebas de integración enfocadas en el controlador pero preferible SpringBootTest
 class TaskControllerTest {
 
    @Autowired
@@ -44,9 +36,6 @@ class TaskControllerTest {
 
    @MockBean
    private TaskRepository repository;
-
-   @Autowired
-   private TaskService service; // Usa el servicio real
 
    @Autowired
    private ObjectMapper objectMapper; // clase Jackson que se utiliza para convertir objetos Java en JSON y viceversa
