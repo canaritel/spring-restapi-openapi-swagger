@@ -12,6 +12,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,16 +22,18 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+//@WebMvcTest -> Se utiliza para realizar pruebas de integración enfocadas en el controlador pero preferible SpringBootTest
 @SpringBootTest(properties = "spring.config.location=classpath:application-test.properties")
 @AutoConfigureMockMvc
-//@WebMvcTest -> Se utiliza para realizar pruebas de integración enfocadas en el controlador pero preferible SpringBootTest
 class TaskControllerTest {
 
    @Autowired
@@ -143,41 +148,6 @@ class TaskControllerTest {
    }
 
    @Test
-   void test1() throws Exception {
-      List<Task> tasks = new ArrayList<>();
-
-      Task task1 = Task.builder()
-             .description("description1")
-             .title("Spring Boot")
-             .priority(1)
-             .isCompleted(Boolean.FALSE)
-             .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
-             .build();
-
-      Task task3 = Task.builder()
-             .description("description3")
-             .title("Spring Boot")
-             .priority(3)
-             .isCompleted(Boolean.FALSE)
-             .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
-             .build();
-
-      tasks.add(task1);
-      tasks.add(task3);
-
-      mockMvc.perform(get("/api/tasks/all").contentType(MediaType.APPLICATION_JSON))
-             // .param("title", "Boot"))
-             .andExpect(status().isOk())
-             .andExpect(MockMvcResultMatchers
-                    .content()
-                    .contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
-   }
-
-   @Test
    void shouldReturnListOfTasksWithFilter() throws Exception {
       List<Task> tasks = new ArrayList<>();
 
@@ -232,7 +202,6 @@ class TaskControllerTest {
              .contentType(MediaType.APPLICATION_JSON))
              .andExpect(status().isNoContent())
              .andDo(print());
-
    }
 
    @Test
@@ -267,7 +236,113 @@ class TaskControllerTest {
              .getResponse()
              .getContentAsString();
       System.out.println("Response JSON: " + response);
+   }
 
+   @Test
+   void shouldReturnNoContentWhenTaskr() throws Exception {
+      String titleFilter = "Boot3";
+
+      List<Task> tasks = Collections.emptyList();
+
+      when(repository.findByTitleContainingIgnoreCase(titleFilter)).thenReturn(tasks);
+      mockMvc.perform(get("/api/tasks/alltitles/{title}", titleFilter))
+             .andExpect(status().isNoContent())
+             .andDo(print());
+   }
+
+   @Test
+   void shouldUpdateTask() throws Exception {
+      long id = 1L;
+
+      Task task = Task.builder()
+             .id(id)
+             .description("description")
+             .title("title")
+             .priority(1)
+             .isCompleted(Boolean.FALSE)
+             .taskStatus(TaskStatus.ON_TIME)
+             .build();
+
+      Task updatedtask = Task.builder()
+             .description("updatep-description")
+             .title("updated-title")
+             .priority(2)
+             .isCompleted(Boolean.FALSE)
+             .taskStatus(TaskStatus.ON_TIME)
+             .build();
+
+      when(repository.findById(id)).thenReturn(Optional.of(task));
+      when(repository.save(any(Task.class))).thenReturn(updatedtask);
+
+      mockMvc.perform(put("/api/tasks/{id}", id)
+             .contentType(MediaType.APPLICATION_JSON)
+             .content(objectMapper.writeValueAsString(updatedtask)))
+             .andExpect(status().isOk())
+             .andExpect(jsonPath("$.title").value(updatedtask.getTitle()))
+             .andExpect(jsonPath("$.description").value(updatedtask.getDescription()))
+             .andExpect(jsonPath("$.priority").value(updatedtask.getPriority()))
+             .andDo(print());
+   }
+
+   @Test
+   void shouldReturnNotFoundUpdateTask() throws Exception {
+      long id = 1L;
+
+      Task updatedtask = Task.builder()
+             .id(id)
+             .description("updatep-description")
+             .title("updated-title")
+             .priority(2)
+             .isCompleted(Boolean.FALSE)
+             .taskStatus(TaskStatus.ON_TIME)
+             .build();
+
+      when(repository.findById(id)).thenReturn(Optional.empty());
+      when(repository.save(any(Task.class))).thenReturn(updatedtask);
+
+      mockMvc.perform(put("/api/tasks/{id}", id)
+             .contentType(MediaType.APPLICATION_JSON)
+             .content(objectMapper.writeValueAsString(updatedtask)))
+             .andExpect(status().isNotFound())
+             .andDo(print());
+   }
+
+   @Test
+   void shouldDeleteTask() throws Exception {
+      long id = 1L;
+
+      Task task = Task.builder()
+             .id(id)
+             .description("description")
+             .title("title")
+             .priority(1)
+             .isCompleted(Boolean.FALSE)
+             .taskStatus(TaskStatus.ON_TIME)
+             .build();
+
+      mockMvc.perform(post("/api/tasks").contentType(MediaType.APPLICATION_JSON)
+             .content(objectMapper.writeValueAsString(task)))
+             .andExpect(status().isCreated())
+             .andDo(print());
+
+      doReturn(Optional.of(task)).when(repository).findById(id);
+      doNothing().when(repository).deleteById(id);
+
+      mockMvc.perform(delete("/api/tasks/{id}", id)
+             .contentType(MediaType.APPLICATION_JSON))
+             .andExpect(status().isOk())
+             .andDo(print());
+   }
+
+   @Test
+   void shouldDeleteNotFoundTask() throws Exception {
+      long id = 1L;
+
+      doNothing().when(repository).deleteById(id);
+      mockMvc.perform(delete("/api/tasks/{id}", id)
+             .contentType(MediaType.APPLICATION_JSON))
+             .andExpect(status().isNotFound())
+             .andDo(print());
    }
 
 }
