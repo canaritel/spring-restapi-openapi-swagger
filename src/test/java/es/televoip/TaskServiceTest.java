@@ -135,11 +135,11 @@ class TaskServiceTest {
       when(mapper.toDto(task)).thenReturn(taskDto);
 
       // Llamar al método del servicio
-      TaskDto updatedTaskDto = service.updateTask(1L, taskDto);
+      TaskDto updatedTaskDto = service.updateTask(1L, taskDto); // actualizamos pasando el 'objeto entero'
 
       // Verificar que los métodos se llamaron correctamente
       verify(repository, times(1)).findById(anyLong());
-      verify(mapper, times(1)).toEntity(taskDto);
+      verify(mapper, times(1)).toEntity(taskDto); // solo si se pasa el 'objeto entero'
       verify(repository, times(1)).save(task);
       verify(mapper, times(1)).toDto(task);
    }
