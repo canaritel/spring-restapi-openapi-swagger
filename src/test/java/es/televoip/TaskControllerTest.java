@@ -28,7 +28,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-//@WebMvcTest -> Se utiliza para realizar pruebas de integración enfocadas en el controlador pero preferible SpringBootTest
+/*
+*  Estas pruebas se centran en probar la capa de controladores de tu aplicación, que maneja las solicitudes HTTP y las respuestas.
+*  El objetivo principal es verificar que los controladores se comporten correctamente al recibir diferentes tipos de
+*  solicitudes y producir las respuestas esperadas.
+*
+*  Componentes involucrados: En estas pruebas, utilizas la herramienta MockMvc para simular solicitudes HTTP y 
+*  verificar las respuestas sin necesidad de utilizar un servidor web real.
+*
+ */
 @SpringBootTest(properties = "spring.config.location=classpath:application-test.properties")
 @AutoConfigureMockMvc
 class TaskControllerTest {

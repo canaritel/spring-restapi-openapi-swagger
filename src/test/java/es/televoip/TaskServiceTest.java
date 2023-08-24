@@ -24,8 +24,13 @@ import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /*
-*   las pruebas de servicio se centran en la lógica de negocio y cómo interactúa con la capa de persistencia y otras dependencias.
-*   Es importante simular todas las interacciones y casos de uso relevantes para garantizar que el servicio funcione como se espera.
+*  Las pruebas de servicio se centran en la lógica de negocio y cómo interactúa con la capa de persistencia y otras dependencias.
+*  Es importante simular todas las interacciones y casos de uso relevantes para garantizar que el servicio funcione como se espera.
+*  El objetivo principal es verificar que los métodos en el servicio realicen las operaciones esperadas y se comporten
+*  correctamente en respuesta a diferentes entradas.
+*
+*  Componentes involucrados: Estas pruebas utilizan mocks para simular la capa de acceso a datos y garantizar
+*  que el servicio interactúe con el repositorio (base de datos) de la manera correcta.
 *
  */
 @SpringBootTest(properties = "spring.config.location=classpath:application-test.properties")
@@ -138,7 +143,9 @@ class TaskServiceTest {
    public void testUpdateTaskStatus() {
       // Configurar comportamiento de repository.findById(), repository.save() y mapper.toDto()
       Task task = new Task();
+      TaskDto taskDto = new TaskDto();
       when(repository.findById(anyLong())).thenReturn(Optional.of(task));
+      when(mapper.toEntity(taskDto)).thenReturn(task);
       when(repository.save(task)).thenReturn(task);
       when(mapper.toDto(task)).thenReturn(new TaskDto());
 
@@ -154,8 +161,10 @@ class TaskServiceTest {
    @Test
    public void testUpdateTaskIsCompleted() {
       // Configurar comportamiento de repository.findById(), repository.save() y mapper.toDto()
+      TaskDto taskDto = new TaskDto();
       Task task = new Task();
       when(repository.findById(anyLong())).thenReturn(Optional.of(task));
+      when(mapper.toEntity(taskDto)).thenReturn(task);
       when(repository.save(task)).thenReturn(task);
       when(mapper.toDto(task)).thenReturn(new TaskDto());
 

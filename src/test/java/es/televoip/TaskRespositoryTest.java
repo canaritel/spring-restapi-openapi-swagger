@@ -14,12 +14,17 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 
 /*
-* En la clase JPAUnitTest, que se enfoca en probar la capa de acceso a datos utilizando JPA, lo ideal es trabajar
-* principalmente con objetos de tipo Task, ya que se está probando cómo las entidades son manejadas por la capa de persistencia.
+*  En la clase TaskRepositoryTest, que se enfoca en probar la capa de acceso a datos utilizando JPA, lo ideal es trabajar
+*  principalmente con objetos de tipo Task, ya que se está probando cómo las entidades son manejadas por la capa de persistencia.
+*  El objetivo principal es verificar que las operaciones de persistencia, como la creación, lectura, actualización y 
+*  eliminación de entidades, se realizan correctamente en la base de datos.
+*
+*  Componentes involucrados: En estas pruebas, interactúas directamente con el EntityManager y el repositorio JPA
+*  para realizar operaciones en la base de datos.
 *
  */
 @DataJpaTest(properties = "spring.config.location=classpath:application-test.properties")
-public class JPAUnitTest {
+public class TaskRespositoryTest {
 
    @Autowired
    private TestEntityManager entityManager;
@@ -40,7 +45,7 @@ public class JPAUnitTest {
    }
 
    @Test
-   public void should_a_task() {
+   public void should_create_a_task() {
       Task task = Task.builder()
              .description("description1")
              .title("title1")
@@ -50,9 +55,11 @@ public class JPAUnitTest {
              .build();
       entityManager.persist(task); ////
 
-      assertThat(task).hasFieldOrPropertyWithValue("description", "description1");
-      assertThat(task).hasFieldOrPropertyWithValue("title", "title1");
-      assertThat(task).hasFieldOrPropertyWithValue("priority", 1);
+      Task newTask = repository.save(task);
+
+      assertThat(newTask).hasFieldOrPropertyWithValue("description", "description1");
+      assertThat(newTask).hasFieldOrPropertyWithValue("title", "title1");
+      assertThat(newTask).hasFieldOrPropertyWithValue("priority", 1);
    }
 
    @Test
