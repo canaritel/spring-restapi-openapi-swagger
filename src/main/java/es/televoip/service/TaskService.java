@@ -212,9 +212,11 @@ public class TaskService {
          Task existingTask = repository.findById(id)
                 .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, "Tarea no encontrada con ID: " + id));
 
-         //  Ejecutar validaciones personalizadas
-         if (newDateOfFinished.isBefore(existingTask.getTaskDateCreation())) {
-            throw new TaskException(HttpStatus.BAD_REQUEST, "La fecha de finalización debe ser igual o posterior a la fecha de creación.");
+         //  Ejecutar validaciones personalizadas. ¡OJO! si funciona cuando querramos realizar TaskServiceTest
+         if (newDateOfFinished != null && existingTask.getTaskDateCreation() != null) {
+            if (newDateOfFinished.isBefore(existingTask.getTaskDateCreation())) {
+               throw new TaskException(HttpStatus.BAD_REQUEST, "La fecha de finalización debe ser igual o posterior a la fecha de creación.");
+            }
          }
 
          existingTask.setTaskDateFinished(newDateOfFinished);

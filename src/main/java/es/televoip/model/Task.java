@@ -51,11 +51,11 @@ public class Task {
    private LocalDateTime taskDateFinished; // la zona horaria la coge del fichero application.properties
 
    @CreatedDate // Para auditoria. Usamos la zona horaria Spain/Madrid -> mirar clase DomainConfig
-   @Column(name = "date_created", nullable = false, updatable = false)
+   @Column(name = "date_created", nullable = true, updatable = false)
    private OffsetDateTime logDateCreated; // incluye información sobre la zona horaria y el desplazamiento con respecto a UTC
 
    @LastModifiedDate // Para auditoria. Usamos la zona horaria Spain/Madrid -> mirar clase DomainConfig
-   @Column(name = "last_updated", nullable = false, updatable = true)
+   @Column(name = "last_updated", nullable = true, updatable = true)
    private OffsetDateTime logLastUpdated; // incluye información sobre la zona horaria y el desplazamiento con respecto a UTC
 
 }

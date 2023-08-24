@@ -12,7 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-@DataJpaTest
+
+/*
+* En la clase JPAUnitTest, que se enfoca en probar la capa de acceso a datos utilizando JPA, lo ideal es trabajar
+* principalmente con objetos de tipo Task, ya que se está probando cómo las entidades son manejadas por la capa de persistencia.
+*
+ */
+@DataJpaTest(properties = "spring.config.location=classpath:application-test.properties")
 public class JPAUnitTest {
 
    @Autowired
@@ -41,9 +47,8 @@ public class JPAUnitTest {
              .priority(1)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
              .build();
+      entityManager.persist(task); ////
 
       assertThat(task).hasFieldOrPropertyWithValue("description", "description1");
       assertThat(task).hasFieldOrPropertyWithValue("title", "title1");

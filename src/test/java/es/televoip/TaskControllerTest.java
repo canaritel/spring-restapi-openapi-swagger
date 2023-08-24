@@ -5,7 +5,6 @@ import es.televoip.model.Task;
 import es.televoip.model.enums.TaskStatus;
 import es.televoip.repository.TaskRepository;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +13,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -52,8 +50,6 @@ class TaskControllerTest {
              .priority(1)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
              .build();
 
       when(repository.save(task)).thenReturn(task);
@@ -75,8 +71,6 @@ class TaskControllerTest {
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
              .taskDateCreation(LocalDateTime.now().withNano(0))
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
              .build();
 
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
@@ -114,8 +108,6 @@ class TaskControllerTest {
              .priority(1)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
              .build();
 
       Task task2 = Task.builder()
@@ -124,8 +116,6 @@ class TaskControllerTest {
              .priority(2)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
              .build();
 
       Task task3 = Task.builder()
@@ -134,8 +124,6 @@ class TaskControllerTest {
              .priority(3)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
              .build();
 
       tasks.add(task1);
@@ -159,8 +147,6 @@ class TaskControllerTest {
              .priority(1)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
              .build();
 
       Task task2 = Task.builder()
@@ -169,8 +155,6 @@ class TaskControllerTest {
              .priority(2)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
              .build();
 
       Task task3 = Task.builder()
@@ -179,8 +163,6 @@ class TaskControllerTest {
              .priority(3)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
              .build();
 
       tasks.add(task1);

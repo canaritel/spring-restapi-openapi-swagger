@@ -3,6 +3,7 @@ package es.televoip.model.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import es.televoip.model.enums.TaskStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -10,10 +11,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Data
 @NoArgsConstructor
@@ -64,5 +67,13 @@ public class TaskDto {
    @Builder.Default
    @Schema(accessMode = Schema.AccessMode.READ_ONLY, defaultValue = "null")
    private LocalDateTime taskDateFinished = null;
+
+   @Null
+   @Schema(hidden = true)
+   private OffsetDateTime logDateCreated; // incluye información sobre la zona horaria y el desplazamiento con respecto a UTC
+
+   @Null
+   @Schema(hidden = true)
+   private OffsetDateTime logLastUpdated; // incluye información sobre la zona horaria y el desplazamiento con respecto a UTC
 
 }

@@ -6,6 +6,8 @@ import es.televoip.model.enums.TaskStatus;
 import es.televoip.model.mapper.TaskMapper;
 import es.televoip.repository.TaskRepository;
 import es.televoip.service.TaskService;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +23,12 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+/*
+*   las pruebas de servicio se centran en la lógica de negocio y cómo interactúa con la capa de persistencia y otras dependencias.
+*   Es importante simular todas las interacciones y casos de uso relevantes para garantizar que el servicio funcione como se espera.
+*
+ */
+@SpringBootTest(properties = "spring.config.location=classpath:application-test.properties")
 class TaskServiceTest {
 
    @Mock
@@ -144,30 +151,6 @@ class TaskServiceTest {
       verify(mapper, times(1)).toDto(task);
    }
 
-   /*
-   // Este método me devuelve error al tener validaciones en la fecha
-   @Test
-   public void testUpdateTaskDateOfFinished() {
-      // Configurar comportamiento de repository.findById(), repository.save() y mapper.toDto()
-      Task task = new Task();
-      when(repository.findById(anyLong())).thenReturn(Optional.of(task));
-      when(repository.save(task)).thenReturn(task);
-      when(mapper.toDto(task)).thenReturn(new TaskDto());
-
-      LocalDateTime newDateOfFinished = LocalDateTime.of(2023, Month.DECEMBER, 31, 15, 30, 00); // Sin segundos fraccionales
-
-      // Llamar al método del servicio
-      TaskDto updatedTaskDto = service.updateTaskDateOfFinished(1L, newDateOfFinished);
-
-      System.out.println("time1: " + newDateOfFinished);
-      System.out.println("time2: " + updatedTaskDto.getTaskDateFinished());
-
-      // Verificar que los métodos se llamaron correctamente
-      verify(repository, times(1)).findById(anyLong());
-      verify(repository, times(1)).save(task);
-      verify(mapper, times(1)).toDto(task);
-   }
-    */
    @Test
    public void testUpdateTaskIsCompleted() {
       // Configurar comportamiento de repository.findById(), repository.save() y mapper.toDto()
@@ -178,6 +161,26 @@ class TaskServiceTest {
 
       // Llamar al método del servicio
       TaskDto updatedTaskDto = service.updateTaskIsCompleted(1L, true);
+
+      // Verificar que los métodos se llamaron correctamente
+      verify(repository, times(1)).findById(anyLong());
+      verify(repository, times(1)).save(task);
+      verify(mapper, times(1)).toDto(task);
+   }
+
+   @Test
+   public void testUpdateTaskDateOfFinished() {
+      LocalDateTime newDateOfFinished = LocalDateTime.of(2023, Month.DECEMBER, 31, 15, 30, 00); // Sin segundos fraccionales      
+      // Configurar comportamiento de repository.findById(), repository.save() y mapper.toDto()
+      TaskDto taskDto = new TaskDto();
+      Task task = new Task();
+      when(repository.findById(anyLong())).thenReturn(Optional.of(task));
+      when(mapper.toEntity(taskDto)).thenReturn(task);
+      when(repository.save(task)).thenReturn(task);
+      when(mapper.toDto(task)).thenReturn(taskDto);
+
+      // Llamar al método del servicio
+      TaskDto updatedTaskDto = service.updateTaskDateOfFinished(1L, newDateOfFinished);
 
       // Verificar que los métodos se llamaron correctamente
       verify(repository, times(1)).findById(anyLong());

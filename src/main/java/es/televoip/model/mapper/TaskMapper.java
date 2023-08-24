@@ -22,4 +22,6 @@ public interface TaskMapper {
    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
    void updateEntity(TaskDto taskDto, @MappingTarget Task task);
 
+  
+
 }
