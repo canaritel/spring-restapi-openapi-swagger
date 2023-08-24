@@ -27,7 +27,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -56,6 +55,9 @@ class TaskControllerTest {
              .logDateCreated(OffsetDateTime.now())
              .logLastUpdated(OffsetDateTime.now())
              .build();
+
+      when(repository.save(task)).thenReturn(task);
+      // when(repository.save(any(Task.class))).thenReturn(updatedtask);
 
       mockMvc.perform(post("/api/tasks").contentType(MediaType.APPLICATION_JSON)
              .content(objectMapper.writeValueAsString(task)))
@@ -272,7 +274,8 @@ class TaskControllerTest {
              .build();
 
       when(repository.findById(id)).thenReturn(Optional.of(task));
-      when(repository.save(any(Task.class))).thenReturn(updatedtask);
+      when(repository.save(task)).thenReturn(updatedtask);
+      //when(repository.save(any(Task.class))).thenReturn(updatedtask);
 
       mockMvc.perform(put("/api/tasks/{id}", id)
              .contentType(MediaType.APPLICATION_JSON)
@@ -320,12 +323,8 @@ class TaskControllerTest {
              .taskStatus(TaskStatus.ON_TIME)
              .build();
 
-      mockMvc.perform(post("/api/tasks").contentType(MediaType.APPLICATION_JSON)
-             .content(objectMapper.writeValueAsString(task)))
-             .andExpect(status().isCreated())
-             .andDo(print());
+      when(repository.findById(id)).thenReturn(Optional.of(task));
 
-      doReturn(Optional.of(task)).when(repository).findById(id);
       doNothing().when(repository).deleteById(id);
 
       mockMvc.perform(delete("/api/tasks/{id}", id)
@@ -339,6 +338,7 @@ class TaskControllerTest {
       long id = 1L;
 
       doNothing().when(repository).deleteById(id);
+
       mockMvc.perform(delete("/api/tasks/{id}", id)
              .contentType(MediaType.APPLICATION_JSON))
              .andExpect(status().isNotFound())
