@@ -111,10 +111,15 @@ class TaskControllerIntegrationTest {
 
    @Test
    public void shouldReturnNotFoundForInvalidTaskId() throws Exception {
+      // Preparar datos en la base de datos
+      long invalidId = 9999L;
+
       // Realizar la solicitud HTTP con un ID de tarea no válido
-      mockMvc.perform(get("/api/tasks/{id}", 9999L)
+      mockMvc.perform(get("/api/tasks/{id}", invalidId)
              .contentType(MediaType.APPLICATION_JSON))
              .andExpect(status().isNotFound())
+             .andExpect(jsonPath("$.message").value("Tarea no encontrada con ID: " + invalidId))
+             .andExpect(jsonPath("$.status").value(404))
              .andDo(print());
    }
 
@@ -143,6 +148,7 @@ class TaskControllerIntegrationTest {
       entityManager.persist(task2);
 
       // Formatear la fecha en el formato deseado
+      // 'T' es un carácter literal que separa la fecha de la hora en la representación de fecha y hora en formato ISO 8601
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
       String expectedDate = specificDate.format(formatter);
 
