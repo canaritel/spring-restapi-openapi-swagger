@@ -73,6 +73,7 @@ class TaskControllerTest {
    public void shouldReturnTask() throws Exception {
       long id = 1L;
       Task task = Task.builder()
+             .id(id)
              .description("description test")
              .title("title test")
              .priority(1)
@@ -84,9 +85,10 @@ class TaskControllerTest {
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
       when(repository.findById(id)).thenReturn(Optional.of(task));
-      mockMvc.perform(get("/api/tasks/{id}", id).contentType(MediaType.APPLICATION_JSON)
+      mockMvc.perform(get("/api/tasks/{id}", id)
+             .contentType(MediaType.APPLICATION_JSON)
              .content(objectMapper.writeValueAsString(task)))
-             //.andExpect(jsonPath("$.id").value(id))
+             .andExpect(jsonPath("$.id").value(task.getId()))
              .andExpect(jsonPath("$.title").value(task.getTitle()))
              .andExpect(jsonPath("$.description").value(task.getDescription()))
              .andExpect(jsonPath("$.priority").value(task.getPriority()))

@@ -5,12 +5,16 @@ import es.televoip.model.enums.TaskStatus;
 import es.televoip.repository.TaskRepository;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.annotation.DirtiesContext;
 
 
 /*
@@ -23,6 +27,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 *  para realizar operaciones en la base de datos.
 *
  */
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD) // indicará al marco de pruebas que debe reinicializar el contexto de la aplicación después de cada prueba
 @DataJpaTest(properties = "spring.config.location=classpath:application-test.properties")
 public class TaskRespositoryTest {
 
@@ -32,20 +37,18 @@ public class TaskRespositoryTest {
    @Autowired
    private TaskRepository repository;
 
-   @BeforeEach  // IMPORTANTE para evitar errores, sobre todo cuando insertamos datos previos en nuestra BD
-   void setUp() {
-      repository.deleteAll();
-   }
-
    @Test
    public void should_find_no_task_if_repository_is_empty() {
-      List taks = repository.findAll();
-
-      assertThat(taks).isEmpty();
+      // When
+      List tasks = repository.findAll();
+      // Then
+      assertThat(tasks).isEmpty();
+      assertEquals(0, tasks.size());
    }
 
    @Test
    public void should_create_a_task() {
+      // Given
       Task task = Task.builder()
              .description("description1")
              .title("title1")
@@ -54,9 +57,11 @@ public class TaskRespositoryTest {
              .taskStatus(TaskStatus.ON_TIME)
              .build();
       entityManager.persist(task); ////
-
+      // When
       Task newTask = repository.save(task);
-
+      // Then
+      assertNotNull(newTask);
+      assertEquals(1, newTask.getId());
       assertThat(newTask).hasFieldOrPropertyWithValue("description", "description1");
       assertThat(newTask).hasFieldOrPropertyWithValue("title", "title1");
       assertThat(newTask).hasFieldOrPropertyWithValue("priority", 1);
@@ -97,9 +102,10 @@ public class TaskRespositoryTest {
              .build();
       entityManager.persist(task3);
 
-      List taks = repository.findAll();
+      List tasks = repository.findAll();
 
-      assertThat(taks).hasSize(3).contains(task1, task2, task3);
+      assertThat(tasks).hasSize(3).contains(task1, task2, task3);
+      assertEquals(3, tasks.size());
    }
 
    @Test
@@ -110,8 +116,6 @@ public class TaskRespositoryTest {
              .priority(1)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
              .build();
       entityManager.persist(task1);
 
@@ -121,13 +125,13 @@ public class TaskRespositoryTest {
              .priority(2)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
              .build();
       entityManager.persist(task2);
 
-      Task foundTask = repository.findById(task2.getId()).get();
+      Optional<Task> foundTaskOptional = repository.findById(task2.getId());
 
+      assertThat(foundTaskOptional).isPresent(); // Verificar que el Optional contiene un valor
+      Task foundTask = foundTaskOptional.get(); // Extraer el objeto Task del Optional
       assertThat(foundTask).isEqualTo(task2);
    }
 
@@ -173,6 +177,7 @@ public class TaskRespositoryTest {
 
    @Test
    public void should_update_task_by_id() {
+      // Given
       Task task1 = Task.builder()
              .description("description1")
              .title("title1")
@@ -205,15 +210,16 @@ public class TaskRespositoryTest {
              .logLastUpdated(OffsetDateTime.now())
              .build();
       entityManager.persist(updatedTask);
-
+      // When
       Task task = repository.findById(task2.getId()).get();
       task.setTitle(updatedTask.getTitle());
       task.setDescription(updatedTask.getDescription());
       task.setPriority(updatedTask.getPriority());
       repository.save(task);
-
       Task checkTask = repository.findById(task2.getId()).get();
-
+      // Then
+      assertNotNull(checkTask);
+      assertEquals(task2.getTitle(), checkTask.getTitle());
       assertThat(checkTask.getId()).isEqualTo(task2.getId());
       assertThat(checkTask.getTitle()).isEqualTo(updatedTask.getTitle());
       assertThat(checkTask.getDescription()).isEqualTo(updatedTask.getDescription());
@@ -221,7 +227,8 @@ public class TaskRespositoryTest {
    }
 
    @Test
-   public void should_delete_task_by_id() {
+   public void should_delete_listasks_by_id() {
+      // Given
       Task task1 = Task.builder()
              .description("description1")
              .title("title1")
@@ -254,12 +261,32 @@ public class TaskRespositoryTest {
              .logLastUpdated(OffsetDateTime.now())
              .build();
       entityManager.persist(task3);
-
+      // When
       repository.deleteById(task2.getId());
-
       List tutorials = repository.findAll();
-
+      // Then
       assertThat(tutorials).hasSize(2).contains(task1, task3);
+   }
+
+   @Test
+   void should_delete_task_by_id() {
+      // Given
+      Task task1 = Task.builder()
+             .id(1L)
+             .description("description1")
+             .title("title1")
+             .priority(1)
+             .isCompleted(Boolean.FALSE)
+             .taskStatus(TaskStatus.ON_TIME)
+             .logDateCreated(OffsetDateTime.now())
+             .logLastUpdated(OffsetDateTime.now())
+             .build();
+
+      // When
+      repository.deleteById(task1.getId());
+      Optional<Task> foundTaskOptional = repository.findById(task1.getId());
+      // Then
+      assertFalse(foundTaskOptional.isPresent());
    }
 
 }

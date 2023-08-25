@@ -35,8 +35,8 @@ public class TodoApiSpringApplication {
          ZonedDateTime madridTime = ZonedDateTime.now(madridZone);
          System.out.println("Hora y zona horaria de Madrid: " + madridTime);
 
-         // Insertamos datos en nuestra BD, solo si está vacía
-         if (repository.count() == 0L) {
+         // Insertamos datos en nuestra BD, solo si está vacía y no es la BD en memoria para los Test
+         if (repository.count() == 0L && !"jdbc:h2:mem:testdb".equals(dataSourceUrl)) {
             // Añadir lógica para crear y guardar las tareas en la base de datos
             Task task1 = Task.builder()
                    .description("description1")
@@ -67,7 +67,7 @@ public class TodoApiSpringApplication {
 
             repository.saveAll(Arrays.asList(task1, task2, task3));
          }
-         
+
          System.out.println("************************   DataSource URL: " + dataSourceUrl);
       };
    }
