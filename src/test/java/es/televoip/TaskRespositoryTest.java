@@ -38,15 +38,6 @@ public class TaskRespositoryTest {
    private TaskRepository repository;
 
    @Test
-   public void should_find_no_task_if_repository_is_empty() {
-      // When
-      List tasks = repository.findAll();
-      // Then
-      assertThat(tasks).isEmpty();
-      assertEquals(0, tasks.size());
-   }
-
-   @Test
    public void should_create_a_task() {
       // Given
       Task task = Task.builder()
@@ -65,6 +56,15 @@ public class TaskRespositoryTest {
       assertThat(newTask).hasFieldOrPropertyWithValue("description", "description1");
       assertThat(newTask).hasFieldOrPropertyWithValue("title", "title1");
       assertThat(newTask).hasFieldOrPropertyWithValue("priority", 1);
+   }
+
+   @Test
+   public void should_find_no_task_if_repository_is_empty() {
+      // When
+      List tasks = repository.findAll();
+      // Then
+      assertThat(tasks).isEmpty();
+      assertEquals(0, tasks.size());
    }
 
    @Test
@@ -170,9 +170,17 @@ public class TaskRespositoryTest {
              .build();
       entityManager.persist(task3);
 
-      List tasks = repository.findAllByTaskStatus(TaskStatus.ON_TIME);
+      List<Task> tasks = repository.findAllByTaskStatus(TaskStatus.ON_TIME);
 
       assertThat(tasks).hasSize(2).contains(task1, task3);
+
+      
+      for (Task task : tasks) {
+         assertThat(task.getTaskStatus()).isEqualTo(TaskStatus.ON_TIME);
+         assertThat(task.getPriority()).isLessThanOrEqualTo(3);
+         assertThat(task.getIsCompleted()).isFalse();
+      }
+
    }
 
    @Test
