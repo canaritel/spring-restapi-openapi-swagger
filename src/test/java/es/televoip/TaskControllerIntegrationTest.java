@@ -5,6 +5,8 @@ import es.televoip.model.Task;
 import es.televoip.model.enums.TaskStatus;
 import es.televoip.repository.TaskRepository;
 import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
@@ -23,6 +25,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+
+/*
+ * Las pruebas de esta clase se enfocan en la integración de la capa de controlador, lo que implica probar cómo los
+ * endpoints HTTP del controlador interactúan con el sistema en su conjunto, incluyendo la capa de servicio y la base de datos.
+ * Estas pruebas aseguran que las solicitudes HTTP se manejen correctamente y que las respuestas sean las esperadas.
+ *
+ * Componentes involucrados: Estas pruebas simulan solicitudes HTTP reales utilizando MockMvc y verifican tanto las respuestas
+ * como el comportamiento del controlador en diferentes casos de uso.
+ */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD) // indicará al marco de pruebas que debe reinicializar el contexto de la aplicación después de cada prueba
 @SpringBootTest(properties = "spring.config.location=classpath:application-test.properties") // Crea un contexto de aplicación de Spring para la prueba y carga todas las configuraciones de la aplicación
 @AutoConfigureMockMvc // configura automáticamente el objeto MockMvc. Es una herramienta que te permite simular solicitudes HTTP y verificar las respuestas recibidas
@@ -110,12 +121,14 @@ class TaskControllerIntegrationTest {
    @Test
    public void shouldReturnListOfTasks() throws Exception {
       // Preparar datos en la base de datos
+      LocalDateTime specificDate = LocalDateTime.of(2023, 8, 19, 12, 0, 00); // Año, mes, día, hora, minutos
       Task task1 = Task.builder()
              .description("description1")
              .title("title1")
              .priority(1)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
+             .taskDateCreation(specificDate)
              .build();
       entityManager.persist(task1);
 
@@ -125,8 +138,13 @@ class TaskControllerIntegrationTest {
              .priority(2)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
+             .taskDateCreation(specificDate)
              .build();
       entityManager.persist(task2);
+
+      // Formatear la fecha en el formato deseado
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+      String expectedDate = specificDate.format(formatter);
 
       // Realizar solicitud HTTP para obtener la lista de tareas y verificar la respuesta
       mockMvc.perform(get("/api/tasks/all")
@@ -139,10 +157,12 @@ class TaskControllerIntegrationTest {
              .andExpect(jsonPath("$[1].description").value(task2.getDescription()))
              .andExpect(jsonPath("$[0].priority").value(task1.getPriority()))
              .andExpect(jsonPath("$[1].priority").value(task2.getPriority()))
-            // .andExpect(jsonPath("$[0].isCompleted").value(task1.getIsCompleted()))
-            // .andExpect(jsonPath("$[1].iaCompleted").value(task2.getIsCompleted()))
-            // .andExpect(jsonPath("$[0].taskStatus").value(task1.getTaskStatus()))
-            // .andExpect(jsonPath("$[1].taskStatus").value(task2.getTaskStatus()))
+             .andExpect(jsonPath("$[0].isCompleted").value(task1.getIsCompleted()))
+             .andExpect(jsonPath("$[1].isCompleted").value(task2.getIsCompleted()))
+             .andExpect(jsonPath("$[0].taskStatus").value(task1.getTaskStatus().name()))
+             .andExpect(jsonPath("$[1].taskStatus").value(task2.getTaskStatus().name()))
+             .andExpect(jsonPath("$[0].taskDateCreation").value(task1.getTaskDateCreation().format(formatter)))
+             .andExpect(jsonPath("$[1].taskDateCreation").value(task2.getTaskDateCreation().format(formatter)))
              .andDo(print());
 
       // Verificar la base de datos utilizando el repositorio
