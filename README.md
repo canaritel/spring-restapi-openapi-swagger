@@ -41,6 +41,7 @@ Netbeans Code Coverage:
 ![image](https://github.com/canaritel/spring-restapi-openapi-swagger/assets/57302177/fadf5225-80a1-4e7c-bf59-73b3f4ec1800)
 
 
+
 ## Instrucciones de Uso
 
 ### Requisitos
