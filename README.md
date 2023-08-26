@@ -15,7 +15,8 @@ Para el desarrollo de este proyecto se han seguido buenas prácticas y 'Clean Co
 - Consulta y filtrado de tareas por diversos criterios.
 - Ordenación y paginación de tareas para una experiencia de usuario optimizada.
 - Cambio de estado y completitud de tareas.
-- Documentación interactiva generada automáticamente a través de Swagger.
+- Documentación API interactiva generada automáticamente a través de Swagger.
+- Pruebas unitarias y de integración
 
 ## Patrones y Tecnologías Utilizadas
 - Arquitectura MVC (Modelo-Vista-Controlador): El proyecto sigue el patrón MVC para mantener una estructura organizada y escalable.
@@ -25,6 +26,16 @@ Para el desarrollo de este proyecto se han seguido buenas prácticas y 'Clean Co
 - Validación de Datos: Se aplican anotaciones de validación en las clases DTO para asegurar la integridad de los datos.
 - Patrón Builder: Utilizado para crear objetos complejos con múltiples parámetros de configuración de manera clara y legible.
 - Principios de Clean Code: El código sigue los principios de "Clean Code" para garantizar la legibilidad, la simplicidad y la facilidad de mantenimiento. Se enfatiza en la claridad de los nombres de variables, funciones y clases, así como en la separación de responsabilidades y la minimización de la complejidad.
+- Jacoco: Para asegurar la calidad del código y medir la cobertura de las pruebas, este proyecto utiliza pruebas unitarias y de integración, además de generar informes de cobertura mediante JaCoCo.
+
+  
+## Informes de Cobertura con JaCoCo
+JaCoCo es una herramienta que mide la cobertura de código de tus pruebas. Genera informes detallados sobre qué líneas de código están cubiertas por tus pruebas y cuáles no.
+
+Para ejecutar las pruebas y generar informes de cobertura, utiliza el siguiente comando: 'mvn clean test jacoco:report'
+
+Los informes de cobertura se generarán en el directorio `target/site/jacoco`. Abre el archivo `index.html` en tu navegador para ver los detalles de la cobertura de código.
+
 
 ## Instrucciones de Uso
 
