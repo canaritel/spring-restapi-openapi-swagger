@@ -165,10 +165,15 @@ public class TaskService {
    public List<TaskDto> createAllTasks(List<TaskDto> taskDtos) {
       try {
 
+         if (taskDtos.isEmpty()) {
+            throw new TaskException(HttpStatus.BAD_REQUEST, "La lista de tareas a crear es 'null'.");
+         }
+
          List<Task> tasks = taskDtos.stream() // convierte la lista taskDtos en un flujo (stream) de elementos
                 .map(mapper::toEntity) // convierte cada elemento de la lista taskDtos en un objeto Task
                 .peek(action -> {
                    /* permite realizar una acción en cada elemento del flujo sin cambiar los elementos mismos  */
+
                    if (action.getTaskDateCreation() == null) {
                       action.setTaskDateCreation(LocalDateTime.now());
                    }

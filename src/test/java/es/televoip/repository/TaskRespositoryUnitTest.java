@@ -1,8 +1,8 @@
-package es.televoip;
+package es.televoip.repository;
 
 import es.televoip.model.Task;
 import es.televoip.model.enums.TaskStatus;
-import es.televoip.repository.TaskRepository;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -10,8 +10,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.DirtiesContext;
@@ -27,9 +30,10 @@ import org.springframework.test.annotation.DirtiesContext;
 *  para realizar operaciones en la base de datos.
 *
  */
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD) // indicará al marco de pruebas que debe reinicializar el contexto de la aplicación después de cada prueba
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // indicará al marco de pruebas que debe reinicializar el contexto de la aplicación después de cada prueba
 @DataJpaTest(properties = "spring.config.location=classpath:application-test.properties")
-public class TaskRespositoryTest {
+@AutoConfigureTestEntityManager // configura y permite realizar operaciones en la base de datos emulada durante las pruebas, como la inserción y recuperación de datoss
+public class TaskRespositoryUnitTest {
 
    @Autowired
    private TestEntityManager entityManager;
@@ -133,54 +137,6 @@ public class TaskRespositoryTest {
       assertThat(foundTaskOptional).isPresent(); // Verificar que el Optional contiene un valor
       Task foundTask = foundTaskOptional.get(); // Extraer el objeto Task del Optional
       assertThat(foundTask).isEqualTo(task2);
-   }
-
-   @Test
-   public void should_find_status_task() {
-      Task task1 = Task.builder()
-             .description("description1")
-             .title("title1")
-             .priority(1)
-             .isCompleted(Boolean.FALSE)
-             .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
-             .build();
-      entityManager.persist(task1);
-
-      Task task2 = Task.builder()
-             .description("description2")
-             .title("title2")
-             .priority(2)
-             .isCompleted(Boolean.FALSE)
-             .taskStatus(TaskStatus.LATE)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
-             .build();
-      entityManager.persist(task2);
-
-      Task task3 = Task.builder()
-             .description("description3")
-             .title("title3")
-             .priority(3)
-             .isCompleted(Boolean.FALSE)
-             .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
-             .build();
-      entityManager.persist(task3);
-
-      List<Task> tasks = repository.findAllByTaskStatus(TaskStatus.ON_TIME);
-
-      assertThat(tasks).hasSize(2).contains(task1, task3);
-
-      
-      for (Task task : tasks) {
-         assertThat(task.getTaskStatus()).isEqualTo(TaskStatus.ON_TIME);
-         assertThat(task.getPriority()).isLessThanOrEqualTo(3);
-         assertThat(task.getIsCompleted()).isFalse();
-      }
-
    }
 
    @Test
@@ -295,6 +251,163 @@ public class TaskRespositoryTest {
       Optional<Task> foundTaskOptional = repository.findById(task1.getId());
       // Then
       assertFalse(foundTaskOptional.isPresent());
+   }
+
+   @Test
+   // en el repository debemos activar @Modifying(clearAutomatically = true) 
+   public void testMarkTaskAsCompleted() {
+      // Given
+      Task task = Task.builder()
+             .description("description1")
+             .title("title1")
+             .priority(3)
+             .isCompleted(Boolean.FALSE)
+             .taskStatus(TaskStatus.ON_TIME)
+             .taskDateCreation(LocalDateTime.now())
+             .logDateCreated(OffsetDateTime.now())
+             .logLastUpdated(OffsetDateTime.now())
+             .build();
+      entityManager.persist(task);
+
+      // When
+      System.out.println("ID: " + task.getId());
+      repository.markTaskAsCompleted(task.getId());
+
+      // Then
+      Task updatedTask = repository.findById(task.getId()).orElse(null);
+      System.out.println(updatedTask.toString());
+      assertNotNull(updatedTask);
+      assertTrue(updatedTask.getIsCompleted());
+   }
+
+   @Test
+   public void testFindAllByTaskStatus() {
+      Task task1 = Task.builder()
+             .description("description1")
+             .title("title1")
+             .priority(1)
+             .isCompleted(Boolean.FALSE)
+             .taskStatus(TaskStatus.ON_TIME)
+             .logDateCreated(OffsetDateTime.now())
+             .logLastUpdated(OffsetDateTime.now())
+             .build();
+      entityManager.persist(task1);
+
+      Task task2 = Task.builder()
+             .description("description2")
+             .title("title2")
+             .priority(2)
+             .isCompleted(Boolean.FALSE)
+             .taskStatus(TaskStatus.LATE)
+             .logDateCreated(OffsetDateTime.now())
+             .logLastUpdated(OffsetDateTime.now())
+             .build();
+      entityManager.persist(task2);
+
+      Task task3 = Task.builder()
+             .description("description3")
+             .title("title3")
+             .priority(3)
+             .isCompleted(Boolean.FALSE)
+             .taskStatus(TaskStatus.ON_TIME)
+             .logDateCreated(OffsetDateTime.now())
+             .logLastUpdated(OffsetDateTime.now())
+             .build();
+      entityManager.persist(task3);
+
+      List<Task> tasks = repository.findAllByTaskStatus(TaskStatus.ON_TIME);
+
+      assertThat(tasks).hasSize(2).contains(task1, task3);
+
+      for (Task task : tasks) {
+         assertThat(task.getTaskStatus()).isEqualTo(TaskStatus.ON_TIME);
+         assertThat(task.getPriority()).isLessThanOrEqualTo(3);
+         assertThat(task.getIsCompleted()).isFalse();
+      }
+   }
+
+   @Test
+   public void testFindByIsCompletedTrue() {
+      // Given
+      Task task1 = Task.builder()
+             .description("description1")
+             .title("title1")
+             .priority(1)
+             .isCompleted(Boolean.TRUE)
+             .taskStatus(TaskStatus.ON_TIME)
+             .build();
+      entityManager.persist(task1);
+
+      Task task2 = Task.builder()
+             .description("description2")
+             .title("title2")
+             .priority(2)
+             .isCompleted(Boolean.FALSE)
+             .taskStatus(TaskStatus.LATE)
+             .build();
+      entityManager.persist(task2);
+
+      // When
+      List<Task> completedTasks = repository.findByIsCompletedTrue();
+
+      // Then
+      assertThat(completedTasks).hasSize(1).contains(task1);
+   }
+
+   @Test
+   public void testFindByIsCompletedFalse() {
+      // Given
+      Task task1 = Task.builder()
+             .description("description1")
+             .title("title1")
+             .priority(1)
+             .isCompleted(Boolean.TRUE)
+             .taskStatus(TaskStatus.ON_TIME)
+             .build();
+      entityManager.persist(task1);
+
+      Task task2 = Task.builder()
+             .description("description2")
+             .title("title2")
+             .priority(2)
+             .isCompleted(Boolean.FALSE)
+             .taskStatus(TaskStatus.LATE)
+             .build();
+      entityManager.persist(task2);
+
+      // When
+      List<Task> incompletedTasks = repository.findByIsCompletedFalse();
+
+      // Then
+      assertThat(incompletedTasks).hasSize(1).contains(task2);
+   }
+
+   @Test
+   public void testFindByTitleContainingIgnoreCase() {
+      // Given
+      Task task1 = Task.builder()
+             .description("description1")
+             .title("Find Me")
+             .priority(1)
+             .isCompleted(Boolean.TRUE)
+             .taskStatus(TaskStatus.ON_TIME)
+             .build();
+      entityManager.persist(task1);
+
+      Task task2 = Task.builder()
+             .description("description2")
+             .title("title2")
+             .priority(2)
+             .isCompleted(Boolean.FALSE)
+             .taskStatus(TaskStatus.LATE)
+             .build();
+      entityManager.persist(task2);
+
+      // When
+      List<Task> foundTasks = repository.findByTitleContainingIgnoreCase("find");
+
+      // Then
+      assertThat(foundTasks).hasSize(1).contains(task1);
    }
 
 }

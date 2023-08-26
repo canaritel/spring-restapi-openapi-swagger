@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-   @Modifying // anotación que indica que se modificará los datos en la base de datos
+   @Modifying(clearAutomatically = true) // anotación que indica que se modificará los datos en la base de datos
    @Query("UPDATE Task t SET t.isCompleted = TRUE WHERE t.id = :id")
    public void markTaskAsCompleted(@Param("id") Long id);
 
