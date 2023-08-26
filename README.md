@@ -35,6 +35,10 @@ JaCoCo es una herramienta que mide la cobertura de código de tus pruebas. Gener
 Para ejecutar las pruebas y generar informes de cobertura, utiliza el siguiente comando: `mvn clean test jacoco:report`
 
 Los informes de cobertura se generarán en el directorio `target/site/jacoco`. Abre el archivo `index.html` en tu navegador para ver los detalles de la cobertura de código.
+![image](https://github.com/canaritel/spring-restapi-openapi-swagger/assets/57302177/cc0accf0-9f77-4c9c-b41c-a8e58143c644)
+
+Netbeans Code Coverage:
+![image](https://github.com/canaritel/spring-restapi-openapi-swagger/assets/57302177/fadf5225-80a1-4e7c-bf59-73b3f4ec1800)
 
 
 ## Instrucciones de Uso
