@@ -32,7 +32,7 @@ Para el desarrollo de este proyecto se han seguido buenas prácticas y 'Clean Co
 ## Informes de Cobertura con JaCoCo
 JaCoCo es una herramienta que mide la cobertura de código de tus pruebas. Genera informes detallados sobre qué líneas de código están cubiertas por tus pruebas y cuáles no.
 
-Para ejecutar las pruebas y generar informes de cobertura, utiliza el siguiente comando: 'mvn clean test jacoco:report'
+Para ejecutar las pruebas y generar informes de cobertura, utiliza el siguiente comando: `mvn clean test jacoco:report`
 
 Los informes de cobertura se generarán en el directorio `target/site/jacoco`. Abre el archivo `index.html` en tu navegador para ver los detalles de la cobertura de código.
 
