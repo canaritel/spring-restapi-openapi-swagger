@@ -1,11 +1,10 @@
-package es.televoip;
+package es.televoip.service;
 
 import es.televoip.model.Task;
 import es.televoip.model.dto.TaskDto;
 import es.televoip.model.enums.TaskStatus;
 import es.televoip.model.mapper.TaskMapper;
 import es.televoip.repository.TaskRepository;
-import es.televoip.service.TaskService;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Arrays;
@@ -34,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 *
  */
 @SpringBootTest(properties = "spring.config.location=classpath:application-test.properties")
-class TaskServiceTest {
+class TaskServiceIntegrationTest {
 
    @Mock
    private TaskRepository repository;

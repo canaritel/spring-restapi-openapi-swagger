@@ -1,4 +1,4 @@
-package es.televoip;
+package es.televoip.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.televoip.model.Task;
@@ -27,10 +27,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 /*
- * Las pruebas de esta clase se enfocan en la integración de la capa de controlador, lo que implica probar cómo los
- * endpoints HTTP del controlador interactúan con el sistema en su conjunto, incluyendo la capa de servicio y la base de datos.
- * Estas pruebas aseguran que las solicitudes HTTP se manejen correctamente y que las respuestas sean las esperadas.
- *
+*  Estas pruebas se centran en probar la capa de controladores de tu aplicación, que maneja las solicitudes HTTP y las respuestas.
+*  El objetivo principal es verificar que los controladores se comporten correctamente al recibir diferentes tipos de
+*  solicitudes y producir las respuestas esperadas.
+*
  * Componentes involucrados: Estas pruebas simulan solicitudes HTTP reales utilizando MockMvc y verifican tanto las respuestas
  * como el comportamiento del controlador en diferentes casos de uso.
  */
@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc // configura automáticamente el objeto MockMvc. Es una herramienta que te permite simular solicitudes HTTP y verificar las respuestas recibidas
 @AutoConfigureTestEntityManager // configura y permite realizar operaciones en la base de datos emulada durante las pruebas, como la inserción y recuperación de datoss
 @Transactional // se asegura que cada prueba se ejecute dentro de una transacción y se revierta al final de la prueba
-class TaskControllerIntegrationTest {
+class TaskControllerUnitTest {
 
    @Autowired
    private TestEntityManager entityManager;
