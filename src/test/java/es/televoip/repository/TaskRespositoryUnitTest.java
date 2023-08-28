@@ -3,7 +3,6 @@ package es.televoip.repository;
 import es.televoip.model.Task;
 import es.televoip.model.enums.TaskStatus;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.DirtiesContext;
@@ -31,7 +29,7 @@ import org.springframework.test.annotation.DirtiesContext;
  */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // indicará al marco de pruebas que debe reinicializar el contexto de la aplicación después de cada prueba
 @DataJpaTest(properties = "spring.config.location=classpath:application-test.properties")
-@AutoConfigureTestEntityManager // configura y permite realizar operaciones en la base de datos emulada durante las pruebas, como la inserción y recuperación de datoss
+//@AutoConfigureTestEntityManager // configura y permite realizar operaciones en la base de datos emulada durante las pruebas, como la inserción y recuperación de datoss
 public class TaskRespositoryUnitTest {
 
    @Autowired
@@ -78,8 +76,8 @@ public class TaskRespositoryUnitTest {
              .priority(1)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
+//             .logDateCreated(OffsetDateTime.now())
+//             .logLastUpdated(OffsetDateTime.now())
              .build();
       entityManager.persist(task1);
 
@@ -89,8 +87,8 @@ public class TaskRespositoryUnitTest {
              .priority(2)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
+//             .logDateCreated(OffsetDateTime.now())
+//             .logLastUpdated(OffsetDateTime.now())
              .build();
       entityManager.persist(task2);
 
@@ -100,8 +98,8 @@ public class TaskRespositoryUnitTest {
              .priority(3)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
+//             .logDateCreated(OffsetDateTime.now())
+//             .logLastUpdated(OffsetDateTime.now())
              .build();
       entityManager.persist(task3);
 
@@ -147,8 +145,8 @@ public class TaskRespositoryUnitTest {
              .priority(1)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
+//             .logDateCreated(OffsetDateTime.now())
+//             .logLastUpdated(OffsetDateTime.now())
              .build();
       entityManager.persist(task1);
 
@@ -158,8 +156,8 @@ public class TaskRespositoryUnitTest {
              .priority(2)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
+//             .logDateCreated(OffsetDateTime.now())
+//             .logLastUpdated(OffsetDateTime.now())
              .build();
       entityManager.persist(task2);
 
@@ -169,8 +167,8 @@ public class TaskRespositoryUnitTest {
              .priority(3)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
+//             .logDateCreated(OffsetDateTime.now())
+//             .logLastUpdated(OffsetDateTime.now())
              .build();
       entityManager.persist(updatedTask);
       // When
@@ -198,8 +196,8 @@ public class TaskRespositoryUnitTest {
              .priority(1)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
+//             .logDateCreated(OffsetDateTime.now())
+//             .logLastUpdated(OffsetDateTime.now())
              .build();
       entityManager.persist(task1);
 
@@ -209,8 +207,8 @@ public class TaskRespositoryUnitTest {
              .priority(2)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
+//             .logDateCreated(OffsetDateTime.now())
+//             .logLastUpdated(OffsetDateTime.now())
              .build();
       entityManager.persist(task2);
 
@@ -220,8 +218,8 @@ public class TaskRespositoryUnitTest {
              .priority(3)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
+//             .logDateCreated(OffsetDateTime.now())
+//             .logLastUpdated(OffsetDateTime.now())
              .build();
       entityManager.persist(task3);
       // When
@@ -235,15 +233,16 @@ public class TaskRespositoryUnitTest {
    void should_delete_task_by_id() {
       // Given
       Task task1 = Task.builder()
-             .id(1L)
+             //.id(1L)
              .description("description1")
              .title("title1")
              .priority(1)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
+//             .logDateCreated(OffsetDateTime.now())
+//             .logLastUpdated(OffsetDateTime.now())
              .build();
+      entityManager.persist(task1);
 
       // When
       repository.deleteById(task1.getId());
@@ -263,8 +262,8 @@ public class TaskRespositoryUnitTest {
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
              .taskDateCreation(LocalDateTime.now())
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
+//             .logDateCreated(OffsetDateTime.now())
+//             .logLastUpdated(OffsetDateTime.now())
              .build();
       entityManager.persist(task);
 
@@ -287,8 +286,8 @@ public class TaskRespositoryUnitTest {
              .priority(1)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
+//             .logDateCreated(OffsetDateTime.now())
+//             .logLastUpdated(OffsetDateTime.now())
              .build();
       entityManager.persist(task1);
 
@@ -298,8 +297,8 @@ public class TaskRespositoryUnitTest {
              .priority(2)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.LATE)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
+//             .logDateCreated(OffsetDateTime.now())
+//             .logLastUpdated(OffsetDateTime.now())
              .build();
       entityManager.persist(task2);
 
@@ -309,8 +308,8 @@ public class TaskRespositoryUnitTest {
              .priority(3)
              .isCompleted(Boolean.FALSE)
              .taskStatus(TaskStatus.ON_TIME)
-             .logDateCreated(OffsetDateTime.now())
-             .logLastUpdated(OffsetDateTime.now())
+//             .logDateCreated(OffsetDateTime.now())
+//             .logLastUpdated(OffsetDateTime.now())
              .build();
       entityManager.persist(task3);
 

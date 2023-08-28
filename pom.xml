@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.2</version>
+        <version>3.1.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>es.televoip</groupId>
@@ -82,23 +82,22 @@
         <!-- Fin dependencias MapStruct -->
         
         <!-- Dependencias de JUnit y Mockito -->
-        <!--
-     <dependency>
-         <groupId>org.junit.jupiter</groupId>
-         <artifactId>junit-jupiter-api</artifactId>
-         <scope>test</scope>
-     </dependency>
-     <dependency>
-         <groupId>org.junit.jupiter</groupId>
-         <artifactId>junit-jupiter-engine</artifactId>
-         <scope>test</scope>
-     </dependency>
-     <dependency>
-         <groupId>org.mockito</groupId>
-         <artifactId>mockito-core</artifactId>
-         <scope>test</scope>
-     </dependency>
-        -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
     </dependencies>
 
     <build>
@@ -135,6 +134,19 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Plugin Surefire para ejecutar pruebas -->
+            <!--
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>3.1.2</version>
+    <configuration>
+        <includes>
+            <include>**/*Test.java</include>
+        </includes>
+    </configuration>
+</plugin>
+            -->
         </plugins>
     </build>
 

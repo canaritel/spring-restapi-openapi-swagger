@@ -4,30 +4,22 @@ import es.televoip.model.enums.TaskStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Task {
-
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Long id;
+public class Task extends AbstractEntity {
 
    @Column(nullable = false)
    private String title;
@@ -49,13 +41,5 @@ public class Task {
 
    @Column(nullable = true, updatable = true)
    private LocalDateTime taskDateFinished; // la zona horaria la coge del fichero application.properties
-
-   @CreatedDate // Para auditoria. Usamos la zona horaria Spain/Madrid -> mirar clase DomainConfig
-   @Column(name = "date_created", nullable = true, updatable = false)
-   private OffsetDateTime logDateCreated; // incluye información sobre la zona horaria y el desplazamiento con respecto a UTC
-
-   @LastModifiedDate // Para auditoria. Usamos la zona horaria Spain/Madrid -> mirar clase DomainConfig
-   @Column(name = "last_updated", nullable = true, updatable = true)
-   private OffsetDateTime logLastUpdated; // incluye información sobre la zona horaria y el desplazamiento con respecto a UTC
 
 }

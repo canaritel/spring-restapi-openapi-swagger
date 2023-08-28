@@ -73,7 +73,7 @@ class TaskControllerIntegrationTest {
    public void shouldReturnTask() throws Exception {
       long id = 1L;
       Task task = Task.builder()
-             .id(id)
+             //.id(id)
              .description("description test")
              .title("title test")
              .priority(1)
@@ -88,7 +88,7 @@ class TaskControllerIntegrationTest {
       mockMvc.perform(get("/api/tasks/{id}", id)
              .contentType(MediaType.APPLICATION_JSON)
              .content(objectMapper.writeValueAsString(task)))
-             .andExpect(jsonPath("$.id").value(task.getId()))
+             .andExpect(status().isOk())
              .andExpect(jsonPath("$.title").value(task.getTitle()))
              .andExpect(jsonPath("$.description").value(task.getDescription()))
              .andExpect(jsonPath("$.priority").value(task.getPriority()))
@@ -249,7 +249,7 @@ class TaskControllerIntegrationTest {
       long id = 1L;
 
       Task task = Task.builder()
-             .id(id)
+             // .id(id)
              .description("description")
              .title("title")
              .priority(1)
@@ -284,7 +284,7 @@ class TaskControllerIntegrationTest {
       long id = 1L;
 
       Task updatedtask = Task.builder()
-             .id(id)
+             //  .id(id)
              .description("updatep-description")
              .title("updated-title")
              .priority(2)
@@ -307,7 +307,7 @@ class TaskControllerIntegrationTest {
       long id = 1L;
 
       Task task = Task.builder()
-             .id(id)
+             //  .id(id)
              .description("description")
              .title("title")
              .priority(1)

@@ -59,4 +59,13 @@
                 <exec.appArgs></exec.appArgs>
             </properties>
         </action>
+        <action>
+            <actionName>CUSTOM-Test</actionName>
+            <displayName>Test</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>test</goal>
+                <goal>jacoco:report</goal>
+            </goals>
+        </action>
     </actions>
