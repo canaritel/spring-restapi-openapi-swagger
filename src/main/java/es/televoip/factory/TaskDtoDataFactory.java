@@ -80,8 +80,8 @@ public final class TaskDtoDataFactory {
       map.put(TaskConstant.TEST_TASK_1_ID, TaskDtoDataFactory.createSampleTask1Default());
       map.put(TaskConstant.TEST_TASK_2_ID, TaskDtoDataFactory.createSampleTask2Default());
       map.put(TaskConstant.TEST_TASK_3_ID, TaskDtoDataFactory.createSampleTask3Default());
-       map.put(TaskConstant.TEST_TASK_4_ID, TaskDtoDataFactory.createSampleTask3Default());
-        map.put(TaskConstant.TEST_TASK_5_ID, TaskDtoDataFactory.createSampleTask3Default());
+      map.put(TaskConstant.TEST_TASK_4_ID, TaskDtoDataFactory.createSampleTask3Default());
+      map.put(TaskConstant.TEST_TASK_5_ID, TaskDtoDataFactory.createSampleTask3Default());
       return map;
    }
 
