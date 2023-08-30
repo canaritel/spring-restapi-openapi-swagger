@@ -3,6 +3,7 @@ package es.televoip.constant;
 public final class TaskConstant {
 
    private TaskConstant() {
+      // Constructor privado para evitar instanciación
    }
 
    // valores para test y carga de datos
@@ -30,4 +31,10 @@ public final class TaskConstant {
    public static final String TEST_TASK_5_TITLE = "title5";
    public static final String TEST_TASK_5_DESCRIPTION = "description5";
    public static final int TEST_TASK_5_PRIORITY = 5;
+
+   // Mensajes en la capa Service
+   public static final String TASK_NOT_FOUND = "Tarea no encontrada con ID: ";
+   public static final String TASK_IS_NULL = "La lista de tareas a crear es 'null'.";
+   public static final String TASK_DATE_FAIL = "La fecha de finalización debe ser igual o posterior a la fecha de creación.";
+
 }

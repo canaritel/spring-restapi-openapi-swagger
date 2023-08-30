@@ -1,5 +1,6 @@
 package es.televoip.controller;
 
+import es.televoip.constant.HttpValues;
 import es.televoip.model.dto.TaskDto;
 import es.televoip.model.enums.TaskStatus;
 import es.televoip.service.TaskService;
@@ -34,32 +35,6 @@ public class taskControllerPatch {
       this.service = service;
    }
 
-   final String VALUE_OK = "{"
-          + "\"id\": \"long\","
-          + "\"title\": \"string\","
-          + "\"description\": \"string\","
-          + "\"taskStatus\": \"[ON_TIME , LATE]\","
-          + "\"isCompleted\": \"boolean\","
-          + "\"priority\": \"int\","
-          + "\"taskDateCreation\": \"localdatetime\","
-          + "\"taskDateFinished\": \"localdatetime\""
-          + "}";
-
-   final String VALUE_ERROR_404 = "{"
-          + "\"status\": \"error\","
-          + "\"message\": \"La tarea no fue encontrada\""
-          + "}";
-
-   final String VALUE_ERROR_400 = "{"
-          + "\"status\": \"error\","
-          + "\"message\": \"La solicitud enviada no es válida.\""
-          + "}";
-
-   final String VALUE_ERROR_422 = "{"
-          + "\"status\": \"error\","
-          + "\"message\": \"La tarea no cumple las validaciones.\""
-          + "}";
-
    // ********************************************************************************************************
    /**
     * updateTask: Actualiza una tarea existente.
@@ -82,7 +57,7 @@ public class taskControllerPatch {
                               description = """
                                  Los campos 'title' y 'description' son de tipo String. 
                                  El campo 'priority' va del 1 (mínima prioridad) a 9 (máxima prioridad).""",
-                              value = VALUE_OK
+                              value = HttpValues.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "404",
@@ -95,7 +70,7 @@ public class taskControllerPatch {
                               name = "Tarea no encontrada",
                               description = """
                                  La tarea con el ID especificado no se encuentra.""",
-                              value = VALUE_ERROR_404
+                              value = HttpValues.VALUE_ERROR_404
                        )})),
       @ApiResponse(
              responseCode = "400",
@@ -107,7 +82,7 @@ public class taskControllerPatch {
                        @ExampleObject(
                               name = "Solicitud incorrecta",
                               description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
-                              value = VALUE_ERROR_400
+                              value = HttpValues.VALUE_ERROR_400
                        )})),
       @ApiResponse(
              responseCode = "422",
@@ -119,7 +94,7 @@ public class taskControllerPatch {
                        @ExampleObject(
                               name = "Tarea no encontrada",
                               description = "Revise si los campos cumplen con las validaciones.",
-                              value = VALUE_ERROR_422
+                              value = HttpValues.VALUE_ERROR_422
                        )}))
    })
    @PutMapping("/{id}")
@@ -151,7 +126,7 @@ public class taskControllerPatch {
                               description = """
                                  El campo es un objeto de tipo LocalDateTime que indica la fecha de finalización de la tarea. 
                                  Permite el envío de 'null'.""",
-                              value = VALUE_OK
+                              value = HttpValues.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "404",
@@ -164,7 +139,7 @@ public class taskControllerPatch {
                               name = "Tarea no encontrada",
                               description = """
                                  La tarea con el ID especificado no se encuentra.""",
-                              value = VALUE_ERROR_404
+                              value = HttpValues.VALUE_ERROR_404
                        )})),
       @ApiResponse(
              responseCode = "400",
@@ -176,7 +151,7 @@ public class taskControllerPatch {
                        @ExampleObject(
                               name = "Solicitud incorrecta",
                               description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
-                              value = VALUE_ERROR_400
+                              value = HttpValues.VALUE_ERROR_400
                        )})),
       @ApiResponse(
              responseCode = "422",
@@ -188,7 +163,7 @@ public class taskControllerPatch {
                        @ExampleObject(
                               name = "Tarea no encontrada",
                               description = "Revise si los campos cumplen con las validaciones.",
-                              value = VALUE_ERROR_422
+                              value = HttpValues.VALUE_ERROR_422
                        )}))
    })
    @PatchMapping("/{id}/dateOfFinished")
@@ -219,7 +194,7 @@ public class taskControllerPatch {
                               description = """
                                  El campo 'taskStatus' es un objeto de tipo enum que indica el estado actual de la tarea.
                                  Por defecto enviar 'ON_TIME'.""",
-                              value = VALUE_OK
+                              value = HttpValues.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "404",
@@ -232,7 +207,7 @@ public class taskControllerPatch {
                               name = "Tarea no encontrada",
                               description = """
                                  La tarea con el ID especificado no se encuentra.""",
-                              value = VALUE_ERROR_404
+                              value = HttpValues.VALUE_ERROR_404
                        )})),
       @ApiResponse(
              responseCode = "400",
@@ -244,7 +219,7 @@ public class taskControllerPatch {
                        @ExampleObject(
                               name = "Solicitud incorrecta",
                               description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
-                              value = VALUE_ERROR_400
+                              value = HttpValues.VALUE_ERROR_400
                        )})),
       @ApiResponse(
              responseCode = "422",
@@ -256,7 +231,7 @@ public class taskControllerPatch {
                        @ExampleObject(
                               name = "Tarea no encontrada",
                               description = "Revise si los campos cumplen con las validaciones.",
-                              value = VALUE_ERROR_422
+                              value = HttpValues.VALUE_ERROR_422
                        )}))
    })
    @PatchMapping("/{id}/status")
@@ -288,7 +263,7 @@ public class taskControllerPatch {
                               description = """
                                  El campo es un objeto de tipo Boolean que indica si se ha completado la tarea.
                                  Para confirmar está completada envíe 'TRUE'.""",
-                              value = VALUE_OK
+                              value = HttpValues.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "404",
@@ -301,7 +276,7 @@ public class taskControllerPatch {
                               name = "Tarea no encontrada",
                               description = """
                                  La tarea con el ID especificado no se encuentra.""",
-                              value = VALUE_ERROR_404
+                              value = HttpValues.VALUE_ERROR_404
                        )})),
       @ApiResponse(
              responseCode = "400",
@@ -313,7 +288,7 @@ public class taskControllerPatch {
                        @ExampleObject(
                               name = "Solicitud incorrecta",
                               description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
-                              value = VALUE_ERROR_400
+                              value = HttpValues.VALUE_ERROR_400
                        )})),
       @ApiResponse(
              responseCode = "422",
@@ -325,7 +300,7 @@ public class taskControllerPatch {
                        @ExampleObject(
                               name = "Tarea no encontrada",
                               description = "Revise si los campos cumplen con las validaciones.",
-                              value = VALUE_ERROR_422
+                              value = HttpValues.VALUE_ERROR_422
                        )}))
    })
    @PatchMapping("/{id}/isCompleted")
@@ -353,7 +328,7 @@ public class taskControllerPatch {
                        @ExampleObject(
                               name = "Actualización de tarea a completada",
                               description = "La tarea se ha actualizado a completada.",
-                              value = VALUE_OK
+                              value = HttpValues.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "404",
@@ -365,7 +340,7 @@ public class taskControllerPatch {
                        @ExampleObject(
                               name = "Tarea no encontrada",
                               description = "La tarea con el ID especificado no se encuentra.",
-                              value = VALUE_ERROR_404
+                              value = HttpValues.VALUE_ERROR_404
                        )})),
       @ApiResponse(
              responseCode = "400",
@@ -377,7 +352,7 @@ public class taskControllerPatch {
                        @ExampleObject(
                               name = "Solicitud incorrecta",
                               description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
-                              value = VALUE_ERROR_400
+                              value = HttpValues.VALUE_ERROR_400
                        )})),
       @ApiResponse(
              responseCode = "422",
@@ -389,7 +364,7 @@ public class taskControllerPatch {
                        @ExampleObject(
                               name = "Tarea no encontrada",
                               description = "Revise si los campos cumplen con las validaciones.",
-                              value = VALUE_ERROR_422
+                              value = HttpValues.VALUE_ERROR_422
                        )}))
    })
    @PatchMapping("/{id}/toCompleted")

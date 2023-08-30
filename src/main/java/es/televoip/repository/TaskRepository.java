@@ -16,13 +16,13 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
    @Query("UPDATE Task t SET t.isCompleted = TRUE WHERE t.id = :id")
    public void markTaskAsCompleted(@Param("id") Long id);
 
+   @Query("SELECT t FROM Task t WHERE LOWER(t.title) LIKE LOWER(CONCAT('%', :title, '%'))")
+   List<Task> getAllByTitleContainingIgnoreCase(String title);
+
    public List<Task> findAllByTaskStatus(TaskStatus status);
 
    public List<Task> findByIsCompletedTrue();
 
    public List<Task> findByIsCompletedFalse();
-
-   @Query("SELECT t FROM Task t WHERE LOWER(t.title) LIKE LOWER(CONCAT('%', :title, '%'))")
-   List<Task> findByTitleContainingIgnoreCase(String title);
 
 }

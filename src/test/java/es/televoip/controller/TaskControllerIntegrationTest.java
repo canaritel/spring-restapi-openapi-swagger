@@ -181,7 +181,7 @@ class TaskControllerIntegrationTest {
 
       String titleFilter = "title3";
 
-      when(repository.findByTitleContainingIgnoreCase(titleFilter)).thenReturn(tasks);
+      when(repository.getAllByTitleContainingIgnoreCase(titleFilter)).thenReturn(tasks);
 
       mockMvc.perform(get("/api/tasks/alltitles/{title}", titleFilter)
              .contentType(MediaType.APPLICATION_JSON))
@@ -191,7 +191,7 @@ class TaskControllerIntegrationTest {
 
       tasks = Collections.emptyList();
 
-      when(repository.findByTitleContainingIgnoreCase(titleFilter)).thenReturn(tasks);
+      when(repository.getAllByTitleContainingIgnoreCase(titleFilter)).thenReturn(tasks);
       mockMvc.perform(get("/api/tasks/alltitles/{title}", titleFilter)
              .contentType(MediaType.APPLICATION_JSON))
              .andExpect(status().isNoContent())
@@ -221,7 +221,7 @@ class TaskControllerIntegrationTest {
 
       String titleFilter = "Boot33";
 
-      when(repository.findByTitleContainingIgnoreCase(titleFilter)).thenReturn(tasks);
+      when(repository.getAllByTitleContainingIgnoreCase(titleFilter)).thenReturn(tasks);
 
       String response = mockMvc.perform(get("/api/tasks/alltitles/{title}", titleFilter)
              .contentType(MediaType.APPLICATION_JSON))
@@ -238,7 +238,7 @@ class TaskControllerIntegrationTest {
 
       List<Task> tasks = Collections.emptyList();
 
-      when(repository.findByTitleContainingIgnoreCase(titleFilter)).thenReturn(tasks);
+      when(repository.getAllByTitleContainingIgnoreCase(titleFilter)).thenReturn(tasks);
       mockMvc.perform(get("/api/tasks/alltitles/{title}", titleFilter))
              .andExpect(status().isNoContent())
              .andDo(print());

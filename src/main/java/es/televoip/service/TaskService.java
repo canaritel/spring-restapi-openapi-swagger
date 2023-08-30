@@ -1,5 +1,6 @@
 package es.televoip.service;
 
+import es.televoip.constant.TaskConstant;
 import es.televoip.exceptions.TaskException;
 import es.televoip.model.Task;
 import es.televoip.model.dto.TaskDto;
@@ -38,7 +39,7 @@ public class TaskService {
          if (optionalTask.isPresent()) {
             return mapper.toDto(optionalTask.get());
          } else {
-            throw new TaskException(HttpStatus.NOT_FOUND, "Tarea no encontrada con ID: " + id);
+            throw new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_NOT_FOUND + id);
          }
 
       } catch (TaskException ex) {
@@ -98,7 +99,7 @@ public class TaskService {
    public List<TaskDto> getAllTasksByTitleContaining(String title) {
       try {
 
-         List<Task> tasks = repository.findByTitleContainingIgnoreCase(title);
+         List<Task> tasks = repository.getAllByTitleContainingIgnoreCase(title);
          return convertToDtoList(tasks);
 
       } catch (TaskException ex) {
@@ -166,7 +167,7 @@ public class TaskService {
       try {
 
          if (taskDtos.isEmpty()) {
-            throw new TaskException(HttpStatus.BAD_REQUEST, "La lista de tareas a crear es 'null'.");
+            throw new TaskException(HttpStatus.BAD_REQUEST, TaskConstant.TASK_IS_NULL);
          }
 
          List<Task> tasks = taskDtos.stream() // convierte la lista taskDtos en un flujo (stream) de elementos
@@ -195,7 +196,7 @@ public class TaskService {
       try {
 
          repository.findById(id)
-                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, "Tarea no encontrada con ID: " + id));
+                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_NOT_FOUND + id));
 
          Task updatedTask = mapper.toEntity(taskDto);
          updatedTask.setId(id); // Asegurar que el ID se mantenga igual
@@ -215,12 +216,12 @@ public class TaskService {
       try {
 
          Task existingTask = repository.findById(id)
-                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, "Tarea no encontrada con ID: " + id));
+                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_NOT_FOUND + id));
 
          //  Ejecutar validaciones personalizadas. ¡OJO! si funciona cuando querramos realizar TaskServiceTest
          if (newDateOfFinished != null && existingTask.getTaskDateCreation() != null) {
             if (newDateOfFinished.isBefore(existingTask.getTaskDateCreation())) {
-               throw new TaskException(HttpStatus.BAD_REQUEST, "La fecha de finalización debe ser igual o posterior a la fecha de creación.");
+               throw new TaskException(HttpStatus.BAD_REQUEST, TaskConstant.TASK_DATE_FAIL);
             }
          }
 
@@ -241,7 +242,7 @@ public class TaskService {
       try {
 
          Task existingTask = repository.findById(id)
-                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, "Tarea no encontrada con ID: " + id));
+                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_NOT_FOUND + id));
 
          existingTask.setTaskStatus(taskStatus);
          Task updatedTask = repository.save(existingTask);
@@ -260,7 +261,7 @@ public class TaskService {
       try {
 
          Task existingTask = repository.findById(id)
-                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, "Tarea no encontrada con ID: " + id));
+                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_NOT_FOUND + id));
 
          existingTask.setIsCompleted(isCompleted);
          Task updatedTask = repository.save(existingTask);
@@ -278,7 +279,7 @@ public class TaskService {
       try {
 
          Task existingTask = repository.findById(id)
-                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, "Tarea no encontrada con ID: " + id));
+                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_NOT_FOUND + id));
 
          repository.markTaskAsCompleted(id);
          existingTask.setIsCompleted(Boolean.TRUE);
@@ -296,7 +297,7 @@ public class TaskService {
       try {
 
          repository.findById(id)
-                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, "Tarea no encontrada con ID: " + id));
+                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_NOT_FOUND + id));
          repository.deleteById(id);
 
       } catch (TaskException ex) { // Lo pongo antes del Exception final para poder capturar mis excepciones
