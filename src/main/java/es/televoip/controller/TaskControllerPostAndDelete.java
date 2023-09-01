@@ -43,40 +43,38 @@ public class TaskControllerPostAndDelete {
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "201",
-             description = "Tarea creada exitosamente.",
+             description = TaskConstant.TASK_CREATED_SUCCESS,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Creación de tarea exitosa",
-                              description = """
-                                 Los campos 'title' y 'description' son de tipo String. 
-                                 El campo 'priority' va del 1 (mínima prioridad) a 9 (máxima prioridad).""",
+                              name = TaskConstant.TASK_SUCCESS_CREATION,
+                              description = TaskConstant.TASK_DESCRIPTION_UPDATE,
                               value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "422",
-             description = "No se pudo procesar la solicitud.",
+             description = TaskConstant.TASK_REQUEST_NOT_PROCESSED,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Tarea no encontrada",
-                              description = "Revise si los campos cumplen con las validaciones.",
+                              name = TaskConstant.TASK_NOT_FOUND,
+                              description = TaskConstant.TASK_RECORD_CHECK_VALID,
                               value = TaskConstant.VALUE_ERROR_422
                        )})),
       @ApiResponse(
              responseCode = "400",
-             description = "Solicitud incorrecta.",
+             description = TaskConstant.TASK_INVALID_REQUEST,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Solicitud incorrecta",
-                              description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
+                              name = TaskConstant.TASK_INVALID_REQUEST,
+                              description = TaskConstant.TASK_PARAM_NOT_VALID,
                               value = TaskConstant.VALUE_ERROR_400
                        )}))
    })
@@ -98,23 +96,23 @@ public class TaskControllerPostAndDelete {
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "204",
-             description = "Tarea eliminada exitosamente.",
+             description = TaskConstant.TASK_DELETED_SUCCESS,
              content = @Content(
                     mediaType = "application/json",
                     examples = {
                        @ExampleObject(
-                              name = "Tarea eliminada",
-                              description = "La tarea se ha eliminado exitosamente."
+                              name = TaskConstant.TASK_DELETED,
+                              description = TaskConstant.TASK_DELETED_SUCCESS
                        )})),
       @ApiResponse(
              responseCode = "404",
-             description = "Tarea no encontrada.",
+             description = TaskConstant.TASK_NOT_FOUND,
              content = @Content(
                     mediaType = "application/json",
                     examples = {
                        @ExampleObject(
-                              name = "Tarea no encontrada",
-                              description = "La tarea con el ID especificado no se encuentra.",
+                              name = TaskConstant.TASK_NOT_FOUND,
+                              description = TaskConstant.TASK_ID_SPECIFIC_NOT_FOUND,
                               value = TaskConstant.VALUE_ERROR_404
                        )}))
    })

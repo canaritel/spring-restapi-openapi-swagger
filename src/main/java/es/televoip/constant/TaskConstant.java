@@ -42,6 +42,14 @@ public final class TaskConstant {
    public static final String TASK_ID_SPECIFIC_NOT_FOUND = "La tarea con el ID especificado no se encuentra.";
    public static final String TASK_PARAM_NOT_VALID = "Revise si los parámetros requeridos están ausentes o no son válidos.";
    public static final String TASK_RECORD_CHECK_VALID = "Revise si los campos cumplen con las validaciones.";
+   
+   public static final String TASK_CREATED_SUCCESS = "Tarea creada exitosamente.";
+    public static final String TASK_SUCCESS_CREATION = "Creación de tarea exitosa";
+    
+    public static final String TASK_DELETED = "Tarea eliminada";
+    public static final String TASK_DELETED_SUCCESS = "Tarea eliminada exitosamente.";
+    
+    
 
    public static final String TASK_UPDATED = "Actualización de la tarea";
    public static final String TASK_UPDATED_SUCCESS = "Tarea actualizada exitosamente.";
