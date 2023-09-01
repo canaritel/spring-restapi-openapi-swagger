@@ -1,7 +1,6 @@
 package es.televoip.controller;
 
-import es.televoip.constant.HttpValues;
-import es.televoip.constant.HttpValues;
+import es.televoip.constant.TaskConstant;
 import es.televoip.model.dto.TaskDto;
 import es.televoip.model.enums.TaskStatus;
 import es.televoip.service.TaskService;
@@ -48,54 +47,53 @@ public class TaskControllerPatch {
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
-             description = "Tarea actualizada exitosamente.",
+             description = TaskConstant.TASK_UPDATED_SUCCESS,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Actualización de la tarea",
+                              name = TaskConstant.TASK_UPDATED,
                               description = """
                                  Los campos 'title' y 'description' son de tipo String. 
                                  El campo 'priority' va del 1 (mínima prioridad) a 9 (máxima prioridad).""",
-                              value = HttpValues.VALUE_OK
+                              value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "404",
-             description = "Tarea no encontrada.",
+             description = TaskConstant.TASK_NOT_FOUND,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Tarea no encontrada",
-                              description = """
-                                 La tarea con el ID especificado no se encuentra.""",
-                              value = HttpValues.VALUE_ERROR_404
+                              name = TaskConstant.TASK_NOT_FOUND,
+                              description = TaskConstant.TASK_ID_SPECIFIC_NOT_FOUND,
+                              value = TaskConstant.VALUE_ERROR_404
                        )})),
       @ApiResponse(
              responseCode = "400",
-             description = "Solicitud incorrecta.",
+             description = TaskConstant.TASK_INVALID_REQUEST,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Solicitud incorrecta",
-                              description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
-                              value = HttpValues.VALUE_ERROR_400
+                              name = TaskConstant.TASK_INVALID_REQUEST,
+                              description = TaskConstant.TASK_PARAM_NOT_VALID,
+                              value = TaskConstant.VALUE_ERROR_400
                        )})),
       @ApiResponse(
              responseCode = "422",
-             description = "No se pudo procesar la solicitud.",
+             description = TaskConstant.TASK_REQUEST_NOT_PROCESSED,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Tarea no encontrada",
-                              description = "Revise si los campos cumplen con las validaciones.",
-                              value = HttpValues.VALUE_ERROR_422
+                              name = TaskConstant.TASK_NOT_FOUND,
+                              description = TaskConstant.TASK_RECORD_CHECK_VALID,
+                              value = TaskConstant.VALUE_ERROR_422
                        )}))
    })
    @PutMapping("/{id}")
@@ -117,54 +115,53 @@ public class TaskControllerPatch {
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
-             description = "Fecha de finalización actualizada exitosamente.",
+             description = TaskConstant.TASK_DATE_UPDATED_SUCCESS,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Actualización de fecha de finalización",
+                              name = TaskConstant.TASK_DATE_UPDATED,
                               description = """
                                  El campo es un objeto de tipo LocalDateTime que indica la fecha de finalización de la tarea. 
                                  Permite el envío de 'null'.""",
-                              value = HttpValues.VALUE_OK
+                              value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "404",
-             description = "Tarea no encontrada.",
+             description = TaskConstant.TASK_NOT_FOUND,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Tarea no encontrada",
-                              description = """
-                                 La tarea con el ID especificado no se encuentra.""",
-                              value = HttpValues.VALUE_ERROR_404
+                              name = TaskConstant.TASK_NOT_FOUND,
+                              description = TaskConstant.TASK_ID_SPECIFIC_NOT_FOUND,
+                              value = TaskConstant.VALUE_ERROR_404
                        )})),
       @ApiResponse(
              responseCode = "400",
-             description = "Solicitud incorrecta.",
+             description = TaskConstant.TASK_INVALID_REQUEST,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Solicitud incorrecta",
-                              description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
-                              value = HttpValues.VALUE_ERROR_400
+                              name = TaskConstant.TASK_INVALID_REQUEST,
+                              description = TaskConstant.TASK_PARAM_NOT_VALID,
+                              value = TaskConstant.VALUE_ERROR_400
                        )})),
       @ApiResponse(
              responseCode = "422",
-             description = "No se pudo procesar la solicitud.",
+             description = TaskConstant.TASK_REQUEST_NOT_PROCESSED,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Tarea no encontrada",
-                              description = "Revise si los campos cumplen con las validaciones.",
-                              value = HttpValues.VALUE_ERROR_422
+                              name = TaskConstant.TASK_NOT_FOUND,
+                              description = TaskConstant.TASK_RECORD_CHECK_VALID,
+                              value = TaskConstant.VALUE_ERROR_422
                        )}))
    })
    @PatchMapping("/{id}/dateOfFinished")
@@ -185,54 +182,53 @@ public class TaskControllerPatch {
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
-             description = "Estado de la tarea actualizada exitosamente.",
+             description = TaskConstant.TASK_STATE_UPDATED,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Actualización del estado de la tarea",
+                              name = TaskConstant.TASK_STATE_UPDATED,
                               description = """
                                  El campo 'taskStatus' es un objeto de tipo enum que indica el estado actual de la tarea.
                                  Por defecto enviar 'ON_TIME'.""",
-                              value = HttpValues.VALUE_OK
+                              value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "404",
-             description = "Tarea no encontrada.",
+             description = TaskConstant.TASK_NOT_FOUND,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Tarea no encontrada",
-                              description = """
-                                 La tarea con el ID especificado no se encuentra.""",
-                              value = HttpValues.VALUE_ERROR_404
+                              name = TaskConstant.TASK_NOT_FOUND,
+                              description = TaskConstant.TASK_ID_SPECIFIC_NOT_FOUND,
+                              value = TaskConstant.VALUE_ERROR_404
                        )})),
       @ApiResponse(
              responseCode = "400",
-             description = "Solicitud incorrecta.",
+             description = TaskConstant.TASK_INVALID_REQUEST,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Solicitud incorrecta",
-                              description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
-                              value = HttpValues.VALUE_ERROR_400
+                              name = TaskConstant.TASK_INVALID_REQUEST,
+                              description = TaskConstant.TASK_PARAM_NOT_VALID,
+                              value = TaskConstant.VALUE_ERROR_400
                        )})),
       @ApiResponse(
              responseCode = "422",
-             description = "No se pudo procesar la solicitud.",
+             description = TaskConstant.TASK_REQUEST_NOT_PROCESSED,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Tarea no encontrada",
-                              description = "Revise si los campos cumplen con las validaciones.",
-                              value = HttpValues.VALUE_ERROR_422
+                              name = TaskConstant.TASK_NOT_FOUND,
+                              description = TaskConstant.TASK_RECORD_CHECK_VALID,
+                              value = TaskConstant.VALUE_ERROR_422
                        )}))
    })
    @PatchMapping("/{id}/status")
@@ -254,54 +250,53 @@ public class TaskControllerPatch {
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
-             description = "Estado para indicar si la tarea está completada.",
+             description = TaskConstant.TASK_IS_COMPLETED,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Tarea completada",
+                              name = TaskConstant.TASK_COMPLETED,
                               description = """
                                  El campo es un objeto de tipo Boolean que indica si se ha completado la tarea.
                                  Para confirmar está completada envíe 'TRUE'.""",
-                              value = HttpValues.VALUE_OK
+                              value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "404",
-             description = "Tarea no encontrada.",
+             description = TaskConstant.TASK_NOT_FOUND,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Tarea no encontrada",
-                              description = """
-                                 La tarea con el ID especificado no se encuentra.""",
-                              value = HttpValues.VALUE_ERROR_404
+                              name = TaskConstant.TASK_NOT_FOUND,
+                              description = TaskConstant.TASK_ID_SPECIFIC_NOT_FOUND,
+                              value = TaskConstant.VALUE_ERROR_404
                        )})),
       @ApiResponse(
              responseCode = "400",
-             description = "Solicitud incorrecta.",
+             description = TaskConstant.TASK_INVALID_REQUEST,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Solicitud incorrecta",
-                              description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
-                              value = HttpValues.VALUE_ERROR_400
+                              name = TaskConstant.TASK_INVALID_REQUEST,
+                              description = TaskConstant.TASK_PARAM_NOT_VALID,
+                              value = TaskConstant.VALUE_ERROR_400
                        )})),
       @ApiResponse(
              responseCode = "422",
-             description = "No se pudo procesar la solicitud.",
+             description = TaskConstant.TASK_REQUEST_NOT_PROCESSED,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Tarea no encontrada",
-                              description = "Revise si los campos cumplen con las validaciones.",
-                              value = HttpValues.VALUE_ERROR_422
+                              name = TaskConstant.TASK_NOT_FOUND,
+                              description = TaskConstant.TASK_RECORD_CHECK_VALID,
+                              value = TaskConstant.VALUE_ERROR_422
                        )}))
    })
    @PatchMapping("/{id}/isCompleted")
@@ -321,51 +316,51 @@ public class TaskControllerPatch {
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
-             description = "Tarea actualizada exitosamente a completada.",
+             description = TaskConstant.TASK_UPDATED_TO_COMPLETED,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Actualización de tarea a completada",
-                              description = "La tarea se ha actualizado a completada.",
-                              value = HttpValues.VALUE_OK
+                              name = TaskConstant.TASK_UPDATED_COMPLETED,
+                              description = TaskConstant.TASK_UPDATED_TO_COMPLETED,
+                              value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "404",
-             description = "Tarea no encontrada.",
+             description = TaskConstant.TASK_NOT_FOUND,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Tarea no encontrada",
-                              description = "La tarea con el ID especificado no se encuentra.",
-                              value = HttpValues.VALUE_ERROR_404
+                              name = TaskConstant.TASK_NOT_FOUND,
+                              description = TaskConstant.TASK_ID_SPECIFIC_NOT_FOUND,
+                              value = TaskConstant.VALUE_ERROR_404
                        )})),
       @ApiResponse(
              responseCode = "400",
-             description = "Solicitud incorrecta.",
+             description = TaskConstant.TASK_INVALID_REQUEST,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Solicitud incorrecta",
-                              description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
-                              value = HttpValues.VALUE_ERROR_400
+                              name = TaskConstant.TASK_INVALID_REQUEST,
+                              description = TaskConstant.TASK_PARAM_NOT_VALID,
+                              value = TaskConstant.VALUE_ERROR_400
                        )})),
       @ApiResponse(
              responseCode = "422",
-             description = "No se pudo procesar la solicitud.",
+             description = TaskConstant.TASK_REQUEST_NOT_PROCESSED,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Tarea no encontrada",
-                              description = "Revise si los campos cumplen con las validaciones.",
-                              value = HttpValues.VALUE_ERROR_422
+                              name = TaskConstant.TASK_NOT_FOUND,
+                              description = TaskConstant.TASK_RECORD_CHECK_VALID,
+                              value = TaskConstant.VALUE_ERROR_422
                        )}))
    })
    @PatchMapping("/{id}/toCompleted")

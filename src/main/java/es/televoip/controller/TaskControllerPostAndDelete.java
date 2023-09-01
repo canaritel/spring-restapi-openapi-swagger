@@ -1,5 +1,6 @@
 package es.televoip.controller;
 
+import es.televoip.constant.TaskConstant;
 import es.televoip.model.dto.TaskDto;
 import es.televoip.service.TaskService;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,32 +32,6 @@ public class TaskControllerPostAndDelete {
       this.service = service;
    }
 
-   final String VALUE_OK = "{"
-          + "\"id\": \"long\","
-          + "\"title\": \"string\","
-          + "\"description\": \"string\","
-          + "\"taskStatus\": \"[ON_TIME , LATE]\","
-          + "\"isCompleted\": \"boolean\","
-          + "\"priority\": \"int\","
-          + "\"taskDateCreation\": \"localdatetime\","
-          + "\"taskDateFinished\": \"localdatetime\""
-          + "}";
-
-   final String VALUE_ERROR_404 = "{"
-          + "\"status\": \"error\","
-          + "\"message\": \"La tarea no fue encontrada\""
-          + "}";
-
-   final String VALUE_ERROR_400 = "{"
-          + "\"status\": \"error\","
-          + "\"message\": \"La solicitud enviada no es válida.\""
-          + "}";
-
-   final String VALUE_ERROR_422 = "{"
-          + "\"status\": \"error\","
-          + "\"message\": \"La tarea no cumple las validaciones.\""
-          + "}";
-
    // ********************************************************************************************************
    /**
     * createTask: Crea una nueva tarea.
@@ -78,7 +53,7 @@ public class TaskControllerPostAndDelete {
                               description = """
                                  Los campos 'title' y 'description' son de tipo String. 
                                  El campo 'priority' va del 1 (mínima prioridad) a 9 (máxima prioridad).""",
-                              value = VALUE_OK
+                              value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "422",
@@ -90,7 +65,7 @@ public class TaskControllerPostAndDelete {
                        @ExampleObject(
                               name = "Tarea no encontrada",
                               description = "Revise si los campos cumplen con las validaciones.",
-                              value = VALUE_ERROR_422
+                              value = TaskConstant.VALUE_ERROR_422
                        )})),
       @ApiResponse(
              responseCode = "400",
@@ -102,7 +77,7 @@ public class TaskControllerPostAndDelete {
                        @ExampleObject(
                               name = "Solicitud incorrecta",
                               description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
-                              value = VALUE_ERROR_400
+                              value = TaskConstant.VALUE_ERROR_400
                        )}))
    })
    @PostMapping
@@ -140,7 +115,7 @@ public class TaskControllerPostAndDelete {
                        @ExampleObject(
                               name = "Tarea no encontrada",
                               description = "La tarea con el ID especificado no se encuentra.",
-                              value = VALUE_ERROR_404
+                              value = TaskConstant.VALUE_ERROR_404
                        )}))
    })
    @DeleteMapping("/{id}")

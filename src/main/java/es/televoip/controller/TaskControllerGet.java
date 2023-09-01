@@ -1,5 +1,6 @@
 package es.televoip.controller;
 
+import es.televoip.constant.TaskConstant;
 import es.televoip.model.dto.TaskDto;
 import es.televoip.model.enums.TaskSortField;
 import es.televoip.model.enums.TaskStatus;
@@ -34,37 +35,6 @@ public class TaskControllerGet {
       this.service = service;
    }
 
-   final String VALUE_OK = "{"
-          + "\"id\": \"long\","
-          + "\"title\": \"string\","
-          + "\"description\": \"string\","
-          + "\"taskStatus\": \"[ON_TIME , LATE]\","
-          + "\"isCompleted\": \"boolean\","
-          + "\"priority\": \"int\","
-          + "\"taskDateCreation\": \"localdatetime\","
-          + "\"taskDateFinished\": \"localdatetime\""
-          + "}";
-
-   final String VALUE_ERROR_404 = "{"
-          + "\"status\": \"error\","
-          + "\"message\": \"La tarea no fue encontrada\""
-          + "}";
-
-   final String VALUE_ERROR_400 = "{"
-          + "\"status\": \"error\","
-          + "\"message\": \"La solicitud enviada no es válida.\""
-          + "}";
-
-   final String VALUE_ERROR_422 = "{"
-          + "\"status\": \"error\","
-          + "\"message\": \"La tarea no cumple las validaciones.\""
-          + "}";
-
-   final String VALUE_ERROR_204 = "{"
-          + "\"status\": \"error\","
-          + "\"message\": \"Esta lista de tareas está vacía.\""
-          + "}";
-
    // ********************************************************************************************************
    /**
     * getTask: Obtiene una tarea por su ID.
@@ -84,7 +54,7 @@ public class TaskControllerGet {
                        @ExampleObject(
                               name = "Obtención de la tarea",
                               description = "Se obtiene un objeto de tipo tarea.",
-                              value = VALUE_OK
+                              value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "404",
@@ -96,7 +66,7 @@ public class TaskControllerGet {
                        @ExampleObject(
                               name = "Tarea no encontrada",
                               description = "La tarea con el ID especificado no se encuentra.",
-                              value = VALUE_ERROR_404
+                              value = TaskConstant.VALUE_ERROR_404
                        )})),
       @ApiResponse(
              responseCode = "400",
@@ -108,7 +78,7 @@ public class TaskControllerGet {
                        @ExampleObject(
                               name = "Solicitud incorrecta",
                               description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
-                              value = VALUE_ERROR_400
+                              value = TaskConstant.VALUE_ERROR_400
                        )}))
    })
    @GetMapping("/{id}")
@@ -139,7 +109,7 @@ public class TaskControllerGet {
                        @ExampleObject(
                               name = "Obtención de todas las tareas",
                               description = "Se obtiene un objeto de tipo listado tareas.",
-                              value = VALUE_OK
+                              value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "400",
@@ -151,7 +121,7 @@ public class TaskControllerGet {
                        @ExampleObject(
                               name = "Solicitud incorrecta",
                               description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
-                              value = VALUE_ERROR_400
+                              value = TaskConstant.VALUE_ERROR_400
                        )}))
    })
    @GetMapping("/all")
@@ -180,7 +150,7 @@ public class TaskControllerGet {
                        @ExampleObject(
                               name = "Obtención de todas las tareas ordenadas",
                               description = "Se obtiene un objeto de tipo listado tareas ordenadas.",
-                              value = VALUE_OK
+                              value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "400",
@@ -192,7 +162,7 @@ public class TaskControllerGet {
                        @ExampleObject(
                               name = "Solicitud incorrecta",
                               description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
-                              value = VALUE_ERROR_400
+                              value = TaskConstant.VALUE_ERROR_400
                        )}))
    })
    @GetMapping("/sorted")
@@ -224,7 +194,7 @@ public class TaskControllerGet {
                        @ExampleObject(
                               name = "Obtención de todas las tareas ordenadas y paginadas",
                               description = "Se obtiene un objeto de tipo listado tareas ordenadas y paginadas.",
-                              value = VALUE_OK
+                              value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "400",
@@ -236,7 +206,7 @@ public class TaskControllerGet {
                        @ExampleObject(
                               name = "Solicitud incorrecta",
                               description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
-                              value = VALUE_ERROR_400
+                              value = TaskConstant.VALUE_ERROR_400
                        )}))
    })
    @GetMapping("/sortedAndPaginated")
@@ -266,7 +236,7 @@ public class TaskControllerGet {
                        @ExampleObject(
                               name = "Obtención de tareas por estado",
                               description = "Se obtiene un objeto de tipo listado de tareas según el estado.",
-                              value = VALUE_OK
+                              value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "400",
@@ -278,7 +248,7 @@ public class TaskControllerGet {
                        @ExampleObject(
                               name = "Solicitud incorrecta",
                               description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
-                              value = VALUE_ERROR_400
+                              value = TaskConstant.VALUE_ERROR_400
                        )}))
    })
    @GetMapping("/status/{status}")
@@ -308,7 +278,7 @@ public class TaskControllerGet {
                               description = """
                                  Se obtiene un objeto de tipo listado de tareas finalizadas o no finalizadas. 
                                  'True' para las finalizadas, y 'FALSE' para las no finalizadas.""",
-                              value = VALUE_OK
+                              value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "400",
@@ -320,7 +290,7 @@ public class TaskControllerGet {
                        @ExampleObject(
                               name = "Solicitud incorrecta",
                               description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
-                              value = VALUE_ERROR_400
+                              value = TaskConstant.VALUE_ERROR_400
                        )}))
    })
    @GetMapping("/completed/{isCompleted}")
@@ -348,7 +318,7 @@ public class TaskControllerGet {
                        @ExampleObject(
                               name = "Obtención de tareas por título",
                               description = "Se obtiene un objeto de tipo listado de tareas que contienen el título especificado.",
-                              value = VALUE_OK
+                              value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
              responseCode = "400",
@@ -360,7 +330,7 @@ public class TaskControllerGet {
                        @ExampleObject(
                               name = "Solicitud incorrecta",
                               description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
-                              value = VALUE_ERROR_400
+                              value = TaskConstant.VALUE_ERROR_400
                        )}))
    })
    @GetMapping("/alltitles/{title}")

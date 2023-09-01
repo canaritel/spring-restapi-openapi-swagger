@@ -39,7 +39,7 @@ public class TaskService {
          if (optionalTask.isPresent()) {
             return mapper.toDto(optionalTask.get());
          } else {
-            throw new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_NOT_FOUND + id);
+            throw new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_ID_NOT_FOUND + id);
          }
 
       } catch (TaskException ex) {
@@ -196,7 +196,7 @@ public class TaskService {
       try {
 
          repository.findById(id)
-                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_NOT_FOUND + id));
+                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_ID_NOT_FOUND + id));
 
          Task updatedTask = mapper.toEntity(taskDto);
          updatedTask.setId(id); // Asegurar que el ID se mantenga igual
@@ -216,7 +216,7 @@ public class TaskService {
       try {
 
          Task existingTask = repository.findById(id)
-                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_NOT_FOUND + id));
+                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_ID_NOT_FOUND + id));
 
          //  Ejecutar validaciones personalizadas. ¡OJO! si funciona cuando querramos realizar TaskServiceTest
          if (existingTask.getTaskDateCreation() != null && newDateOfFinished.isBefore(existingTask.getTaskDateCreation())) {
@@ -240,7 +240,7 @@ public class TaskService {
       try {
 
          Task existingTask = repository.findById(id)
-                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_NOT_FOUND + id));
+                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_ID_NOT_FOUND + id));
 
          existingTask.setTaskStatus(taskStatus);
          Task updatedTask = repository.save(existingTask);
@@ -259,7 +259,7 @@ public class TaskService {
       try {
 
          Task existingTask = repository.findById(id)
-                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_NOT_FOUND + id));
+                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_ID_NOT_FOUND + id));
 
          existingTask.setIsCompleted(isCompleted);
          Task updatedTask = repository.save(existingTask);
@@ -277,7 +277,7 @@ public class TaskService {
       try {
 
          Task existingTask = repository.findById(id)
-                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_NOT_FOUND + id));
+                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_ID_NOT_FOUND + id));
 
          repository.markTaskAsCompleted(id);
          existingTask.setIsCompleted(Boolean.TRUE);
@@ -295,7 +295,7 @@ public class TaskService {
       try {
 
          repository.findById(id)
-                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_NOT_FOUND + id));
+                .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_ID_NOT_FOUND + id));
          repository.deleteById(id);
 
       } catch (TaskException ex) { // Lo pongo antes del Exception final para poder capturar mis excepciones
