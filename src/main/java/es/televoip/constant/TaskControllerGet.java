@@ -1,4 +1,4 @@
-package es.televoip.controller;
+package es.televoip.constant;
 
 import es.televoip.model.dto.TaskDto;
 import es.televoip.model.enums.TaskSortField;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/tasks")
-public class taskControllerGet {
+public class TaskControllerGet {
 
    // Accesos para OPENAPI Swagger3
    // http://localhost:8080/swagger-ui/index.html
@@ -30,7 +30,7 @@ public class taskControllerGet {
    //
    private final TaskService service;
 
-   public taskControllerGet(TaskService service) {
+   public TaskControllerGet(TaskService service) {
       this.service = service;
    }
 

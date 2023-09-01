@@ -1,4 +1,4 @@
-package es.televoip.controller;
+package es.televoip.constant;
 
 import es.televoip.constant.HttpValues;
 import es.televoip.model.dto.TaskDto;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/tasks")
-public class taskControllerPatch {
+public class TaskControllerPatch {
 
    // Accesos para OPENAPI Swagger3
    // http://localhost:8080/swagger-ui/index.html
@@ -31,7 +31,7 @@ public class taskControllerPatch {
    //
    private final TaskService service;
 
-   public taskControllerPatch(TaskService service) {
+   public TaskControllerPatch(TaskService service) {
       this.service = service;
    }
 
