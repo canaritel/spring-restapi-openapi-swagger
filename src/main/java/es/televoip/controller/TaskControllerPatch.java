@@ -54,9 +54,7 @@ public class TaskControllerPatch {
                     examples = {
                        @ExampleObject(
                               name = TaskConstant.TASK_UPDATED,
-                              description = """
-                                 Los campos 'title' y 'description' son de tipo String. 
-                                 El campo 'priority' va del 1 (mínima prioridad) a 9 (máxima prioridad).""",
+                              description = TaskConstant.TASK_DESCRIPTION_UPDATE,
                               value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
@@ -122,9 +120,7 @@ public class TaskControllerPatch {
                     examples = {
                        @ExampleObject(
                               name = TaskConstant.TASK_DATE_UPDATED,
-                              description = """
-                                 El campo es un objeto de tipo LocalDateTime que indica la fecha de finalización de la tarea. 
-                                 Permite el envío de 'null'.""",
+                              description = TaskConstant.TASK_DESCRIPTION_DATE_FINISH,
                               value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
@@ -189,9 +185,7 @@ public class TaskControllerPatch {
                     examples = {
                        @ExampleObject(
                               name = TaskConstant.TASK_STATE_UPDATED,
-                              description = """
-                                 El campo 'taskStatus' es un objeto de tipo enum que indica el estado actual de la tarea.
-                                 Por defecto enviar 'ON_TIME'.""",
+                              description = TaskConstant.TASK_DESCRIPTION_STATUS,
                               value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
@@ -257,9 +251,7 @@ public class TaskControllerPatch {
                     examples = {
                        @ExampleObject(
                               name = TaskConstant.TASK_COMPLETED,
-                              description = """
-                                 El campo es un objeto de tipo Boolean que indica si se ha completado la tarea.
-                                 Para confirmar está completada envíe 'TRUE'.""",
+                              description = TaskConstant.TASK_DESCRIPTION_IS_COMPLETED,
                               value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(

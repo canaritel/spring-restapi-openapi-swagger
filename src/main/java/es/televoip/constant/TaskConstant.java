@@ -56,6 +56,23 @@ public final class TaskConstant {
    public static final String TASK_DATE_UPDATED_SUCCESS = "Fecha de finalización actualizada exitosamente.";
    public static final String TASK_DATE_UPDATED = "Actualización de fecha de finalización";
 
+   public static final String TASK_DESCRIPTION_UPDATE = """
+                                 Los campos 'title' y 'description' son de tipo String. 
+                                 El campo 'priority' va del 1 (mínima prioridad) a 9 (máxima prioridad).""";
+
+   public static final String TASK_DESCRIPTION_DATE_FINISH = """
+                                 El campo es un objeto de tipo LocalDateTime que indica la fecha de finalización de la tarea. 
+                                 Permite el envío de 'null'.""";
+   
+   public static final String TASK_DESCRIPTION_STATUS = """
+                                 El campo 'taskStatus' es un objeto de tipo enum que indica el estado actual de la tarea.
+                                 Por defecto enviar 'ON_TIME'.""";
+   
+   public static final String TASK_DESCRIPTION_IS_COMPLETED = """
+                                 El campo es un objeto de tipo Boolean que indica si se ha completado la tarea.
+                                 Para confirmar está completada envíe 'TRUE'.""";
+   
+
    static final String STATUS = "\"status\": \"error\",";
    public static final String VALUE_OK = "{"
           + "\"id\": \"long\","
