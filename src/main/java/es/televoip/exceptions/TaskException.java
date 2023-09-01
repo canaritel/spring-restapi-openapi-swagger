@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 @EqualsAndHashCode(callSuper = false)
 public class TaskException extends RuntimeException {
 
-   private HttpStatus errorCode;
-   private String errorMessage;
+   final HttpStatus errorCode;
+   final String errorMessage;
 
    public TaskException(HttpStatus errorCode, String errorMessage) {
       this.errorCode = errorCode;

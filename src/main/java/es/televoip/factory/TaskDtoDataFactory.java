@@ -9,14 +9,17 @@ import java.util.Map;
 
 public final class TaskDtoDataFactory {
 
+   private TaskDtoDataFactory() {
+      // Constructor privado para evitar instanciación
+   }
+
    public static TaskDto createSampleTaskWithId(Long id, String title, String description, int priority) {
-      final TaskDto taskDto = TaskDto.builder()
+      return TaskDto.builder()
              .id(id)
              .title(title)
              .description(description)
              .priority(priority)
              .build();
-      return taskDto;
    }
 
    public static TaskDto createSampleTask1Default() {

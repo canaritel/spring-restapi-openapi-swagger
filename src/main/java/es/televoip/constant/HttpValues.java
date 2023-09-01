@@ -6,6 +6,8 @@ public class HttpValues {
       // Constructor privado para evitar instanciación
    }
 
+   static final String STATUS = "\"status\": \"error\",";
+
    public static final String VALUE_OK = "{"
           + "\"id\": \"long\","
           + "\"title\": \"string\","
@@ -18,17 +20,17 @@ public class HttpValues {
           + "}";
 
    public static final String VALUE_ERROR_404 = "{"
-          + "\"status\": \"error\","
+          + STATUS //"\"status\": \"error\","
           + "\"message\": \"La tarea no fue encontrada\""
           + "}";
 
    public static final String VALUE_ERROR_400 = "{"
-          + "\"status\": \"error\","
+          + STATUS //"\"status\": \"error\","
           + "\"message\": \"La solicitud enviada no es válida.\""
           + "}";
 
    public static final String VALUE_ERROR_422 = "{"
-          + "\"status\": \"error\","
+          + STATUS //"\"status\": \"error\","
           + "\"message\": \"La tarea no cumple las validaciones.\""
           + "}";
 

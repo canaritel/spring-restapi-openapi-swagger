@@ -219,10 +219,8 @@ public class TaskService {
                 .orElseThrow(() -> new TaskException(HttpStatus.NOT_FOUND, TaskConstant.TASK_NOT_FOUND + id));
 
          //  Ejecutar validaciones personalizadas. ¡OJO! si funciona cuando querramos realizar TaskServiceTest
-         if (newDateOfFinished != null && existingTask.getTaskDateCreation() != null) {
-            if (newDateOfFinished.isBefore(existingTask.getTaskDateCreation())) {
-               throw new TaskException(HttpStatus.BAD_REQUEST, TaskConstant.TASK_DATE_FAIL);
-            }
+         if (existingTask.getTaskDateCreation() != null && newDateOfFinished.isBefore(existingTask.getTaskDateCreation())) {
+            throw new TaskException(HttpStatus.BAD_REQUEST, TaskConstant.TASK_DATE_FAIL);
          }
 
          existingTask.setTaskDateFinished(newDateOfFinished);

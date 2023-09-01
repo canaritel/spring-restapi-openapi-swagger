@@ -7,12 +7,14 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+@Slf4j
 @SpringBootApplication
 public class TodoApiSpringApplication {
 
@@ -28,12 +30,14 @@ public class TodoApiSpringApplication {
       return args -> {
          // Obtén la hora y zona horaria del sistema
          ZonedDateTime systemTime = ZonedDateTime.now();
-         System.out.println("Hora y zona horaria del sistema: " + systemTime);
+
+         log.info("Hora y zona horaria del sistema: {}" + systemTime);
 
          // Define la zona horaria de Madrid
          ZoneId madridZone = ZoneId.of("Europe/Madrid");
          ZonedDateTime madridTime = ZonedDateTime.now(madridZone);
-         System.out.println("Hora y zona horaria de Madrid: " + madridTime);
+
+         log.info("Hora y zona horaria de Madrid: {}" + madridTime);
 
          // Insertamos datos en nuestra BD, solo si está vacía y no es la BD en memoria usada para los Test
          if (repository.count() == 0L && !"jdbc:h2:mem:testdb".equals(dataSourceUrl)) {
@@ -68,7 +72,7 @@ public class TodoApiSpringApplication {
             repository.saveAll(Arrays.asList(task1, task2, task3));
          }
 
-         System.out.println("************************   DataSource URL: " + dataSourceUrl);
+         log.info("************************   DataSource URL: {}" + dataSourceUrl);
       };
    }
 
