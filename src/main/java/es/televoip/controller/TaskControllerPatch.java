@@ -4,6 +4,8 @@ import es.televoip.constant.TaskConstant;
 import es.televoip.model.dto.TaskDto;
 import es.televoip.model.enums.TaskStatus;
 import es.televoip.service.TaskService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -44,6 +46,7 @@ public class TaskControllerPatch {
     * @return Respuesta con la tarea actualizada.
     * @apiNote Actualiza la tarea correspondiente al ID proporcionado con los datos proporcionados en el cuerpo de la solicitud.
     */
+   @Operation(summary = "Update a task")
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
@@ -95,7 +98,8 @@ public class TaskControllerPatch {
                        )}))
    })
    @PutMapping("/{id}")
-   public ResponseEntity<TaskDto> updateTask(@PathVariable Long id, @Valid @RequestBody TaskDto taskDto) {
+   public ResponseEntity<TaskDto> updateTask(@Parameter(description = "id of task to be updated") @PathVariable Long id,
+          @Valid @RequestBody TaskDto taskDto) {
       // Valid debe tener anotaciones de validación adecuadas, como @NotBlank, @NotNull, @Size, etc., en su capa DTO
       TaskDto updatedTask = service.updateTask(id, taskDto);
       return new ResponseEntity<>(updatedTask, HttpStatus.OK);
@@ -110,6 +114,7 @@ public class TaskControllerPatch {
     * @return Respuesta con la tarea actualizada.
     * @apiNote Actualiza la fecha de finalización de la tarea correspondiente al ID proporcionado con la nueva fecha especificada.
     */
+   @Operation(summary = "Update task's date of finished")
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
@@ -161,7 +166,8 @@ public class TaskControllerPatch {
                        )}))
    })
    @PatchMapping("/{id}/dateOfFinished")
-   public ResponseEntity<TaskDto> updateTaskDateOfFinished(@PathVariable Long id, @RequestParam LocalDateTime newDateOfFinished) {
+   public ResponseEntity<TaskDto> updateTaskDateOfFinished(@Parameter(description = "id of task to be updated") @PathVariable Long id,
+          @Parameter(description = "date of task to be updated") @RequestParam LocalDateTime newDateOfFinished) {
       TaskDto updatedTask = service.updateTaskDateOfFinished(id, newDateOfFinished);
       return new ResponseEntity<>(updatedTask, HttpStatus.OK);
    }
@@ -175,6 +181,7 @@ public class TaskControllerPatch {
     * @return Respuesta con la tarea actualizada.
     * @apiNote Actualiza el estado de la tarea correspondiente al ID proporcionado con el nuevo estado especificado.
     */
+   @Operation(summary = "Update task's status")
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
@@ -226,7 +233,8 @@ public class TaskControllerPatch {
                        )}))
    })
    @PatchMapping("/{id}/status")
-   public ResponseEntity<TaskDto> updateTaskStatus(@PathVariable Long id, @RequestParam TaskStatus taskStatus) {
+   public ResponseEntity<TaskDto> updateTaskStatus(@Parameter(description = "id of task to be updated") @PathVariable Long id,
+          @Parameter(description = "status of task to be updated") @RequestParam TaskStatus taskStatus) {
       TaskDto updatedStatus = service.updateTaskStatus(id, taskStatus);
       return new ResponseEntity<>(updatedStatus, HttpStatus.OK);
    }
@@ -241,6 +249,7 @@ public class TaskControllerPatch {
     * @apiNote Actualiza el estado de finalización de la tarea correspondiente al ID proporcionado con el nuevo estado de finalización
     * especificado.
     */
+   @Operation(summary = "Update task's completion")
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
@@ -292,7 +301,8 @@ public class TaskControllerPatch {
                        )}))
    })
    @PatchMapping("/{id}/isCompleted")
-   public ResponseEntity<TaskDto> updateTaskIsCompleted(@PathVariable Long id, @RequestParam Boolean isCompleted) {
+   public ResponseEntity<TaskDto> updateTaskIsCompleted(@Parameter(description = "id of task to be updated") @PathVariable Long id,
+          @Parameter(description = "boolean completed of task to be updated") @RequestParam Boolean isCompleted) {
       TaskDto updatedCompleted = service.updateTaskIsCompleted(id, isCompleted);
       return new ResponseEntity<>(updatedCompleted, HttpStatus.OK);
    }
@@ -305,6 +315,7 @@ public class TaskControllerPatch {
     * @return Respuesta con la tarea actualizada a completada.
     * @apiNote Actualiza la tarea correspondiente al ID proporcionado y establece su estado como completada.
     */
+   @Operation(summary = "Update task to completed")
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
@@ -356,7 +367,8 @@ public class TaskControllerPatch {
                        )}))
    })
    @PatchMapping("/{id}/toCompleted")
-   public ResponseEntity<TaskDto> updateTaskToCompleted(@PathVariable("id") Long id) {
+   public ResponseEntity<TaskDto> updateTaskToCompleted(@Parameter(description = "id of task to be updated as completed")
+          @PathVariable("id") Long id) {
       TaskDto updatedCompleted = service.updateTaskToCompleted(id);
       return new ResponseEntity<>(updatedCompleted, HttpStatus.OK);
    }

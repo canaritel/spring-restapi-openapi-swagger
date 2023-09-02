@@ -3,6 +3,8 @@ package es.televoip.controller;
 import es.televoip.constant.TaskConstant;
 import es.televoip.model.dto.TaskDto;
 import es.televoip.service.TaskService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -40,6 +42,7 @@ public class TaskControllerPostAndDelete {
     * @return Respuesta con la tarea creada.
     * @apiNote Crea una nueva tarea con los datos proporcionados en el cuerpo de la solicitud.
     */
+   @Operation(summary = "Create a new task")
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "201",
@@ -93,6 +96,7 @@ public class TaskControllerPostAndDelete {
     * @return Respuesta vacía. Devolverá la petición si es correcta un (HttpStatus.OK) código 200.
     * @apiNote Elimina la tarea correspondiente al ID proporcionado.
     */
+   @Operation(summary = "Delete a task by ID")
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "204",
@@ -117,7 +121,7 @@ public class TaskControllerPostAndDelete {
                        )}))
    })
    @DeleteMapping("/{id}")
-   public ResponseEntity<TaskDto> deleteTask(@PathVariable("id") Long id) {
+   public ResponseEntity<TaskDto> deleteTask(@Parameter(description = "id of task to be deleted") @PathVariable("id") Long id) {
       service.deleteTask(id);
       return new ResponseEntity<>(HttpStatus.OK);
    }

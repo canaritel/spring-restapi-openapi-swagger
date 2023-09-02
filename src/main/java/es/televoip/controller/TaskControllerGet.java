@@ -5,6 +5,7 @@ import es.televoip.model.dto.TaskDto;
 import es.televoip.model.enums.TaskSortField;
 import es.televoip.model.enums.TaskStatus;
 import es.televoip.service.TaskService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -43,6 +44,7 @@ public class TaskControllerGet {
     * @return Respuesta con el objeto tarea.
     * @apiNote Devuelve una tarea correspondiente al ID proporcionado.
     */
+   @Operation(summary = "Get a book by its id")
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
@@ -98,6 +100,7 @@ public class TaskControllerGet {
     * @return Respuesta con la lista de objetos tarea.
     * @apiNote Devuelve una lista de todas las tareas disponibles.
     */
+   @Operation(summary = "Get all tasks")
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
@@ -139,6 +142,7 @@ public class TaskControllerGet {
     * @return Respuesta con la lista de objetos tarea ordenada.
     * @apiNote Devuelve una lista de todas las tareas ordenadas según el campo y dirección proporcionados.
     */
+   @Operation(summary = "Get all tasks sorted")
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
@@ -183,6 +187,7 @@ public class TaskControllerGet {
     * @return Respuesta con la lista de objetos tarea ordenada y paginada.
     * @apiNote Devuelve una lista de todas las tareas ordenadas y paginadas según los parámetros proporcionados.
     */
+   @Operation(summary = "Get all tasks sorted and paginated")
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
@@ -225,6 +230,7 @@ public class TaskControllerGet {
     * @return Respuesta con la lista de objetos tarea correspondientes al estado.
     * @apiNote Devuelve una lista de todas las tareas que coinciden con el estado proporcionado.
     */
+   @Operation(summary = "Get tasks by status")
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
@@ -265,6 +271,7 @@ public class TaskControllerGet {
     * @return Una respuesta que contiene la lista de objetos tarea correspondientes al estado de completitud.
     * @apiNote Este endpoint devuelve una lista de todas las tareas que coinciden con el estado de completitud proporcionado.
     */
+   @Operation(summary = "Get tasks by completion")
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
@@ -305,6 +312,7 @@ public class TaskControllerGet {
     * @return Respuesta con la lista de objetos tarea que contienen el título proporcionado.
     * @apiNote Devuelve una lista de todas las tareas que contienen el título especificado.
     */
+   @Operation(summary = "Find tasks by title containing")
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
