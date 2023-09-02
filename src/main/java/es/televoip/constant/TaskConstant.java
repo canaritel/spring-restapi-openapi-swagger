@@ -49,7 +49,7 @@ public final class TaskConstant {
     public static final String TASK_DELETED = "Tarea eliminada";
     public static final String TASK_DELETED_SUCCESS = "Tarea eliminada exitosamente.";
     
-    
+    public static final String TASK_RETRIEVED_SUCCESS = "Tarea obtenida exitosamente.";
 
    public static final String TASK_UPDATED = "Actualización de la tarea";
    public static final String TASK_UPDATED_SUCCESS = "Tarea actualizada exitosamente.";

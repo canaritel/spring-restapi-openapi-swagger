@@ -46,7 +46,7 @@ public class TaskControllerGet {
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
-             description = "Tarea obtenida exitosamente.",
+             description = TaskConstant.TASK_RETRIEVED_SUCCESS,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
@@ -58,26 +58,26 @@ public class TaskControllerGet {
                        )})),
       @ApiResponse(
              responseCode = "404",
-             description = "Tarea no encontrada.",
+             description = TaskConstant.TASK_NOT_FOUND,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Tarea no encontrada",
-                              description = "La tarea con el ID especificado no se encuentra.",
+                              name = TaskConstant.TASK_NOT_FOUND,
+                              description = TaskConstant.TASK_ID_SPECIFIC_NOT_FOUND,
                               value = TaskConstant.VALUE_ERROR_404
                        )})),
       @ApiResponse(
              responseCode = "400",
-             description = "Solicitud incorrecta.",
+             description = TaskConstant.TASK_INVALID_REQUEST,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Solicitud incorrecta",
-                              description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
+                              name =  TaskConstant.TASK_INVALID_REQUEST,
+                              description = TaskConstant.TASK_PARAM_NOT_VALID,
                               value = TaskConstant.VALUE_ERROR_400
                        )}))
    })
@@ -101,7 +101,7 @@ public class TaskControllerGet {
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
-             description = "Tarea obtenida exitosamente.",
+             description = TaskConstant.TASK_RETRIEVED_SUCCESS,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
@@ -113,14 +113,14 @@ public class TaskControllerGet {
                        )})),
       @ApiResponse(
              responseCode = "400",
-             description = "Solicitud incorrecta.",
+             description = TaskConstant.TASK_INVALID_REQUEST,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Solicitud incorrecta",
-                              description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
+                              name = TaskConstant.TASK_INVALID_REQUEST,
+                              description = TaskConstant.TASK_PARAM_NOT_VALID,
                               value = TaskConstant.VALUE_ERROR_400
                        )}))
    })
@@ -142,7 +142,7 @@ public class TaskControllerGet {
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
-             description = "Tarea obtenida exitosamente.",
+             description = TaskConstant.TASK_RETRIEVED_SUCCESS,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
@@ -154,14 +154,14 @@ public class TaskControllerGet {
                        )})),
       @ApiResponse(
              responseCode = "400",
-             description = "Solicitud incorrecta.",
+             description = TaskConstant.TASK_INVALID_REQUEST,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Solicitud incorrecta",
-                              description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
+                              name = TaskConstant.TASK_INVALID_REQUEST,
+                              description = TaskConstant.TASK_PARAM_NOT_VALID,
                               value = TaskConstant.VALUE_ERROR_400
                        )}))
    })
@@ -186,7 +186,7 @@ public class TaskControllerGet {
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
-             description = "Tarea obtenida exitosamente.",
+             description = TaskConstant.TASK_RETRIEVED_SUCCESS,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
@@ -198,14 +198,14 @@ public class TaskControllerGet {
                        )})),
       @ApiResponse(
              responseCode = "400",
-             description = "Solicitud incorrecta.",
+             description = TaskConstant.TASK_INVALID_REQUEST,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Solicitud incorrecta",
-                              description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
+                              name = TaskConstant.TASK_INVALID_REQUEST,
+                              description = TaskConstant.TASK_PARAM_NOT_VALID,
                               value = TaskConstant.VALUE_ERROR_400
                        )}))
    })
@@ -240,14 +240,14 @@ public class TaskControllerGet {
                        )})),
       @ApiResponse(
              responseCode = "400",
-             description = "Solicitud incorrecta.",
+             description = TaskConstant.TASK_INVALID_REQUEST,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Solicitud incorrecta",
-                              description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
+                              name =  TaskConstant.TASK_INVALID_REQUEST,
+                              description = TaskConstant.TASK_PARAM_NOT_VALID,
                               value = TaskConstant.VALUE_ERROR_400
                        )}))
    })
@@ -282,14 +282,14 @@ public class TaskControllerGet {
                        )})),
       @ApiResponse(
              responseCode = "400",
-             description = "Solicitud incorrecta.",
+             description = TaskConstant.TASK_INVALID_REQUEST,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Solicitud incorrecta",
-                              description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
+                              name = TaskConstant.TASK_INVALID_REQUEST,
+                              description = TaskConstant.TASK_PARAM_NOT_VALID,
                               value = TaskConstant.VALUE_ERROR_400
                        )}))
    })
@@ -322,14 +322,14 @@ public class TaskControllerGet {
                        )})),
       @ApiResponse(
              responseCode = "400",
-             description = "Solicitud incorrecta.",
+             description = TaskConstant.TASK_INVALID_REQUEST,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Solicitud incorrecta",
-                              description = "Revise si los parámetros requeridos están ausentes o no son válidos.",
+                              name = TaskConstant.TASK_INVALID_REQUEST,
+                              description = TaskConstant.TASK_PARAM_NOT_VALID,
                               value = TaskConstant.VALUE_ERROR_400
                        )}))
    })
