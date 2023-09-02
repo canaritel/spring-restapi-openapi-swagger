@@ -52,8 +52,8 @@ public class TaskControllerGet {
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Obtención de la tarea",
-                              description = "Se obtiene un objeto de tipo tarea.",
+                              name = TaskConstant.TASK_GET,
+                              description = TaskConstant.TASK_GET_SUCCESS,
                               value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
@@ -76,7 +76,7 @@ public class TaskControllerGet {
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name =  TaskConstant.TASK_INVALID_REQUEST,
+                              name = TaskConstant.TASK_INVALID_REQUEST,
                               description = TaskConstant.TASK_PARAM_NOT_VALID,
                               value = TaskConstant.VALUE_ERROR_400
                        )}))
@@ -107,8 +107,8 @@ public class TaskControllerGet {
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Obtención de todas las tareas",
-                              description = "Se obtiene un objeto de tipo listado tareas.",
+                              name = TaskConstant.TASK_GET_ALL,
+                              description = TaskConstant.TASK_GET_ALL_SUCCESS,
                               value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
@@ -148,8 +148,8 @@ public class TaskControllerGet {
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Obtención de todas las tareas ordenadas",
-                              description = "Se obtiene un objeto de tipo listado tareas ordenadas.",
+                              name = TaskConstant.TASK_GET_ALL_SORTED,
+                              description = TaskConstant.TASK_GET_ALL_SORTED_SUCCESS,
                               value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
@@ -192,8 +192,8 @@ public class TaskControllerGet {
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Obtención de todas las tareas ordenadas y paginadas",
-                              description = "Se obtiene un objeto de tipo listado tareas ordenadas y paginadas.",
+                              name = TaskConstant.TASK_GET_ALL_SORTED_PAGED,
+                              description = TaskConstant.TASK_GET_ALL_SORTED_PAGED_SUCCESS,
                               value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
@@ -228,14 +228,14 @@ public class TaskControllerGet {
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
-             description = "Tareas obtenidas exitosamente por estado.",
+             description = TaskConstant.TASK_GET_ALL_STATUS_SUCCESS,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Obtención de tareas por estado",
-                              description = "Se obtiene un objeto de tipo listado de tareas según el estado.",
+                              name = TaskConstant.TASK_GET_ALL_STATUS_NAME,
+                              description = TaskConstant.TASK_GET_ALL_STATUS_RESULT_DESCRIPTION,
                               value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
@@ -246,7 +246,7 @@ public class TaskControllerGet {
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name =  TaskConstant.TASK_INVALID_REQUEST,
+                              name = TaskConstant.TASK_INVALID_REQUEST,
                               description = TaskConstant.TASK_PARAM_NOT_VALID,
                               value = TaskConstant.VALUE_ERROR_400
                        )}))
@@ -268,16 +268,14 @@ public class TaskControllerGet {
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
-             description = "Tareas obtenidas exitosamente por completitud.",
+             description = TaskConstant.TASK_GET_ALL_COMPLETED_SUCCESS,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Obtención de tareas por estado",
-                              description = """
-                                 Se obtiene un objeto de tipo listado de tareas finalizadas o no finalizadas. 
-                                 'True' para las finalizadas, y 'FALSE' para las no finalizadas.""",
+                              name = TaskConstant.TASK_GET_ALL_COMPLETED_NAME,
+                              description = TaskConstant.TASK_GET_ALL_COMPLETED_DESCRIPTION,
                               value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
@@ -310,14 +308,14 @@ public class TaskControllerGet {
    @ApiResponses(value = {
       @ApiResponse(
              responseCode = "200",
-             description = "Tareas obtenidas exitosamente por título.",
+             description = TaskConstant.TASK_GET_ALL_TITLE_SUCCESS,
              content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = TaskDto.class),
                     examples = {
                        @ExampleObject(
-                              name = "Obtención de tareas por título",
-                              description = "Se obtiene un objeto de tipo listado de tareas que contienen el título especificado.",
+                              name = TaskConstant.TASK_GET_ALL_TITLE_NAME,
+                              description = TaskConstant.TASK_GET_ALL_TITLE_DESCRIPTION,
                               value = TaskConstant.VALUE_OK
                        )})),
       @ApiResponse(
