@@ -17,7 +17,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 @Data // es equivalente a usar @ToString, @EqualsAndHashCode, @Getter, @Setter, @RequiredArgsConstrutor al mismo tiempo
 @NoArgsConstructor  // genera un constructor sin parámetros
 @AllArgsConstructor  // genera un constructor con un parámetro para cada campo en su clase
-public abstract class AbstractEntity implements Serializable {
+public abstract class BaseEntity implements Serializable {
 
    private static final long serialVersionUID = -7643472199261145774L;
 

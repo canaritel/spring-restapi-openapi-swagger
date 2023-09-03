@@ -1,7 +1,6 @@
 package es.televoip.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import es.televoip.model.AbstractEntity;
 import es.televoip.model.enums.TaskStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
@@ -15,16 +14,14 @@ import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL) // No se incluye en la respuesta JSON cuando su valor sea 'null'
-public class TaskDto extends AbstractEntity {
+public class TaskDto {
 
    // Usamos la especificación OPENAPI con Swagger3
    // Para más información: https://www.bezkoder.com/spring-boot-swagger-3/

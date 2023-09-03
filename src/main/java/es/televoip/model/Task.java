@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -19,12 +20,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Task extends AbstractEntity {
+public class Task extends BaseEntity {
 
-   @Column(nullable = false)
+   @Column(nullable = false, updatable = true)
    private String title;
 
-   @Column(nullable = false)
+   @Column(nullable = false, updatable = true)
    private String description;
 
    @Column(nullable = false, updatable = true)
@@ -36,9 +37,11 @@ public class Task extends AbstractEntity {
    @Column(nullable = false, updatable = true)
    private int priority; // del 1 (mínima) al 9 (máxima) 
 
+   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
    @Column(nullable = true, updatable = false)
    private LocalDateTime taskDateCreation; // la zona horaria la coge del fichero application.properties
 
+   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
    @Column(nullable = true, updatable = true)
    private LocalDateTime taskDateFinished; // la zona horaria la coge del fichero application.properties
 
