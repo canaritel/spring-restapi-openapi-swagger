@@ -37,7 +37,6 @@ public class UserAccess {
    @Builder.Default
    private Role roles = Role.USER;
 
-   // https://www.baeldung.com/spring-boot-mongodb-upload-file
    @Column(nullable = false, updatable = true)
    private byte[] profilePicture;
 

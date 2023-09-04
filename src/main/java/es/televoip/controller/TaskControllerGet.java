@@ -85,7 +85,7 @@ public class TaskControllerGet {
    })
    @GetMapping("/{id}")
    public ResponseEntity<TaskDto> getTask(@PathVariable("id") Long id) {
-      TaskDto taskDto = service.getTask(id);
+      TaskDto taskDto = service.getById(id);
       if (taskDto != null) {
          return new ResponseEntity<>(taskDto, HttpStatus.OK);
       } else {
@@ -129,7 +129,7 @@ public class TaskControllerGet {
    })
    @GetMapping("/all")
    public ResponseEntity<List<TaskDto>> getAllTasks() {
-      List<TaskDto> tasks = service.getAllTask();
+      List<TaskDto> tasks = service.getAll();
       return new ResponseEntity<>(tasks, HttpStatus.OK);
    }
 

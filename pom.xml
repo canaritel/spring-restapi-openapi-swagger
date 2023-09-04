@@ -106,6 +106,18 @@
             <scope>test</scope>
         </dependency>
         
+        <!-- Librería para implementar caché Caffeine   -->
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+        </dependency>
+        <!-- Proporciona clases y interfaces que soportan la funcionalidad de Spring Framework -->
+        <!-- Si usamos Caffeine con Spring Boot, la dependencia spring-context-support es necesaria para que funcione correctamente -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <build>
