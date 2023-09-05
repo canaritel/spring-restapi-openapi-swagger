@@ -9,15 +9,18 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring")
-public interface PersonMapper {
+public interface PersonMapper extends BaseMapper<Person, PersonDto> {
 
+   @Override
    Person toEntity(PersonDto personDto);
 
+   @Override
    PersonDto toDto(Person person);
 
    @Mapping(ignore = true, target = "logDateCreated")
    @Mapping(ignore = true, target = "logLastUpdated")
    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+   @Override
    void updateEntity(PersonDto personDto, @MappingTarget Person person);
 
 }

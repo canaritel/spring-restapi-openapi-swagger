@@ -8,13 +8,16 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring")
-public interface TaskMapper {
+public interface TaskMapper extends BaseMapper<Task, TaskDto> {
 
+   @Override
    Task toEntity(TaskDto taskDto);
 
+   @Override
    TaskDto toDto(Task task);
 
    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+   @Override
    void updateEntity(TaskDto taskDto, @MappingTarget Task task);
 
 }
