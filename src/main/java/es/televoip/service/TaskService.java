@@ -1,18 +1,18 @@
 package es.televoip.service;
 
 import es.televoip.model.dto.TaskDto;
-import es.televoip.model.enums.TaskSortField;
+import es.televoip.model.enums.SortField;
 import es.televoip.model.enums.TaskStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 
-public interface TaskService extends BaseService<TaskDto, Long> {
+public interface TaskService  {
 
-   List<TaskDto> getAllTasksSorted(TaskSortField sortBy, Sort.Direction sortOrder);
+   List<TaskDto> getAllTasksSorted(SortField sortBy, Sort.Direction sortOrder);
 
-   Page<TaskDto> getAllTasksSortedAndPaginated(TaskSortField sortBy, Sort.Direction sortOrder, int page, int size);
+   Page<TaskDto> getAllTasksSortedAndPaginated(SortField sortBy, Sort.Direction sortOrder, int page, int size);
 
    List<TaskDto> getAllTasksByTitleContaining(String title);
 

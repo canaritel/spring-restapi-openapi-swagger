@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+/*
 public interface BaseService<E extends Object, ID extends Serializable> {
 
    public E getById(ID id);
@@ -26,3 +27,4 @@ public interface BaseService<E extends Object, ID extends Serializable> {
    public Page<E> getAllPageable(Pageable page);
 
 }
+*/

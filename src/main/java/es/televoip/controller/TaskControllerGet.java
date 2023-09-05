@@ -2,7 +2,7 @@ package es.televoip.controller;
 
 import es.televoip.constant.TaskConstant;
 import es.televoip.model.dto.TaskDto;
-import es.televoip.model.enums.TaskSortField;
+import es.televoip.model.enums.SortField;
 import es.televoip.model.enums.TaskStatus;
 import es.televoip.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -170,7 +170,7 @@ public class TaskControllerGet {
                        )}))
    })
    @GetMapping("/sorted")
-   public ResponseEntity<List<TaskDto>> getAllTasksSorted(@RequestParam TaskSortField sortBy,
+   public ResponseEntity<List<TaskDto>> getAllTasksSorted(@RequestParam SortField sortBy,
           @RequestParam Sort.Direction sortOrder) {
       List<TaskDto> tasks = service.getAllTasksSorted(sortBy, sortOrder);
       return new ResponseEntity<>(tasks, HttpStatus.OK);
@@ -215,7 +215,7 @@ public class TaskControllerGet {
                        )}))
    })
    @GetMapping("/sortedAndPaginated")
-   public ResponseEntity<Page<TaskDto>> getAllTasksSortedAndPaginated(@RequestParam TaskSortField sortBy,
+   public ResponseEntity<Page<TaskDto>> getAllTasksSortedAndPaginated(@RequestParam SortField sortBy,
           @RequestParam Sort.Direction sortOrder, @RequestParam(defaultValue = "0") int page,
           @RequestParam(defaultValue = "20") int size) {
       Page<TaskDto> taskPage = service.getAllTasksSortedAndPaginated(sortBy, sortOrder, page, size);

@@ -1,13 +1,13 @@
 package es.televoip.service;
 
-import es.televoip.exceptions.TaskException;
+import es.televoip.exceptions.DataException;
 import static es.televoip.factory.TaskDtoDataFactory.create3SampleTaskList;
 import static es.televoip.factory.TaskDtoDataFactory.create5SampleTaskList;
 import static es.televoip.factory.TaskDtoDataFactory.createSampleTask1Default;
 import static es.televoip.factory.TaskDtoDataFactory.createSampleTask2Default;
 import static es.televoip.factory.TaskDtoDataFactory.createSampleTaskWithId;
 import es.televoip.model.dto.TaskDto;
-import es.televoip.model.enums.TaskSortField;
+import es.televoip.model.enums.SortField;
 import es.televoip.model.enums.TaskStatus;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -75,7 +75,7 @@ class TaskServiceUnitTest {
       taskService.setSave(taskDto2);
 
       // Llamar al método del servicio para obtener todas las tareas ordenadas por prioridad
-      List<TaskDto> taskDtos = taskService.getAllTasksSorted(TaskSortField.TITLE, Sort.Direction.ASC);
+      List<TaskDto> taskDtos = taskService.getAllTasksSorted(SortField.TASK_TITLE, Sort.Direction.ASC);
 
       // Verificar que las tareas se obtuvieron ordenadas correctamente y que los datos coinciden
       assertThat(taskDtos).hasSize(2);
@@ -91,7 +91,7 @@ class TaskServiceUnitTest {
       // Llamar al método del servicio para obtener todas las tareas ordenadas por prioridad y paginadas
       int page = 0;
       int size = 3;
-      Page<TaskDto> taskPage = taskService.getAllTasksSortedAndPaginated(TaskSortField.TITLE, Sort.Direction.ASC, page, size);
+      Page<TaskDto> taskPage = taskService.getAllTasksSortedAndPaginated(SortField.TASK_TITLE, Sort.Direction.ASC, page, size);
 
       // Verificar que se obtuvo la página correcta de tareas y que los datos coinciden
       assertThat(taskPage.getContent()).hasSize(size);
@@ -341,7 +341,7 @@ class TaskServiceUnitTest {
       taskService.setDelete(taskId);
 
       // Verificar que una excepción de tipo TaskException es lanzada al intentar obtener la tarea eliminada
-      TaskException assertThrows = assertThrows(TaskException.class, () -> {
+      DataException assertThrows = assertThrows(DataException.class, () -> {
          taskService.getById(taskId);
       });
       assertEquals(assertThrows.getErrorMessage(), "Tarea no encontrada con ID: " + taskId);
@@ -353,7 +353,7 @@ class TaskServiceUnitTest {
       List<TaskDto> emptyList = new ArrayList<>();
 
       // Utilizar assertThrows para verificar que se lanza una excepción
-      TaskException assertThrows = assertThrows(TaskException.class, () -> {
+      DataException assertThrows = assertThrows(DataException.class, () -> {
          taskService.createAllTasks(emptyList);
       });
 

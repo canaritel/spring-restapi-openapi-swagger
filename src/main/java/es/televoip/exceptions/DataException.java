@@ -6,12 +6,12 @@ import org.springframework.http.HttpStatus;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class TaskException extends RuntimeException {
+public class DataException extends RuntimeException {
 
    final HttpStatus errorCode;
    final String errorMessage;
 
-   public TaskException(HttpStatus errorCode, String errorMessage) {
+   public DataException(HttpStatus errorCode, String errorMessage) {
       this.errorCode = errorCode;
       this.errorMessage = errorMessage;
    }

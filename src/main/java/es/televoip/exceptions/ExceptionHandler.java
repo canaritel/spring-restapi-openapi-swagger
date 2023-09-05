@@ -18,8 +18,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 public class ExceptionHandler {
 
    // Excepción personalizada que puedes lanzar desde tu código cuando ocurren errores específicos relacionados con tareas
-   @org.springframework.web.bind.annotation.ExceptionHandler(value = {TaskException.class})
-   public ResponseEntity<ErrorResponse> handleTaskException(TaskException ex) {
+   @org.springframework.web.bind.annotation.ExceptionHandler(value = {DataException.class})
+   public ResponseEntity<ErrorResponse> handleTaskException(DataException ex) {
       HttpStatus httpStatus = ex.getErrorCode();
       ErrorResponse errorResponse = new ErrorResponse(httpStatus.value(), ex.getErrorMessage());
       return new ResponseEntity<>(errorResponse, httpStatus);
