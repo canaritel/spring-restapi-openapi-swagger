@@ -3,7 +3,7 @@ package es.televoip.controller;
 import es.televoip.constant.TaskConstant;
 import es.televoip.model.dto.TaskDto;
 import es.televoip.model.enums.TaskStatus;
-import es.televoip.service.TaskService;
+import es.televoip.service.implement.TaskServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,9 +31,9 @@ public class TaskControllerPatch {
    // http://localhost:8080/swagger-ui/index.html
    // http://localhost:8080/v3/api-docs
    //
-   private final TaskService service;
+   private final TaskServiceImpl service;
 
-   public TaskControllerPatch(TaskService service) {
+   public TaskControllerPatch(TaskServiceImpl service) {
       this.service = service;
    }
 
@@ -369,7 +369,7 @@ public class TaskControllerPatch {
    @PatchMapping("/{id}/toCompleted")
    public ResponseEntity<TaskDto> updateTaskToCompleted(@Parameter(description = "id of task to be updated as completed")
           @PathVariable("id") Long id) {
-      TaskDto updatedCompleted = service.updateTaskToCompleted(id);
+      TaskDto updatedCompleted = service.markTaskAsCompleted(id);
       return new ResponseEntity<>(updatedCompleted, HttpStatus.OK);
    }
 

@@ -1,7 +1,6 @@
 package es.televoip.service;
 
 import es.televoip.exceptions.DataException;
-import static es.televoip.factory.TaskDtoDataFactory.create3SampleTaskList;
 import static es.televoip.factory.TaskDtoDataFactory.create5SampleTaskList;
 import static es.televoip.factory.TaskDtoDataFactory.createSampleTask1Default;
 import static es.televoip.factory.TaskDtoDataFactory.createSampleTask2Default;
@@ -9,6 +8,7 @@ import static es.televoip.factory.TaskDtoDataFactory.createSampleTaskWithId;
 import es.televoip.model.dto.TaskDto;
 import es.televoip.model.enums.SortField;
 import es.televoip.model.enums.TaskStatus;
+import es.televoip.service.implement.TaskServiceImpl;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +19,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
 
@@ -27,7 +29,7 @@ import org.springframework.test.annotation.DirtiesContext;
 class TaskServiceUnitTest {
 
    @Autowired
-   private TaskService taskService;
+   private TaskServiceImpl taskService;
 
    @Test
    public void testGetTask() {
@@ -75,7 +77,7 @@ class TaskServiceUnitTest {
       taskService.setSave(taskDto2);
 
       // Llamar al método del servicio para obtener todas las tareas ordenadas por prioridad
-      List<TaskDto> taskDtos = taskService.getAllTasksSorted(SortField.TASK_TITLE, Sort.Direction.ASC);
+      List<TaskDto> taskDtos = taskService.getAllSort(SortField.TASK_TITLE, Sort.Direction.ASC);
 
       // Verificar que las tareas se obtuvieron ordenadas correctamente y que los datos coinciden
       assertThat(taskDtos).hasSize(2);
@@ -86,18 +88,17 @@ class TaskServiceUnitTest {
    @Test
    public void testGetAllTasksSortedAndPaginated() {
       // Crear algunas tareas y guardarlas en la base de datos
-      taskService.createAllTasks(create5SampleTaskList());
+      taskService.saveAllTasks(create5SampleTaskList());
 
       // Llamar al método del servicio para obtener todas las tareas ordenadas por prioridad y paginadas
-      int page = 0;
-      int size = 3;
-      Page<TaskDto> taskPage = taskService.getAllTasksSortedAndPaginated(SortField.TASK_TITLE, Sort.Direction.ASC, page, size);
+      Pageable pageable = PageRequest.of(0, 3);
+      Page<TaskDto> taskPage = taskService.getAllSortdAndPageable(SortField.TASK_TITLE, Sort.Direction.ASC, pageable);
 
       // Verificar que se obtuvo la página correcta de tareas y que los datos coinciden
-      assertThat(taskPage.getContent()).hasSize(size);
+      assertThat(taskPage.getContent()).hasSize(pageable.getPageSize());
       assertThat(taskPage.getTotalElements()).isEqualTo(5);
       assertThat(taskPage.getTotalPages()).isEqualTo(2);
-      assertThat(taskPage.getNumber()).isEqualTo(page);
+      assertThat(taskPage.getNumber()).isEqualTo(pageable.getPageNumber());
    }
 
    @Test
@@ -118,7 +119,7 @@ class TaskServiceUnitTest {
       TaskDto savedTaskDto2 = taskService.setSave(taskDto2);
 
       // Llamar al método del servicio para obtener tareas por título que contienen una palabra clave
-      List<TaskDto> tasksContainingKeyword = taskService.getAllTasksByTitleContaining("Keyword");
+      List<TaskDto> tasksContainingKeyword = taskService.getTasksByTitleContaining("Keyword");
 
       // Verificar que se obtuvieron las tareas con título que contiene la palabra clave
       assertThat(tasksContainingKeyword).isNotNull();
@@ -142,8 +143,8 @@ class TaskServiceUnitTest {
       taskService.setSave(taskDto2);
 
       // Llamar al método del servicio para obtener tareas por estado
-      List<TaskDto> tasksOnTime = taskService.getAllByTaskStatus(TaskStatus.ON_TIME);
-      List<TaskDto> tasksLate = taskService.getAllByTaskStatus(TaskStatus.LATE);
+      List<TaskDto> tasksOnTime = taskService.getTasksByTaskStatus(TaskStatus.ON_TIME);
+      List<TaskDto> tasksLate = taskService.getTasksByTaskStatus(TaskStatus.LATE);
 
       // Verificar que se recuperaron las tareas con los estados correctos
       assertThat(tasksOnTime).isNotEmpty();
@@ -166,8 +167,8 @@ class TaskServiceUnitTest {
       taskService.setSave(taskDto2);
 
       // Llamar al método del servicio para obtener tareas por estado de completitud
-      List<TaskDto> completedTasks = taskService.getAllTasksByCompletionStatus(true);
-      List<TaskDto> incompleteTasks = taskService.getAllTasksByCompletionStatus(false);
+      List<TaskDto> completedTasks = taskService.getTasksByCompletion(true);
+      List<TaskDto> incompleteTasks = taskService.getTasksByCompletion(false);
 
       // Verificar que se recuperaron las tareas con los estados de completitud correctos
       assertThat(completedTasks).isNotEmpty();
@@ -228,9 +229,7 @@ class TaskServiceUnitTest {
       assertThat(createdTask3.getTitle()).isEqualTo(createdTasks.get(2).getTitle());
       assertThat(createdTask3.getDescription()).isEqualTo(createdTasks.get(2).getDescription());
    }
-*/
-   
-   
+    */
    @Test
    public void testUpdateTask() {
       // Crear un DTO de tarea existente
@@ -318,7 +317,7 @@ class TaskServiceUnitTest {
       TaskDto savedTaskDto = taskService.setSave(taskDto);
 
       // Llamar al método del servicio para actualizar la tarea a completada
-      TaskDto updatedTask = taskService.updateTaskToCompleted(savedTaskDto.getId());
+      TaskDto updatedTask = taskService.markTaskAsCompleted(savedTaskDto.getId());
 
       // Verificar que la tarea se actualizó a completada correctamente
       assertThat(updatedTask).isNotNull();
@@ -338,7 +337,7 @@ class TaskServiceUnitTest {
       System.out.println("ID: " + taskId);
 
       // Borrar la tarea utilizando el servicio
-      taskService.setDelete(taskId);
+      taskService.setDeleteById(taskId);
 
       // Verificar que una excepción de tipo TaskException es lanzada al intentar obtener la tarea eliminada
       DataException assertThrows = assertThrows(DataException.class, () -> {
@@ -354,7 +353,7 @@ class TaskServiceUnitTest {
 
       // Utilizar assertThrows para verificar que se lanza una excepción
       DataException assertThrows = assertThrows(DataException.class, () -> {
-         taskService.createAllTasks(emptyList);
+         taskService.saveAllTasks(emptyList);
       });
 
       // Verificar el mensaje de error en la excepción

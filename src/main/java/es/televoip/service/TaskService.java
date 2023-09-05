@@ -1,26 +1,27 @@
 package es.televoip.service;
 
 import es.televoip.model.dto.TaskDto;
-import es.televoip.model.enums.SortField;
 import es.televoip.model.enums.TaskStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 
-public interface TaskService  {
+public interface TaskService {
 
-   List<TaskDto> getAllTasksSorted(SortField sortBy, Sort.Direction sortOrder);
+   List<TaskDto> getTasksByFilter(String filter);
 
-   Page<TaskDto> getAllTasksSortedAndPaginated(SortField sortBy, Sort.Direction sortOrder, int page, int size);
+   Page<TaskDto> getTasksByFilterPageable(String filter, Pageable page);
 
-   List<TaskDto> getAllTasksByTitleContaining(String title);
+   List<TaskDto> getTasksByTitleContaining(String title);
 
-   List<TaskDto> getAllByTaskStatus(TaskStatus status);
+   List<TaskDto> getTasksByTaskStatus(TaskStatus status);
 
-   List<TaskDto> getAllTasksByCompletionStatus(boolean isCompleted);
+   List<TaskDto> getTasksByCompletion(boolean isCompleted);
 
-   List<TaskDto> createAllTasks(List<TaskDto> taskDtos);
+   TaskDto saveTaskAndCheckCreationDate(TaskDto taskDto);
+
+   List<TaskDto> saveAllTasks(List<TaskDto> taskDtos);
 
    TaskDto updateTaskDateOfFinished(Long id, LocalDateTime newDateOfFinished);
 
@@ -28,7 +29,7 @@ public interface TaskService  {
 
    TaskDto updateTaskIsCompleted(Long id, Boolean isCompleted);
 
-   TaskDto updateTaskToCompleted(Long id);
+   TaskDto markTaskAsCompleted(Long id);
 
 }
 //   private final TaskRepository repository;

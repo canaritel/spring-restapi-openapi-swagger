@@ -5,6 +5,7 @@ import es.televoip.model.dto.TaskDto;
 import es.televoip.model.enums.TaskStatus;
 import es.televoip.model.mapper.TaskMapper;
 import es.televoip.repository.TaskRepository;
+import es.televoip.service.implement.TaskServiceImpl;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Arrays;
@@ -42,7 +43,7 @@ class TaskServiceIntegrationTest {
    private TaskMapper mapper;
 
    @InjectMocks
-   private TaskService service;
+   private TaskServiceImpl service;
 
    @Test
    public void testGetTask() {
@@ -213,7 +214,7 @@ class TaskServiceIntegrationTest {
       when(repository.findById(anyLong())).thenReturn(Optional.of(new Task()));
 
       // Llamar al método del servicio
-      service.setDelete(1L);
+      service.setDeleteById(1L);
 
       // Verificar que repository.delete() se llamó correctamente
       verify(repository, times(1)).deleteById(1L);

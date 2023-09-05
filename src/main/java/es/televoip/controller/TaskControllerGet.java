@@ -4,7 +4,7 @@ import es.televoip.constant.TaskConstant;
 import es.televoip.model.dto.TaskDto;
 import es.televoip.model.enums.SortField;
 import es.televoip.model.enums.TaskStatus;
-import es.televoip.service.TaskService;
+import es.televoip.service.implement.TaskServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +31,9 @@ public class TaskControllerGet {
    // http://localhost:8080/swagger-ui/index.html
    // http://localhost:8080/v3/api-docs
    //
-   private final TaskService service;
+   private final TaskServiceImpl service;
 
-   public TaskControllerGet(TaskService service) {
+   public TaskControllerGet(TaskServiceImpl service) {
       this.service = service;
    }
 
@@ -172,7 +173,7 @@ public class TaskControllerGet {
    @GetMapping("/sorted")
    public ResponseEntity<List<TaskDto>> getAllTasksSorted(@RequestParam SortField sortBy,
           @RequestParam Sort.Direction sortOrder) {
-      List<TaskDto> tasks = service.getAllTasksSorted(sortBy, sortOrder);
+      List<TaskDto> tasks = service.getAllSort(sortBy, sortOrder);
       return new ResponseEntity<>(tasks, HttpStatus.OK);
    }
 
@@ -182,8 +183,7 @@ public class TaskControllerGet {
     *
     * @param sortBy Campo por el cual se ordenarán las tareas.
     * @param sortOrder Dirección de la ordenación (ASCENDENTE o DESCENDENTE).
-    * @param page Número de página para la paginación.
-    * @param size Tamaño de página para la paginación.
+    * @param pageable Objeto Page con el tamaño y página
     * @return Respuesta con la lista de objetos tarea ordenada y paginada.
     * @apiNote Devuelve una lista de todas las tareas ordenadas y paginadas según los parámetros proporcionados.
     */
@@ -216,9 +216,8 @@ public class TaskControllerGet {
    })
    @GetMapping("/sortedAndPaginated")
    public ResponseEntity<Page<TaskDto>> getAllTasksSortedAndPaginated(@RequestParam SortField sortBy,
-          @RequestParam Sort.Direction sortOrder, @RequestParam(defaultValue = "0") int page,
-          @RequestParam(defaultValue = "20") int size) {
-      Page<TaskDto> taskPage = service.getAllTasksSortedAndPaginated(sortBy, sortOrder, page, size);
+          @RequestParam Sort.Direction sortOrder, @RequestParam Pageable pageable) {
+      Page<TaskDto> taskPage = service.getAllSortdAndPageable(sortBy, sortOrder, pageable);
       return new ResponseEntity<>(taskPage, HttpStatus.OK);
    }
 
@@ -259,7 +258,7 @@ public class TaskControllerGet {
    })
    @GetMapping("/status/{status}")
    public ResponseEntity<List<TaskDto>> getAllByTaskStatus(@PathVariable("status") TaskStatus status) {
-      List<TaskDto> tasks = service.getAllByTaskStatus(status);
+      List<TaskDto> tasks = service.getTasksByTaskStatus(status);
       return new ResponseEntity<>(tasks, HttpStatus.OK);
    }
 
@@ -300,7 +299,7 @@ public class TaskControllerGet {
    })
    @GetMapping("/completed/{isCompleted}")
    public ResponseEntity<List<TaskDto>> getTasksByCompletion(@PathVariable("isCompleted") Boolean isCompleted) {
-      List<TaskDto> tasks = service.getAllTasksByCompletionStatus(isCompleted);
+      List<TaskDto> tasks = service.getTasksByCompletion(isCompleted);
       return new ResponseEntity<>(tasks, HttpStatus.OK);
    }
 
@@ -341,7 +340,7 @@ public class TaskControllerGet {
    })
    @GetMapping("/alltitles/{title}")
    public ResponseEntity<List<TaskDto>> findTasksByTitleContaining(@PathVariable("title") String title) {
-      List<TaskDto> tasks = service.getAllTasksByTitleContaining(title);
+      List<TaskDto> tasks = service.getTasksByTitleContaining(title);
       if (tasks.isEmpty()) {
          return new ResponseEntity<>(HttpStatus.NO_CONTENT);
       } else {

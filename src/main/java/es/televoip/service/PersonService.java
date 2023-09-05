@@ -1,25 +1,20 @@
 package es.televoip.service;
 
 import es.televoip.model.dto.PersonDto;
-import java.util.Collection;
 import java.util.List;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
-public interface PersonService extends BaseService<PersonDto, Long> {
+public interface PersonService {
 
-   List<PersonDto> search(String filter);
+   List<PersonDto> getPersonsByFilter(String filter);
 
-   List<PersonDto> searchPageable(String filter, Pageable page);
+   Page<PersonDto> getPersonsByFilterPageable(String filter, Pageable page);
 
-   PersonDto searchDni(String dni);
+   PersonDto getPersonByDni(String dni);
 
-   List<PersonDto> searchFirstNameOrLastName(String filter);
+   List<PersonDto> getPersonsByFirstNameOrLastName(String filter);
 
-   List<PersonDto> searchFirstNameOrLastName(String filter, Pageable page);
-
-   Integer countByFirstNameOrLastName(String filter);
-
-   Collection<PersonDto> findAllPageSort(Pageable page, Sort sort);
+   Page<PersonDto> getPersonsByFirstNameOrLastNamePageable(String filter, Pageable page);
 
 }
