@@ -30,6 +30,10 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
       this.mapper = mapper;
    }
 
+//   protected BaseRepository<E, I> getRepository() {
+//      return repository;
+//   }
+
    public D getById(I id) {
       try {
          // obtenemos el objeto Optional del id

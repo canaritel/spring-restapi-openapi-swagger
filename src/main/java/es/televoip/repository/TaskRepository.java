@@ -23,5 +23,7 @@ public interface TaskRepository extends BaseRepository<Task, Long> {
    public List<Task> findByIsCompletedTrue();
 
    public List<Task> findByIsCompletedFalse();
+   
+   
 
 }
