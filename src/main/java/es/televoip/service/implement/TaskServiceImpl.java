@@ -35,21 +35,43 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
 
    @Override
    public List<TaskDto> getTasksByFilter(String filter) {
-      throw new UnsupportedOperationException("Not supported yet.");
+      try {
+         // Realizamos una consulta a la base de datos para obtener las tareas que coincidan con el filtro
+         List<Task> tasks = repository.findByTitleContainingOrDescriptionContainingAllIgnoreCase(
+                filter, filter);
+
+         // Convertimos las entidades a DTOs
+         return convertToDtoList(tasks);
+
+      } catch (DataException ex) {
+         throw ex;
+      } catch (Exception ex) {
+         throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
    }
 
    @Override
    public Page<TaskDto> getTasksByFilterPageable(String filter, Pageable page) {
+      try {
+         // Realizamos una consulta a la base de datos para obtener las tareas que coincidan con el filtro
+         Page<Task> tasks = repository.findByTitleContainingOrDescriptionContainingAllIgnoreCase(
+                filter, filter, page);
 
-      throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+         // Convertimos las entidades a DTOs
+         return tasks.map(entity -> mapper.toDto(entity));
 
+      } catch (DataException ex) {
+         throw ex;
+      } catch (Exception ex) {
+         throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
    }
 
    @Override
    public List<TaskDto> getTasksByTitleContaining(String title) {
       try {
 
-         List<Task> tasks = repository.getAllByTitleContainingIgnoreCase(title);
+         List<Task> tasks = repository.findAllByTitleContainingIgnoreCase(title);
          return convertToDtoList(tasks);
 
       } catch (DataException ex) {
@@ -61,16 +83,36 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
 
    @Override
    public List<TaskDto> getTasksByTaskStatus(TaskStatus status) {
+      try {
 
-      throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+         List<Task> tasks = repository.findAllByTaskStatus(status);
+         return convertToDtoList(tasks);
 
+      } catch (DataException ex) {
+         throw ex;
+      } catch (Exception ex) {
+         throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
    }
 
    @Override
    public List<TaskDto> getTasksByCompletion(boolean isCompleted) {
+      try {
 
-      throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+         List<Task> tasks;
+         if (isCompleted) {
+            tasks = repository.findByIsCompletedTrue();
+         } else {
+            tasks = repository.findByIsCompletedFalse();
+         }
 
+         return convertToDtoList(tasks);
+
+      } catch (DataException ex) {
+         throw ex;
+      } catch (Exception ex) {
+         throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
    }
 
    @Override
@@ -100,8 +142,7 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
          }
          List<Task> tasks = taskDtos.stream() // convierte la lista taskDtos en un flujo (stream) de elementos
                 .map(mapper::toEntity) // convierte cada elemento de la lista taskDtos en un objeto Task
-                .peek(action -> {
-                   /* permite realizar una acción en cada elemento del flujo sin cambiar los elementos mismos  */
+                .peek(action -> { //permite realizar una acción en cada elemento del flujo sin cambiar los elementos mismos
                    if (action.getTaskDateCreation() == null) {
                       action.setTaskDateCreation(LocalDateTime.now());
                    }
@@ -120,22 +161,79 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
 
    @Override
    public TaskDto updateTaskDateOfFinished(Long id, LocalDateTime newDateOfFinished) {
-      throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+      try {
+
+         Task existingTask = repository.findById(id)
+                .orElseThrow(() -> new DataException(HttpStatus.NOT_FOUND, TaskConstant.TASK_ID_NOT_FOUND + id));
+
+         //  Ejecutar validaciones personalizadas. ¡OJO! si funciona cuando querramos realizar TaskServiceTest
+         if (existingTask.getTaskDateCreation() != null && newDateOfFinished.isBefore(existingTask.getTaskDateCreation())) {
+            throw new DataException(HttpStatus.BAD_REQUEST, TaskConstant.TASK_DATE_FAIL);
+         }
+
+         existingTask.setTaskDateFinished(newDateOfFinished);
+         Task updatedTask = repository.save(existingTask);
+         return mapper.toDto(updatedTask);
+
+      } catch (DataException ex) { // Lo pongo antes del Exception final para poder capturar mis excepciones
+         throw ex;
+      } catch (Exception ex) {
+         throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
    }
 
    @Override
    public TaskDto updateTaskStatus(Long id, TaskStatus taskStatus) {
-      throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+      try {
+
+         Task existingTask = repository.findById(id)
+                .orElseThrow(() -> new DataException(HttpStatus.NOT_FOUND, TaskConstant.TASK_ID_NOT_FOUND + id));
+
+         existingTask.setTaskStatus(taskStatus);
+         Task updatedTask = repository.save(existingTask);
+         return mapper.toDto(updatedTask);
+
+      } catch (DataException ex) { // Lo pongo antes del Exception final para poder capturar mis excepciones
+         throw ex;
+      } catch (Exception ex) {
+         throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
    }
 
    @Override
    public TaskDto updateTaskIsCompleted(Long id, Boolean isCompleted) {
-      throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+      try {
+
+         Task existingTask = repository.findById(id)
+                .orElseThrow(() -> new DataException(HttpStatus.NOT_FOUND, TaskConstant.TASK_ID_NOT_FOUND + id));
+
+         existingTask.setIsCompleted(isCompleted);
+         Task updatedTask = repository.save(existingTask);
+         return mapper.toDto(updatedTask);
+
+      } catch (DataException ex) { // Lo pongo antes del Exception final para poder capturar mis excepciones
+         throw ex;
+      } catch (Exception ex) {
+         throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
    }
 
    @Override
    public TaskDto markTaskAsCompleted(Long id) {
-      throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+      try {
+
+         Task existingTask = repository.findById(id)
+                .orElseThrow(() -> new DataException(HttpStatus.NOT_FOUND, TaskConstant.TASK_ID_NOT_FOUND + id));
+
+         repository.markTaskAsCompleted(id);
+         existingTask.setIsCompleted(Boolean.TRUE);
+         return mapper.toDto(existingTask);
+
+      } catch (DataException ex) { // Lo pongo antes del Exception final para poder capturar mis excepciones
+         throw ex;
+      } catch (Exception ex) {
+         throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
    }
 
    //    Método auxiliar para convertir una lista de entidades a DTOs

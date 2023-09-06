@@ -6,7 +6,9 @@ import static es.televoip.factory.TaskDtoDataFactory.createSampleTask1Default;
 import static es.televoip.factory.TaskDtoDataFactory.createSampleTask2Default;
 import static es.televoip.factory.TaskDtoDataFactory.createSampleTaskWithId;
 import es.televoip.model.dto.TaskDto;
+import es.televoip.model.enums.PersonSortField;
 import es.televoip.model.enums.SortField;
+import es.televoip.model.enums.TaskSortField;
 import es.televoip.model.enums.TaskStatus;
 import es.televoip.service.implement.TaskServiceImpl;
 import java.time.LocalDateTime;
@@ -36,10 +38,10 @@ class TaskServiceUnitTest {
       // Crear una tarea y guardarla en la base de datos
       TaskDto taskDto = createSampleTask1Default();
 
-      taskService.setSave(taskDto);
+      taskService.save(taskDto);
 
       // Llamar al método del servicio para obtener la tarea
-      TaskDto newTaskDto = taskService.getById(taskDto.getId());
+      TaskDto newTaskDto = taskService.findById(taskDto.getId());
 
       // Verificar que los datos coinciden con lo esperado
       assertThat(taskDto).isNotNull();
@@ -53,11 +55,11 @@ class TaskServiceUnitTest {
       TaskDto taskDto1 = createSampleTask1Default();
       TaskDto taskDto2 = createSampleTask2Default();
 
-      taskService.setSave(taskDto1);
-      taskService.setSave(taskDto2);
+      taskService.save(taskDto1);
+      taskService.save(taskDto2);
 
       // Llamar al método del servicio para obtener todas las tareas
-      List<TaskDto> taskDtos = taskService.getAll();
+      List<TaskDto> taskDtos = taskService.findAll();
 
       // Verificar que se obtuvieron todas las tareas y que los datos coinciden
       assertThat(taskDtos).hasSize(2);
@@ -73,11 +75,11 @@ class TaskServiceUnitTest {
       TaskDto taskDto1 = createSampleTask1Default();
       TaskDto taskDto2 = createSampleTask2Default();
 
-      taskService.setSave(taskDto1);
-      taskService.setSave(taskDto2);
+      taskService.save(taskDto1);
+      taskService.save(taskDto2);
 
       // Llamar al método del servicio para obtener todas las tareas ordenadas por prioridad
-      List<TaskDto> taskDtos = taskService.getAllSort(SortField.TASK_TITLE, Sort.Direction.ASC);
+      List<TaskDto> taskDtos = taskService.findAllSorted(SortField.TASK_TITLE, Sort.Direction.ASC);
 
       // Verificar que las tareas se obtuvieron ordenadas correctamente y que los datos coinciden
       assertThat(taskDtos).hasSize(2);
@@ -92,7 +94,7 @@ class TaskServiceUnitTest {
 
       // Llamar al método del servicio para obtener todas las tareas ordenadas por prioridad y paginadas
       Pageable pageable = PageRequest.of(0, 3);
-      Page<TaskDto> taskPage = taskService.getAllSortdAndPageable(SortField.TASK_TITLE, Sort.Direction.ASC, pageable);
+      Page<TaskDto> taskPage = taskService.findAllSortedAndPaged(SortField.TASK_TITLE, Sort.Direction.ASC, pageable);
 
       // Verificar que se obtuvo la página correcta de tareas y que los datos coinciden
       assertThat(taskPage.getContent()).hasSize(pageable.getPageSize());
@@ -109,14 +111,14 @@ class TaskServiceUnitTest {
              "Title Containing Keyword",
              "Description 1",
              1);
-      TaskDto savedTaskDto1 = taskService.setSave(taskDto1);
+      TaskDto savedTaskDto1 = taskService.save(taskDto1);
 
       TaskDto taskDto2 = createSampleTaskWithId(
              2L,
              "Another Title",
              "Description 2",
              2);
-      TaskDto savedTaskDto2 = taskService.setSave(taskDto2);
+      TaskDto savedTaskDto2 = taskService.save(taskDto2);
 
       // Llamar al método del servicio para obtener tareas por título que contienen una palabra clave
       List<TaskDto> tasksContainingKeyword = taskService.getTasksByTitleContaining("Keyword");
@@ -136,11 +138,11 @@ class TaskServiceUnitTest {
       // Crear y guardar tareas en la base de datos con diferentes estados
       TaskDto taskDto1 = createSampleTask1Default();
       taskDto1.setTaskStatus(TaskStatus.ON_TIME);
-      taskService.setSave(taskDto1);
+      taskService.save(taskDto1);
 
       TaskDto taskDto2 = createSampleTask2Default();
       taskDto2.setTaskStatus(TaskStatus.LATE);
-      taskService.setSave(taskDto2);
+      taskService.save(taskDto2);
 
       // Llamar al método del servicio para obtener tareas por estado
       List<TaskDto> tasksOnTime = taskService.getTasksByTaskStatus(TaskStatus.ON_TIME);
@@ -160,11 +162,11 @@ class TaskServiceUnitTest {
       // Crear y guardar tareas en la base de datos con diferentes estados de completitud
       TaskDto taskDto1 = createSampleTask1Default();
       taskDto1.setIsCompleted(true);
-      taskService.setSave(taskDto1);
+      taskService.save(taskDto1);
 
       TaskDto taskDto2 = createSampleTask2Default();
       taskDto2.setIsCompleted(false);
-      taskService.setSave(taskDto2);
+      taskService.save(taskDto2);
 
       // Llamar al método del servicio para obtener tareas por estado de completitud
       List<TaskDto> completedTasks = taskService.getTasksByCompletion(true);
@@ -185,14 +187,14 @@ class TaskServiceUnitTest {
       TaskDto taskDto1 = createSampleTask1Default();
 
       // Llamar al método del servicio para crear la tarea
-      TaskDto createdTaskDto = taskService.setSave(taskDto1);
+      TaskDto createdTaskDto = taskService.save(taskDto1);
 
       // Verificar que se creó correctamente y tiene un ID asignado
       assertThat(createdTaskDto).isNotNull();
       assertThat(createdTaskDto.getId()).isNotNull();
 
       // Obtener la tarea de la base de datos y verificar que los datos coinciden
-      TaskDto createdTask = taskService.getById(createdTaskDto.getId());
+      TaskDto createdTask = taskService.findById(createdTaskDto.getId());
       assertThat(createdTask).isNotNull();
       assertThat(createdTask.getTitle()).isEqualTo(taskDto1.getTitle());
       assertThat(createdTask.getDescription()).isEqualTo(taskDto1.getDescription());
@@ -240,7 +242,7 @@ class TaskServiceUnitTest {
              1);
 
       // Grabamos el objeto DTO
-      TaskDto savedTaskDto = taskService.setSave(taskDto);
+      TaskDto savedTaskDto = taskService.save(taskDto);
 
       // Crear un DTO de tarea actualizada
       TaskDto updatedTaskDto = createSampleTaskWithId(
@@ -250,7 +252,7 @@ class TaskServiceUnitTest {
              2);
 
       // Actualizar la tarea utilizando el servicio
-      TaskDto updatedTask = taskService.setUpdate(updatedTaskDto.getId(), updatedTaskDto);
+      TaskDto updatedTask = taskService.update(updatedTaskDto.getId(), updatedTaskDto);
 
       // Verificar que la tarea se actualizó correctamente
       assertThat(updatedTask).isNotNull();
@@ -263,7 +265,7 @@ class TaskServiceUnitTest {
    public void testUpdateTaskDateOfFinished() {
       // Crear y guardar una tarea en la base de datos
       TaskDto taskDto = createSampleTask1Default();
-      TaskDto savedTaskDto = taskService.setSave(taskDto);
+      TaskDto savedTaskDto = taskService.save(taskDto);
 
       // Crear una nueva fecha de finalización
       LocalDateTime newDateOfFinished = LocalDateTime.now().plusDays(1);
@@ -280,7 +282,7 @@ class TaskServiceUnitTest {
    public void testUpdateTaskStatus() {
       // Crear y guardar una tarea en la base de datos
       TaskDto taskDto = createSampleTask1Default();
-      TaskDto savedTaskDto = taskService.setSave(taskDto);
+      TaskDto savedTaskDto = taskService.save(taskDto);
 
       // Crear un nuevo estado de tarea
       TaskStatus newTaskStatus = TaskStatus.LATE;
@@ -297,7 +299,7 @@ class TaskServiceUnitTest {
    public void testUpdateTaskIsCompleted() {
       // Crear y guardar una tarea en la base de datos
       TaskDto taskDto = createSampleTask1Default();
-      TaskDto savedTaskDto = taskService.setSave(taskDto);
+      TaskDto savedTaskDto = taskService.save(taskDto);
 
       // Crear un nuevo estado de completitud
       Boolean newIsCompleted = true;
@@ -314,7 +316,7 @@ class TaskServiceUnitTest {
    public void testUpdateTaskToCompleted() {
       // Crear y guardar una tarea en la base de datos
       TaskDto taskDto = createSampleTask1Default();
-      TaskDto savedTaskDto = taskService.setSave(taskDto);
+      TaskDto savedTaskDto = taskService.save(taskDto);
 
       // Llamar al método del servicio para actualizar la tarea a completada
       TaskDto updatedTask = taskService.markTaskAsCompleted(savedTaskDto.getId());
@@ -330,18 +332,18 @@ class TaskServiceUnitTest {
       TaskDto taskDto = createSampleTask1Default();
 
       // Grabamos el objeto DTO
-      TaskDto savedTaskDto = taskService.setSave(taskDto);
+      TaskDto savedTaskDto = taskService.save(taskDto);
 
       // Obtener el ID de la tarea recién creada
       Long taskId = savedTaskDto.getId();
       System.out.println("ID: " + taskId);
 
       // Borrar la tarea utilizando el servicio
-      taskService.setDeleteById(taskId);
+      taskService.deleteById(taskId);
 
       // Verificar que una excepción de tipo TaskException es lanzada al intentar obtener la tarea eliminada
       DataException assertThrows = assertThrows(DataException.class, () -> {
-         taskService.getById(taskId);
+         taskService.findById(taskId);
       });
       assertEquals(assertThrows.getErrorMessage(), "Tarea no encontrada con ID: " + taskId);
    }

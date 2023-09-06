@@ -2,6 +2,8 @@ package es.televoip.service;
 
 import es.televoip.exceptions.DataException;
 import es.televoip.model.BaseEntity;
+import es.televoip.model.Person;
+import es.televoip.model.Task;
 import es.televoip.model.enums.SortField;
 import es.televoip.repository.BaseRepository;
 import java.io.Serializable;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import es.televoip.model.mapper.BaseMapper;
 import jakarta.validation.Valid;
+import java.util.Arrays;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,11 +33,7 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
       this.mapper = mapper;
    }
 
-//   protected BaseRepository<E, I> getRepository() {
-//      return repository;
-//   }
-
-   public D getById(I id) {
+   public D findById(I id) {
       try {
          // obtenemos el objeto Optional del id
          Optional<E> optionalTask = repository.findById(id);
@@ -51,7 +50,7 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
       }
    }
 
-   public D setSave(@Valid D dto) {
+   public D save(@Valid D dto) {
       try {
          // Convertimos el objeto DTO a su entidad
          E entity = mapper.toEntity(dto);
@@ -93,7 +92,7 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
       }
    }
 
-   public void setDeleteById(I id) {
+   public void deleteById(I id) {
       try {
          repository.deleteById(id);
       } catch (Exception ex) {
@@ -101,7 +100,7 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
       }
    }
 
-   public D setUpdate(I id, @Valid D dto) {
+   public D update(I id, @Valid D dto) {
       try {
          repository.findById(id)
                 .orElseThrow(() -> new DataException(HttpStatus.NOT_FOUND, "OBJECT_ID_NOT_FOUND" + id));
@@ -118,7 +117,7 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
       }
    }
 
-   public List<D> getAll() {
+   public List<D> findAll() {
       try {
          List<E> list = repository.findAll();
          return convertToDtoList(list);
@@ -130,22 +129,7 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
       }
    }
 
-   public List<D> getAllSort(SortField sortBy, Sort.Direction sortOrder) {
-      try {
-         validateEntitySortBy(sortBy);
-
-         Sort sort = Sort.by(new Sort.Order(sortOrder, sortBy.getFieldName()));
-         List<E> list = repository.findAll(sort);
-         return convertToDtoList(list);
-
-      } catch (DataException ex) {
-         throw ex;
-      } catch (Exception ex) {
-         throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
-      }
-   }
-
-   public Page<D> getAllPageable(Pageable page) {
+   public Page<D> findAllPaged(Pageable page) {
       try {
          Page<E> pageE = repository.findAll(page);
          return pageE // se utiliza map directamente con 'taskPage' para convertirla en una página de DTO.
@@ -158,10 +142,25 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
       }
    }
 
-   public Page<D> getAllSortdAndPageable(SortField sortBy, Sort.Direction sortOrder, Pageable pageable) {
+   public List<D> findAllSorted(SortField sortBy, Sort.Direction sortOrder) {
       try {
-         validateEntitySortBy(sortBy);
 
+         validateEntitySortBy(sortBy);
+         Sort sort = Sort.by(new Sort.Order(sortOrder, sortBy.getFieldName()));
+         List<E> list = repository.findAll(sort);
+         return convertToDtoList(list);
+
+      } catch (DataException ex) {
+         throw ex;
+      } catch (Exception ex) {
+         throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
+   }
+
+   public Page<D> findAllSortedAndPaged(SortField sortBy, Sort.Direction sortOrder, Pageable pageable) {
+      try {
+
+         validateEntitySortBy(sortBy);
          Sort sort = Sort.by(new Sort.Order(sortOrder, sortBy.getFieldName()));
          pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
 
@@ -183,34 +182,21 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
          throw new DataException(HttpStatus.BAD_REQUEST, ENTITY_NOT_FOUND);
       }
 
-      if (!SortField.values().equals(sortBy)) {
+      if (!Arrays.asList(SortField.values()).contains(sortBy)) {
          throw new DataException(HttpStatus.BAD_REQUEST, ENTITY_NOT_FOUND);
-      }
-
-      Class<?> entityClass = this.getClass();
-      if (sortBy.getEntityClass() != entityClass) {
-         throw new DataException(HttpStatus.BAD_REQUEST, ENTITY_NOT_FOUND);
-      }
-
-      if (!isValueValid(sortBy.getFieldName())) {
-         throw new DataException(HttpStatus.BAD_REQUEST, ENTITY_NOT_FOUND);
-      }
-   }
-
-   private boolean isValueValid(String value) {
-      try {
-         Enum.valueOf(SortField.class, value);
-         return true;
-      } catch (IllegalArgumentException e) {
-         return false;
       }
    }
 
    //    Método auxiliar para convertir una lista de entidades a DTOs
    private List<D> convertToDtoList(List<E> list) {
       return list.stream() // se utiliza stream() y collect(Collectors.toList()) para convertirlo en una lista de DTO
-             .map(mapper::toDto)
+             .map(entity -> mapper.toDto(entity))
              .collect(Collectors.toList());
+   }
+
+   private boolean isValidSortFieldForEntity(SortField sortField, Class<?> entityClass) {
+      // Validar si el campo de ordenamiento es relevante para la entidad dada
+      return sortField.getEntityClass().equals(entityClass);
    }
 
 }

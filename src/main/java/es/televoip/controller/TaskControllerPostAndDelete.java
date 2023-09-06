@@ -84,7 +84,7 @@ public class TaskControllerPostAndDelete {
    @PostMapping
    public ResponseEntity<TaskDto> createTask(@Valid @RequestBody TaskDto taskDto) {
       // Valid debe tener anotaciones de validación adecuadas, como @NotBlank, @NotNull, @Size, etc., en su capa DTO
-      TaskDto createdTask = service.setSave(taskDto);
+      TaskDto createdTask = service.save(taskDto);
       return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
    }
 
@@ -122,7 +122,7 @@ public class TaskControllerPostAndDelete {
    })
    @DeleteMapping("/{id}")
    public ResponseEntity<TaskDto> deleteTask(@Parameter(description = "id of task to be deleted") @PathVariable("id") Long id) {
-      service.setDeleteById(id);
+      service.deleteById(id);
       return new ResponseEntity<>(HttpStatus.OK);
    }
 

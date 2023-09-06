@@ -374,7 +374,7 @@ public class TaskRespositoryUnitTest {
       entityManager.persist(task2);
 
       // When
-      List<Task> foundTasks = repository.getAllByTitleContainingIgnoreCase("find");
+      List<Task> foundTasks = repository.findAllByTitleContainingIgnoreCase("find");
 
       // Then
       assertThat(foundTasks).hasSize(1).contains(task1);
