@@ -122,6 +122,10 @@ public class TaskControllerPostAndDelete {
    })
    @DeleteMapping("/{id}")
    public ResponseEntity<TaskDto> deleteTask(@Parameter(description = "id of task to be deleted") @PathVariable("id") Long id) {
+      if (service.findById(id) == null) {
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+
       service.deleteById(id);
       return new ResponseEntity<>(HttpStatus.OK);
    }

@@ -327,7 +327,9 @@ class TaskControllerIntegrationTest {
 
    @Test
    void shouldDeleteNotFoundTask() throws Exception {
-      long id = 1L;
+      long id = -1L;
+
+      when(repository.findById(id)).thenReturn(Optional.empty());
 
       doNothing().when(repository).deleteById(id);
 

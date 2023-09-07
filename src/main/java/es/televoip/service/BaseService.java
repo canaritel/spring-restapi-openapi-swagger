@@ -2,8 +2,6 @@ package es.televoip.service;
 
 import es.televoip.exceptions.DataException;
 import es.televoip.model.BaseEntity;
-import es.televoip.model.Person;
-import es.televoip.model.Task;
 import es.televoip.model.enums.SortField;
 import es.televoip.repository.BaseRepository;
 import java.io.Serializable;
@@ -40,7 +38,7 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
          if (optionalTask.isPresent()) {
             return mapper.toDto(optionalTask.get());
          } else {
-            throw new DataException(HttpStatus.NOT_FOUND, "OBJECT_ID_NOT_FOUND" + id);
+            throw new DataException(HttpStatus.NOT_FOUND, "ENTITY_ID_NOT_FOUND: " + id);
          }
 
       } catch (DataException ex) {
@@ -74,12 +72,7 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
          }
 
          List<E> list = dtos.stream() // convierte la lista dtos en un flujo (stream) de elementos
-                .map(mapper::toEntity) // convierte cada elemento de la lista en un objeto 
-                .peek(action -> {// permite realizar una acción en cada elemento del flujo sin cambiar los elementos mismos
-                   // if (action.getTaskDateCreation() == null) {
-                   //    action.setTaskDateCreation(LocalDateTime.now());
-                   // }
-                })
+                .map(dto -> mapper.toEntity(dto)) // convierte cada elemento de la lista en un objeto 
                 .collect(Collectors.toList()); // crea una lista de objetos
 
          List<E> listE = repository.saveAll(list);
@@ -95,6 +88,8 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
    public void deleteById(I id) {
       try {
          repository.deleteById(id);
+//      } catch (DataException ex) {
+//         throw ex;
       } catch (Exception ex) {
          throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
       }
@@ -103,7 +98,7 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
    public D update(I id, @Valid D dto) {
       try {
          repository.findById(id)
-                .orElseThrow(() -> new DataException(HttpStatus.NOT_FOUND, "OBJECT_ID_NOT_FOUND" + id));
+                .orElseThrow(() -> new DataException(HttpStatus.NOT_FOUND, "ENTITY_ID_NOT_FOUND: " + id));
 
          E entity = mapper.toEntity(dto);
          entity.setId((Long) id); // Asegurar que el ID se mantenga igual
@@ -187,16 +182,11 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
       }
    }
 
-   //    Método auxiliar para convertir una lista de entidades a DTOs
+   // Método auxiliar para convertir una lista de entidades a DTOs
    private List<D> convertToDtoList(List<E> list) {
       return list.stream() // se utiliza stream() y collect(Collectors.toList()) para convertirlo en una lista de DTO
              .map(entity -> mapper.toDto(entity))
              .collect(Collectors.toList());
-   }
-
-   private boolean isValidSortFieldForEntity(SortField sortField, Class<?> entityClass) {
-      // Validar si el campo de ordenamiento es relevante para la entidad dada
-      return sortField.getEntityClass().equals(entityClass);
    }
 
 }

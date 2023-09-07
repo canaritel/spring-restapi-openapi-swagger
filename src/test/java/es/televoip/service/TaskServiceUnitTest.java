@@ -6,9 +6,7 @@ import static es.televoip.factory.TaskDtoDataFactory.createSampleTask1Default;
 import static es.televoip.factory.TaskDtoDataFactory.createSampleTask2Default;
 import static es.televoip.factory.TaskDtoDataFactory.createSampleTaskWithId;
 import es.televoip.model.dto.TaskDto;
-import es.televoip.model.enums.PersonSortField;
 import es.televoip.model.enums.SortField;
-import es.televoip.model.enums.TaskSortField;
 import es.televoip.model.enums.TaskStatus;
 import es.televoip.service.implement.TaskServiceImpl;
 import java.time.LocalDateTime;
@@ -187,7 +185,7 @@ class TaskServiceUnitTest {
       TaskDto taskDto1 = createSampleTask1Default();
 
       // Llamar al método del servicio para crear la tarea
-      TaskDto createdTaskDto = taskService.save(taskDto1);
+      TaskDto createdTaskDto = taskService.saveTaskAndCheckCreationDate(taskDto1);
 
       // Verificar que se creó correctamente y tiene un ID asignado
       assertThat(createdTaskDto).isNotNull();
@@ -265,7 +263,7 @@ class TaskServiceUnitTest {
    public void testUpdateTaskDateOfFinished() {
       // Crear y guardar una tarea en la base de datos
       TaskDto taskDto = createSampleTask1Default();
-      TaskDto savedTaskDto = taskService.save(taskDto);
+      TaskDto savedTaskDto = taskService.saveTaskAndCheckCreationDate(taskDto);
 
       // Crear una nueva fecha de finalización
       LocalDateTime newDateOfFinished = LocalDateTime.now().plusDays(1);
@@ -299,7 +297,7 @@ class TaskServiceUnitTest {
    public void testUpdateTaskIsCompleted() {
       // Crear y guardar una tarea en la base de datos
       TaskDto taskDto = createSampleTask1Default();
-      TaskDto savedTaskDto = taskService.save(taskDto);
+      TaskDto savedTaskDto = taskService.saveTaskAndCheckCreationDate(taskDto);
 
       // Crear un nuevo estado de completitud
       Boolean newIsCompleted = true;
@@ -316,7 +314,7 @@ class TaskServiceUnitTest {
    public void testUpdateTaskToCompleted() {
       // Crear y guardar una tarea en la base de datos
       TaskDto taskDto = createSampleTask1Default();
-      TaskDto savedTaskDto = taskService.save(taskDto);
+      TaskDto savedTaskDto = taskService.saveTaskAndCheckCreationDate(taskDto);
 
       // Llamar al método del servicio para actualizar la tarea a completada
       TaskDto updatedTask = taskService.markTaskAsCompleted(savedTaskDto.getId());
@@ -332,7 +330,7 @@ class TaskServiceUnitTest {
       TaskDto taskDto = createSampleTask1Default();
 
       // Grabamos el objeto DTO
-      TaskDto savedTaskDto = taskService.save(taskDto);
+      TaskDto savedTaskDto = taskService.saveTaskAndCheckCreationDate(taskDto);
 
       // Obtener el ID de la tarea recién creada
       Long taskId = savedTaskDto.getId();
@@ -345,7 +343,7 @@ class TaskServiceUnitTest {
       DataException assertThrows = assertThrows(DataException.class, () -> {
          taskService.findById(taskId);
       });
-      assertEquals(assertThrows.getErrorMessage(), "Tarea no encontrada con ID: " + taskId);
+      assertEquals(assertThrows.getErrorMessage(), "ENTITY_ID_NOT_FOUND: " + taskId);
    }
 
    @Test
