@@ -29,7 +29,7 @@ public class CaffeineConfiguration {
              "cachePerson", "cachePersons");
       caffeineCacheManager.setCaffeine(caffeine);
 
-      return caffeineCacheManager;
-   }
+		return caffeineCacheManager;
+	}
 
 }

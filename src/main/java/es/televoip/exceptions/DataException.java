@@ -8,12 +8,14 @@ import org.springframework.http.HttpStatus;
 @EqualsAndHashCode(callSuper = false)
 public class DataException extends RuntimeException {
 
-   final HttpStatus errorCode;
-   final String errorMessage;
+	private static final long serialVersionUID = 1L;
 
-   public DataException(HttpStatus errorCode, String errorMessage) {
-      this.errorCode = errorCode;
-      this.errorMessage = errorMessage;
-   }
+	final HttpStatus errorCode;
+	final String errorMessage;
+
+	public DataException(HttpStatus errorCode, String errorMessage) {
+		this.errorCode = errorCode;
+		this.errorMessage = errorMessage;
+	}
 
 }

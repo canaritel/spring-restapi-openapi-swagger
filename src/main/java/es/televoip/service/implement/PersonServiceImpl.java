@@ -64,11 +64,11 @@ public class PersonServiceImpl extends BaseService<Person, Long, PersonDto> impl
          throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
       }
    }
-
+   
    @Override
    public PersonDto getPersonByDni(String dni) {
       try {
-         // obtenemos el objeto Optional del id
+         // obtenemos el objeto Optional
          Optional<Person> person = repository.findByDni(dni);
          if (person.isPresent()) {
             return mapper.toDto(person.get());
@@ -82,12 +82,48 @@ public class PersonServiceImpl extends BaseService<Person, Long, PersonDto> impl
          throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
       }
    }
+  
+@Override
+public PersonDto getPersonByEmail(String email) {
+	try {
+      // obtenemos el objeto Optional
+      Optional<Person> person = repository.findByEmail(email);
+      if (person.isPresent()) {
+         return mapper.toDto(person.get());
+      } else {
+         throw new DataException(HttpStatus.NOT_FOUND, "EMAIL_NOT_FOUND: " + email);
+      }
 
-//    Método auxiliar para convertir una lista de entidades a DTOs
-   private List<PersonDto> convertToDtoList(List<Person> persons) {
-      return persons.stream() // se utiliza stream() y collect(Collectors.toList()) para convertirlo en una lista de DTO
-             .map(mapper::toDto)
-             .collect(Collectors.toList());
+   } catch (DataException ex) {
+      throw ex;
+   } catch (Exception ex) {
+      throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
    }
+}
+
+@Override
+public PersonDto getPersonByUserAccessUserName(String username) {
+	try {
+      // obtenemos el objeto Optional
+      Optional<Person> person = repository.findByUserAccessUserName(username);
+      if (person.isPresent()) {
+         return mapper.toDto(person.get());
+      } else {
+         throw new DataException(HttpStatus.NOT_FOUND, "USERNAME_NOT_FOUND: " + username);
+      }
+
+   } catch (DataException ex) {
+      throw ex;
+   } catch (Exception ex) {
+      throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+   }
+}
+
+//Método auxiliar para convertir una lista de entidades a DTOs
+private List<PersonDto> convertToDtoList(List<Person> persons) {
+return persons.stream() // se utiliza stream() y collect(Collectors.toList()) para convertirlo en una lista de DTO
+       .map(mapper::toDto)
+       .collect(Collectors.toList());
+}
 
 }

@@ -7,10 +7,14 @@ import org.springframework.data.domain.Pageable;
 
 public interface PersonService {
 
-   List<PersonDto> getPersonsByFilter(String filter);
+	List<PersonDto> getPersonsByFilter(String filter);
 
-   Page<PersonDto> getPersonsByFilterPageable(String filter, Pageable page);
+	Page<PersonDto> getPersonsByFilterPageable(String filter, Pageable page);
 
-   PersonDto getPersonByDni(String dni);
+	PersonDto getPersonByDni(String dni);
+
+	PersonDto getPersonByEmail(String email);
+
+	PersonDto getPersonByUserAccessUserName(String username);
 
 }
