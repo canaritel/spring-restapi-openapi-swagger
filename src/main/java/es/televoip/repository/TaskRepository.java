@@ -18,7 +18,7 @@ public interface TaskRepository extends BaseRepository<Task, Long> {
    public void markTaskAsCompleted(@Param("id") Long id);
 
    @Query("SELECT t FROM Task t WHERE LOWER(t.title) LIKE LOWER(CONCAT('%', :title, '%'))")
-   List<Task> findAllByTitleContainingIgnoreCase(String title);
+   public List<Task> findAllByTitleContainingIgnoreCase(String title);
 
    public List<Task> findAllByTaskStatus(TaskStatus status);
 
@@ -32,7 +32,7 @@ public interface TaskRepository extends BaseRepository<Task, Long> {
    // Mismo método usando JPQL
    @Query("SELECT t FROM Task t WHERE LOWER(t.title) LIKE LOWER(CONCAT('%', :title, '%')) "
           + "OR LOWER(t.description) LIKE LOWER(CONCAT('%', :description, '%'))")
-   List<Task> findAllByTitleContainingOrDescriptionContainingAllIgnoreCase(
+   public List<Task> findAllByTitleContainingOrDescriptionContainingAllIgnoreCase(
           @Param("title") String title, @Param("description") String description);
 
    // Método de consulta Spring Data Query Methods
@@ -41,7 +41,7 @@ public interface TaskRepository extends BaseRepository<Task, Long> {
    // Mismo método usando JPQL
    @Query("SELECT t FROM Task t WHERE LOWER(t.title) LIKE LOWER(CONCAT('%', :title, '%')) "
           + "OR LOWER(t.description) LIKE LOWER(CONCAT('%', :description, '%'))")
-   Page<Task> findAllByTitleContainingOrDescriptionContainingAllIgnoreCase(
+   public Page<Task> findAllByTitleContainingOrDescriptionContainingAllIgnoreCase(
           @Param("title") String title, @Param("description") String description, Pageable pageable);
 
 }

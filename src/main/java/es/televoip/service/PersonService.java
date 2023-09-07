@@ -13,8 +13,4 @@ public interface PersonService {
 
    PersonDto getPersonByDni(String dni);
 
-   List<PersonDto> getPersonsByFirstNameOrLastName(String filter);
-
-   Page<PersonDto> getPersonsByFirstNameOrLastNamePageable(String filter, Pageable page);
-
 }
