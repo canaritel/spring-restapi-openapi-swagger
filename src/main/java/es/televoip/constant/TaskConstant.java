@@ -74,9 +74,6 @@ public final class TaskConstant {
    public static final String TASK_GET_ALL_TITLE_NAME = "Obtención de tareas por título";
    public static final String TASK_GET_ALL_TITLE_DESCRIPTION = "Se obtiene un objeto de tipo listado de tareas que contienen el título especificado.";
 
-   
-   
-   
    public static final String TASK_UPDATED = "Actualización de la tarea";
    public static final String TASK_UPDATED_SUCCESS = "Tarea actualizada exitosamente.";
    public static final String TASK_IS_COMPLETED = "Indica si la tarea está completada.";
