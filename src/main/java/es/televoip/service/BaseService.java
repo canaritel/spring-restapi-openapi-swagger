@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import es.televoip.model.mapper.BaseMapper;
 import jakarta.validation.Valid;
 import java.util.Arrays;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,7 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
       }
    }
 
+   @CacheEvict(value = "cacheAll", allEntries = true)
    public D save(@Valid D dto) {
       try {
          // Convertimos el objeto DTO a su entidad
@@ -64,6 +66,7 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
       }
    }
 
+   @CacheEvict(value = "cacheAll", allEntries = true)
    public List<D> saveAll(@Valid List<D> dtos) {
       try {
 
@@ -85,16 +88,18 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
       }
    }
 
+   @CacheEvict(value = "cacheAll", allEntries = true)
    public void deleteById(I id) {
       try {
          repository.deleteById(id);
-//      } catch (DataException ex) {
-//         throw ex;
+      } catch (DataException ex) {
+         throw ex;
       } catch (Exception ex) {
          throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
       }
    }
 
+   @CacheEvict(value = "cacheAll", allEntries = true)
    public D update(I id, @Valid D dto) {
       try {
          repository.findById(id)

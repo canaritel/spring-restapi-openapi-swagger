@@ -15,6 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import java.util.stream.Collectors;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -33,6 +36,7 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
       this.repository = repository;
    }
 
+   @Cacheable("cacheTasks")
    @Override
    public List<TaskDto> getTasksByFilter(String filter) {
       try {
@@ -50,6 +54,7 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
       }
    }
 
+   @Cacheable("cacheTasks")
    @Override
    public Page<TaskDto> getTasksByFilterPageable(String filter, Pageable page) {
       try {
@@ -67,6 +72,7 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
       }
    }
 
+   @Cacheable("cacheTasks")
    @Override
    public List<TaskDto> getTasksByTitleContaining(String title) {
       try {
@@ -81,6 +87,7 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
       }
    }
 
+   @Cacheable("cacheTasks")
    @Override
    public List<TaskDto> getTasksByTaskStatus(TaskStatus status) {
       try {
@@ -95,6 +102,7 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
       }
    }
 
+   @Cacheable("cacheTasks")
    @Override
    public List<TaskDto> getTasksByCompletion(boolean isCompleted) {
       try {
@@ -115,6 +123,9 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
       }
    }
 
+   @Caching(evict = {
+      @CacheEvict(value = "cacheTask", allEntries = true),
+      @CacheEvict(value = "cacheTasks", allEntries = true)})
    @Override
    public TaskDto saveTaskAndCheckCreationDate(TaskDto taskDto) {
       try {
@@ -133,6 +144,9 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
       }
    }
 
+   @Caching(evict = {
+      @CacheEvict(value = "cacheTask", allEntries = true),
+      @CacheEvict(value = "cacheTasks", allEntries = true)})
    @Override
    public List<TaskDto> saveAllTasks(List<TaskDto> taskDtos) {
       try {
@@ -159,6 +173,9 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
       }
    }
 
+   @Caching(evict = {
+      @CacheEvict(value = "cacheTask", allEntries = true),
+      @CacheEvict(value = "cacheTasks", allEntries = true)})
    @Override
    public TaskDto updateTaskDateOfFinished(Long id, LocalDateTime newDateOfFinished) {
       try {
@@ -182,6 +199,9 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
       }
    }
 
+   @Caching(evict = {
+      @CacheEvict(value = "cacheTask", allEntries = true),
+      @CacheEvict(value = "cacheTasks", allEntries = true)})
    @Override
    public TaskDto updateTaskStatus(Long id, TaskStatus taskStatus) {
       try {
@@ -200,6 +220,9 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
       }
    }
 
+   @Caching(evict = {
+      @CacheEvict(value = "cacheTask", allEntries = true),
+      @CacheEvict(value = "cacheTasks", allEntries = true)})
    @Override
    public TaskDto updateTaskIsCompleted(Long id, Boolean isCompleted) {
       try {
@@ -218,6 +241,9 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
       }
    }
 
+   @Caching(evict = {
+      @CacheEvict(value = "cacheTask", allEntries = true),
+      @CacheEvict(value = "cacheTasks", allEntries = true)})
    @Override
    public TaskDto markTaskAsCompleted(Long id) {
       try {

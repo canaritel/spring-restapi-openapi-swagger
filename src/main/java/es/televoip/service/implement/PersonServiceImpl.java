@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,7 @@ public class PersonServiceImpl extends BaseService<Person, Long, PersonDto> impl
       this.repository = repository;
    }
 
+   @Cacheable("cachePersons")
    @Override
    public List<PersonDto> getPersonsByFilter(String filter) {
       try {
@@ -48,6 +50,7 @@ public class PersonServiceImpl extends BaseService<Person, Long, PersonDto> impl
       }
    }
 
+   @Cacheable("cachePersons")
    @Override
    public Page<PersonDto> getPersonsByFilterPageable(String filter, Pageable page) {
       try {
@@ -65,6 +68,7 @@ public class PersonServiceImpl extends BaseService<Person, Long, PersonDto> impl
       }
    }
 
+   @Cacheable("cachePerson")
    @Override
    public PersonDto getPersonByDni(String dni) {
       try {
@@ -83,6 +87,7 @@ public class PersonServiceImpl extends BaseService<Person, Long, PersonDto> impl
       }
    }
 
+   @Cacheable("cachePerson")
    @Override
    public PersonDto getPersonByEmail(String email) {
       try {
@@ -101,6 +106,7 @@ public class PersonServiceImpl extends BaseService<Person, Long, PersonDto> impl
       }
    }
 
+   @Cacheable("cachePerson")
    @Override
    public PersonDto getPersonByUserAccessUserName(String username) {
       try {
@@ -119,7 +125,7 @@ public class PersonServiceImpl extends BaseService<Person, Long, PersonDto> impl
       }
    }
 
-//Método auxiliar para convertir una lista de entidades a DTOs
+   //Método auxiliar para convertir una lista de entidades a DTOs
    private List<PersonDto> convertToDtoList(List<Person> persons) {
       return persons.stream() // se utiliza stream() y collect(Collectors.toList()) para convertirlo en una lista de DTO
              .map(mapper::toDto)
