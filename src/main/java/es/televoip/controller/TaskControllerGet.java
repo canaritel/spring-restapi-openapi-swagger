@@ -3,7 +3,6 @@ package es.televoip.controller;
 import es.televoip.constant.TaskConstant;
 import es.televoip.model.dto.TaskDto;
 import es.televoip.model.enums.SortField;
-
 import es.televoip.model.enums.TaskStatus;
 import es.televoip.service.implement.TaskServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -115,7 +114,8 @@ public class TaskControllerGet {
                               name = TaskConstant.TASK_GET_ALL,
                               description = TaskConstant.TASK_GET_ALL_SUCCESS,
                               value = TaskConstant.VALUE_OK
-                       )})),
+                       )})
+      ),
       @ApiResponse(
              responseCode = "400",
              description = TaskConstant.TASK_INVALID_REQUEST,

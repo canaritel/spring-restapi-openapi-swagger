@@ -18,7 +18,7 @@ public class CaffeineConfiguration {
    @Bean
    public Caffeine caffeineConfig() {
       return Caffeine.newBuilder()
-             .maximumSize(100) // máximo de 100 elementos
+             .maximumSize(1000) // máximo de 100 elementos
              .expireAfterWrite(60, TimeUnit.MINUTES); // un TTL (tiempo de vida) de 60 minutos
    }
 

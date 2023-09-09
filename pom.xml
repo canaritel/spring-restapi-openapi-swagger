@@ -75,6 +75,12 @@
             <version>2.2.0</version>
         </dependency>
         
+        <!--  Librería para monitorear  -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        
         <!-- Dependencias para MapStruct -->       
         <!-- Mapper Conversion  https://www.baeldung.com/java-modelmapper  -->
         <dependency>
