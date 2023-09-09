@@ -133,7 +133,7 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
       try {
          Page<E> pageE = repository.findAll(page);
          return pageE // se utiliza map directamente con 'taskPage' para convertirla en una página de DTO.
-                .map(mapper::toDto);
+                .map(entity -> mapper.toDto(entity));
 
       } catch (DataException ex) {
          throw ex;
@@ -166,7 +166,7 @@ public abstract class BaseService<E extends BaseEntity, I extends Serializable, 
 
          Page<E> pageE = repository.findAll(pageable);
          return pageE // se utiliza map directamente para convertirla en una página de DTO.
-                .map(mapper::toDto);
+                .map(entity -> mapper.toDto(entity));
 
       } catch (DataException ex) {
          throw ex;

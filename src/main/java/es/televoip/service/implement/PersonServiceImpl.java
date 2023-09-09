@@ -128,7 +128,7 @@ public class PersonServiceImpl extends BaseService<Person, Long, PersonDto> impl
    //Método auxiliar para convertir una lista de entidades a DTOs
    private List<PersonDto> convertToDtoList(List<Person> persons) {
       return persons.stream() // se utiliza stream() y collect(Collectors.toList()) para convertirlo en una lista de DTO
-             .map(mapper::toDto)
+             .map(entity -> mapper.toDto(entity))
              .collect(Collectors.toList());
    }
 

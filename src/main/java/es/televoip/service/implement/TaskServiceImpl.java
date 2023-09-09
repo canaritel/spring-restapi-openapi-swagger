@@ -265,7 +265,7 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
    //    Método auxiliar para convertir una lista de entidades a DTOs
    private List<TaskDto> convertToDtoList(List<Task> tasks) {
       return tasks.stream() // se utiliza stream() y collect(Collectors.toList()) para convertirlo en una lista de DTO
-             .map(mapper::toDto)
+             .map(entity -> mapper.toDto(entity))
              .collect(Collectors.toList());
    }
 
