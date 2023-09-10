@@ -17,7 +17,9 @@ package es.televoip.service;
 //import org.springframework.data.domain.PageRequest;
 //import org.springframework.stereotype.Service;
 //import org.springframework.transaction.annotation.Transactional;
-
+/*
+*******************  NO LO USAMOS PORQUE NO NOS PERMITE GESTIONAR ADECUADAMENTE LA CACHÉ *******************************
+ */
 //@Service
 //@Transactional
 //public abstract class BaseService<E extends BaseEntity, I extends Serializable, D extends Object> {
@@ -47,12 +49,6 @@ package es.televoip.service;
 //      }
 //   }
 //
-////   @Caching(evict = {
-////      @CacheEvict(value = "cacheTask", allEntries = true),
-////      @CacheEvict(value = "cacheTasks", allEntries = true),
-////      @CacheEvict(value = "PersonTask", allEntries = true),
-////      @CacheEvict(value = "PersonTasks", allEntries = true)
-////   })
 //   public D save(@Valid D dto) {
 //      try {
 //         // Convertimos el objeto DTO a su entidad
@@ -69,12 +65,6 @@ package es.televoip.service;
 //      }
 //   }
 //
-////   @Caching(evict = {
-////      @CacheEvict(value = "cacheTask", allEntries = true),
-////      @CacheEvict(value = "cacheTasks", allEntries = true),
-////      @CacheEvict(value = "PersonTask", allEntries = true),
-////      @CacheEvict(value = "PersonTasks", allEntries = true)
-////   })
 //   public List<D> saveAll(@Valid List<D> dtos) {
 //      try {
 //
@@ -96,12 +86,6 @@ package es.televoip.service;
 //      }
 //   }
 //
-////   @Caching(evict = {
-////      @CacheEvict(value = "cacheTask", allEntries = true),
-////      @CacheEvict(value = "cacheTasks", allEntries = true),
-////      @CacheEvict(value = "PersonTask", allEntries = true),
-////      @CacheEvict(value = "PersonTasks", allEntries = true)
-////   })
 //   public void deleteById(I id) {
 //      try {
 //         repository.deleteById(id);
@@ -112,12 +96,6 @@ package es.televoip.service;
 //      }
 //   }
 //
-////   @Caching(evict = {
-////      @CacheEvict(value = "cacheTask", allEntries = true),
-////      @CacheEvict(value = "cacheTasks", allEntries = true),
-////      @CacheEvict(value = "PersonTask", allEntries = true),
-////      @CacheEvict(value = "PersonTasks", allEntries = true)
-////   })
 //   public D update(I id, @Valid D dto) {
 //      try {
 //         repository.findById(id)
