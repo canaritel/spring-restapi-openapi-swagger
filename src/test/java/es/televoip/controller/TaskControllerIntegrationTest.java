@@ -15,11 +15,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.test.context.ActiveProfiles;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -37,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 *  verificar las respuestas sin necesidad de utilizar un servidor web real.
 *
  */
+@ActiveProfiles("test")
 @SpringBootTest(properties = "spring.config.location=classpath:application-test.properties")
 @AutoConfigureMockMvc
 class TaskControllerIntegrationTest {
@@ -49,6 +52,14 @@ class TaskControllerIntegrationTest {
 
    @Autowired
    private ObjectMapper objectMapper; // clase Jackson que se utiliza para convertir objetos Java en JSON y viceversa
+
+   @Value("${cache.enabled}")
+   private boolean cacheEnabled;
+
+   @Test
+   public void printCacheEnabledProperty() {
+      System.out.println("cache.enabled: " + cacheEnabled);
+   }
 
    @Test
    public void shouldCreateTask() throws Exception {

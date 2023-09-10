@@ -2,18 +2,24 @@ package es.televoip.cache;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import java.util.concurrent.TimeUnit;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
 @EnableCaching
+@Profile("!test") // Esta configuración solo se aplicará si el perfil no es "test"
 public class CaffeineConfiguration {
-
-// Need to define caffeine bean first with caching behavior, expiration, cache limit, etc. 
+   // Need to define caffeine bean first with caching behavior, expiration, cache limit, etc. 
 // https://blog.coditas.com/coders/caching-in-spring-with-caffeine/ 
+
+   @Value("${cache.enabled}")
+   private boolean cacheEnabled;
+
    @SuppressWarnings("rawtypes")
    @Bean
    public Caffeine caffeineConfig() {
@@ -29,7 +35,11 @@ public class CaffeineConfiguration {
       CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager(
              "cacheOneTask", "cacheManyTasks",
              "cacheOnePerson", "cacheManyPersons");
-      caffeineCacheManager.setCaffeine(caffeine);
+
+      // Para no activamos la caché en los TEST
+      if (cacheEnabled) {
+         caffeineCacheManager.setCaffeine(caffeine);
+      }
 
       return caffeineCacheManager;
    }

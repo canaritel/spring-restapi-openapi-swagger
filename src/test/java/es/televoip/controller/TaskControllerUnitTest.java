@@ -118,7 +118,7 @@ class TaskControllerUnitTest {
       mockMvc.perform(get("/api/tasks/{id}", invalidId)
              .contentType(MediaType.APPLICATION_JSON))
              .andExpect(status().isNotFound())
-             .andExpect(jsonPath("$.message").value("ENTITY_ID_NOT_FOUND: " + invalidId))
+             .andExpect(jsonPath("$.message").value("TASK_ID_NOT_FOUND: " + invalidId))
              .andExpect(jsonPath("$.status").value(404))
              .andDo(print());
    }
