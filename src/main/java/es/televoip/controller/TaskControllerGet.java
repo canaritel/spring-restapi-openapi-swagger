@@ -2,7 +2,7 @@ package es.televoip.controller;
 
 import es.televoip.constant.TaskConstant;
 import es.televoip.model.dto.TaskDto;
-import es.televoip.model.enums.SortField;
+import es.televoip.model.enums.SortFieldTask;
 import es.televoip.model.enums.TaskStatus;
 import es.televoip.service.implement.TaskServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -86,7 +86,7 @@ public class TaskControllerGet {
    })
    @GetMapping("/{id}")
    public ResponseEntity<TaskDto> getTask(@PathVariable("id") Long id) {
-      TaskDto taskDto = service.findById(id);
+      TaskDto taskDto = service.getTaskById(id);
       if (taskDto != null) {
          return new ResponseEntity<>(taskDto, HttpStatus.OK);
       } else {
@@ -131,7 +131,7 @@ public class TaskControllerGet {
    })
    @GetMapping("/all")
    public ResponseEntity<List<TaskDto>> getAllTasks() {
-      List<TaskDto> tasks = service.findAll();
+      List<TaskDto> tasks = service.getAllTasks();
       return new ResponseEntity<>(tasks, HttpStatus.OK);
    }
 
@@ -172,9 +172,9 @@ public class TaskControllerGet {
                        )}))
    })
    @GetMapping("/sorted")
-   public ResponseEntity<List<TaskDto>> getAllTasksSorted(@RequestParam SortField sortBy,
+   public ResponseEntity<List<TaskDto>> getAllTasksSorted(@RequestParam SortFieldTask sortBy,
           @RequestParam Sort.Direction sortOrder) {
-      List<TaskDto> tasks = service.findAllSorted(sortBy, sortOrder);
+      List<TaskDto> tasks = service.getTasksSorted(sortBy, sortOrder);
       return new ResponseEntity<>(tasks, HttpStatus.OK);
    }
 
@@ -216,9 +216,9 @@ public class TaskControllerGet {
                        )}))
    })
    @GetMapping("/sortedAndPaginated")
-   public ResponseEntity<Page<TaskDto>> getAllTasksSortedAndPaginated(@RequestParam SortField sortBy,
+   public ResponseEntity<Page<TaskDto>> getAllTasksSortedAndPaginated(@RequestParam SortFieldTask sortBy,
           @RequestParam Sort.Direction sortOrder, @RequestParam Pageable pageable) {
-      Page<TaskDto> taskPage = service.findAllSortedAndPaged(sortBy, sortOrder, pageable);
+      Page<TaskDto> taskPage = service.getTasksSortedAndPaged(sortBy, sortOrder, pageable);
       return new ResponseEntity<>(taskPage, HttpStatus.OK);
    }
 

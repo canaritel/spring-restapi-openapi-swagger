@@ -52,7 +52,7 @@ class TaskServiceIntegrationTest {
       when(mapper.toDto(any(Task.class))).thenReturn(new TaskDto());
 
       // Llamar al método del servicio
-      TaskDto taskDto = service.findById(1L);
+      TaskDto taskDto = service.getTaskById(1L);
 
       // Verificar que los métodos se llamaron correctamente
       verify(repository, times(1)).findById(anyLong());
@@ -68,7 +68,7 @@ class TaskServiceIntegrationTest {
       when(mapper.toDto(any(Task.class))).thenReturn(new TaskDto());
 
       // Llamar al método del servicio
-      List<TaskDto> taskDtos = service.findAll();
+      List<TaskDto> taskDtos = service.getAllTasks();
 
       // Verificar que los métodos se llamaron correctamente
       verify(repository, times(1)).findAll();
@@ -86,7 +86,7 @@ class TaskServiceIntegrationTest {
       when(mapper.toDto(any(Task.class))).thenReturn(new TaskDto());
 
       // Llamar al método del servicio
-      TaskDto taskDto = service.findById(1L);
+      TaskDto taskDto = service.getTaskById(1L);
 
       // Verificar que los métodos se llamaron correctamente
       verify(repository, times(1)).findById(anyLong());
@@ -114,7 +114,7 @@ class TaskServiceIntegrationTest {
       when(mapper.toDto(task)).thenReturn(new TaskDto()); // Cambiado a toDto
 
       // Llamar al método del servicio
-      TaskDto createdTaskDto = service.save(taskDto);
+      TaskDto createdTaskDto = service.saveTask(taskDto);
 
       // Verificar que los métodos se llamaron correctamente
       verify(mapper, times(1)).toEntity(taskDto);
@@ -135,7 +135,7 @@ class TaskServiceIntegrationTest {
       when(mapper.toDto(task)).thenReturn(taskDto);
 
       // Llamar al método del servicio
-      TaskDto updatedTaskDto = service.update(1L, taskDto); // actualizamos pasando el 'objeto entero'
+      TaskDto updatedTaskDto = service.updateTask(1L, taskDto); // actualizamos pasando el 'objeto entero'
 
       // Verificar que los métodos se llamaron correctamente
       verify(repository, times(1)).findById(anyLong());
@@ -214,7 +214,7 @@ class TaskServiceIntegrationTest {
       when(repository.findById(anyLong())).thenReturn(Optional.of(new Task()));
 
       // Llamar al método del servicio
-      service.deleteById(1L);
+      service.deleteTaskById(1L);
 
       // Verificar que repository.delete() se llamó correctamente
       verify(repository, times(1)).deleteById(1L);

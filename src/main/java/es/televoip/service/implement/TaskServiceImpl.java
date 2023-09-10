@@ -4,13 +4,14 @@ import es.televoip.constant.TaskConstant;
 import es.televoip.exceptions.DataException;
 import es.televoip.model.Task;
 import es.televoip.model.dto.TaskDto;
+import es.televoip.model.enums.SortFieldTask;
 import es.televoip.model.enums.TaskStatus;
 import es.televoip.model.mapper.TaskMapper;
 import es.televoip.repository.TaskRepository;
-import es.televoip.service.BaseService;
 import es.televoip.service.TaskService;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -19,7 +20,9 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,16 +30,102 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j // nos permite enviar texto a la consola mediante "log"
 @Service
 @Transactional
-public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements TaskService {
+public class TaskServiceImpl implements TaskService {
+// public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements TaskService {
 
    private TaskRepository repository;
 
+   private TaskMapper mapper;
+
    public TaskServiceImpl(TaskRepository repository, TaskMapper mapper) {
-      super(repository, mapper);
+      this.mapper = mapper;
       this.repository = repository;
    }
 
-   @Cacheable("cacheTasks")
+   @Cacheable("cacheOneTask")
+   @Override
+   public TaskDto getTaskById(Long id) {
+      try {
+         // obtenemos el objeto Optional del id
+         Optional<Task> optionalTask = repository.findById(id);
+         if (optionalTask.isPresent()) {
+            return mapper.toDto(optionalTask.get());
+         } else {
+            throw new DataException(HttpStatus.NOT_FOUND, "TASK_ID_NOT_FOUND: " + id);
+         }
+
+      } catch (DataException ex) {
+         throw ex;
+      } catch (Exception ex) {
+         throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
+   }
+
+   @Cacheable("cacheManyTasks")
+   @Override
+   public List<TaskDto> getAllTasks() {
+      try {
+         List<Task> list = repository.findAll();
+         return convertToDtoList(list);
+
+      } catch (DataException ex) {
+         throw ex;
+      } catch (Exception ex) {
+         throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
+   }
+
+   @Cacheable("cacheManyTasks")
+   @Override
+   public Page<TaskDto> getTasksPaged(Pageable page) {
+      try {
+         Page<Task> pageE = repository.findAll(page);
+         return pageE // se utiliza map directamente con 'taskPage' para convertirla en una página de DTO.
+                .map(entity -> mapper.toDto(entity));
+
+      } catch (DataException ex) {
+         throw ex;
+      } catch (Exception ex) {
+         throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
+   }
+
+   @Cacheable("cacheManyTasks")
+   @Override
+   public List<TaskDto> getTasksSorted(SortFieldTask sortBy, Sort.Direction sortOrder) {
+      try {
+
+         Sort sort = Sort.by(new Sort.Order(sortOrder, sortBy.getFieldName()));
+         List<Task> list = repository.findAll(sort);
+         return convertToDtoList(list);
+
+      } catch (DataException ex) {
+         throw ex;
+      } catch (Exception ex) {
+         throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
+   }
+
+   @Cacheable("cacheManyTasks")
+   @Override
+   public Page<TaskDto> getTasksSortedAndPaged(SortFieldTask sortBy, Sort.Direction sortOrder, Pageable pageable) {
+      try {
+
+         Sort sort = Sort.by(new Sort.Order(sortOrder, sortBy.getFieldName()));
+         pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+
+         Page<Task> pageE = repository.findAll(pageable);
+         return pageE // se utiliza map directamente para convertirla en una página de DTO.
+                .map(entity -> mapper.toDto(entity));
+
+      } catch (DataException ex) {
+         throw ex;
+      } catch (Exception ex) {
+         throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
+   }
+
+   @Cacheable("cacheManyTasks")
    @Override
    public List<TaskDto> getTasksByFilter(String filter) {
       try {
@@ -54,7 +143,7 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
       }
    }
 
-   @Cacheable("cacheTasks")
+   @Cacheable("cacheManyTasks")
    @Override
    public Page<TaskDto> getTasksByFilterPageable(String filter, Pageable page) {
       try {
@@ -72,7 +161,7 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
       }
    }
 
-   @Cacheable("cacheTasks")
+   @Cacheable("cacheManyTasks")
    @Override
    public List<TaskDto> getTasksByTitleContaining(String title) {
       try {
@@ -87,7 +176,7 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
       }
    }
 
-   @Cacheable("cacheTasks")
+   @Cacheable("cacheManyTasks")
    @Override
    public List<TaskDto> getTasksByTaskStatus(TaskStatus status) {
       try {
@@ -102,7 +191,7 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
       }
    }
 
-   @Cacheable("cacheTasks")
+   @Cacheable("cacheManyTasks")
    @Override
    public List<TaskDto> getTasksByCompletion(boolean isCompleted) {
       try {
@@ -124,10 +213,10 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
    }
 
    @Caching(evict = {
-      @CacheEvict(value = "cacheTask", allEntries = true),
-      @CacheEvict(value = "cacheTasks", allEntries = true)})
+      @CacheEvict(value = "cacheOneTask", allEntries = true),
+      @CacheEvict(value = "cacheManyTasks", allEntries = true)})
    @Override
-   public TaskDto saveTaskAndCheckCreationDate(TaskDto taskDto) {
+   public TaskDto saveTask(TaskDto taskDto) {
       try {
 
          Task task = mapper.toEntity(taskDto);
@@ -145,8 +234,8 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
    }
 
    @Caching(evict = {
-      @CacheEvict(value = "cacheTask", allEntries = true),
-      @CacheEvict(value = "cacheTasks", allEntries = true)})
+      @CacheEvict(value = "cacheOneTask", allEntries = true),
+      @CacheEvict(value = "cacheManyTasks", allEntries = true)})
    @Override
    public List<TaskDto> saveAllTasks(List<TaskDto> taskDtos) {
       try {
@@ -174,8 +263,29 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
    }
 
    @Caching(evict = {
-      @CacheEvict(value = "cacheTask", allEntries = true),
-      @CacheEvict(value = "cacheTasks", allEntries = true)})
+      @CacheEvict(value = "cacheOneTask", allEntries = true),
+      @CacheEvict(value = "cacheManyTasks", allEntries = true)})
+   @Override
+   public TaskDto updateTask(Long id, TaskDto taskDto) {
+      try {
+         repository.findById(id)
+                .orElseThrow(() -> new DataException(HttpStatus.NOT_FOUND, "TASK_ID_NOT_FOUND: " + id));
+
+         Task entity = mapper.toEntity(taskDto);
+         entity.setId(id); // Asegurar que el ID se mantenga igual
+         repository.save(entity);
+         return mapper.toDto(entity);
+
+      } catch (DataException ex) { // Lo pongo antes del Exception final para poder capturar mis excepciones
+         throw ex;
+      } catch (Exception ex) {
+         throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
+   }
+
+   @Caching(evict = {
+      @CacheEvict(value = "cacheOneTask", allEntries = true),
+      @CacheEvict(value = "cacheManyTasks", allEntries = true)})
    @Override
    public TaskDto updateTaskDateOfFinished(Long id, LocalDateTime newDateOfFinished) {
       try {
@@ -200,8 +310,8 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
    }
 
    @Caching(evict = {
-      @CacheEvict(value = "cacheTask", allEntries = true),
-      @CacheEvict(value = "cacheTasks", allEntries = true)})
+      @CacheEvict(value = "cacheOneTask", allEntries = true),
+      @CacheEvict(value = "cacheManyTasks", allEntries = true)})
    @Override
    public TaskDto updateTaskStatus(Long id, TaskStatus taskStatus) {
       try {
@@ -221,8 +331,8 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
    }
 
    @Caching(evict = {
-      @CacheEvict(value = "cacheTask", allEntries = true),
-      @CacheEvict(value = "cacheTasks", allEntries = true)})
+      @CacheEvict(value = "cacheOneTask", allEntries = true),
+      @CacheEvict(value = "cacheManyTasks", allEntries = true)})
    @Override
    public TaskDto updateTaskIsCompleted(Long id, Boolean isCompleted) {
       try {
@@ -242,8 +352,8 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
    }
 
    @Caching(evict = {
-      @CacheEvict(value = "cacheTask", allEntries = true),
-      @CacheEvict(value = "cacheTasks", allEntries = true)})
+      @CacheEvict(value = "cacheOneTask", allEntries = true),
+      @CacheEvict(value = "cacheManyTasks", allEntries = true)})
    @Override
    public TaskDto markTaskAsCompleted(Long id) {
       try {
@@ -256,6 +366,20 @@ public class TaskServiceImpl extends BaseService<Task, Long, TaskDto> implements
          return mapper.toDto(existingTask);
 
       } catch (DataException ex) { // Lo pongo antes del Exception final para poder capturar mis excepciones
+         throw ex;
+      } catch (Exception ex) {
+         throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+      }
+   }
+
+   @Caching(evict = {
+      @CacheEvict(value = "cacheOneTask", allEntries = true),
+      @CacheEvict(value = "cacheManyTasks", allEntries = true)})
+   @Override
+   public void deleteTaskById(Long id) {
+      try {
+         repository.deleteById(id);
+      } catch (DataException ex) {
          throw ex;
       } catch (Exception ex) {
          throw new DataException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());

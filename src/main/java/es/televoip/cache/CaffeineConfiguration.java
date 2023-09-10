@@ -27,8 +27,8 @@ public class CaffeineConfiguration {
    @Bean
    public CacheManager cacheManager(Caffeine caffeine) {
       CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager(
-             "cacheTask", "cacheTasks",
-             "cachePerson", "cachePersons");
+             "cacheOneTask", "cacheManyTasks",
+             "cacheOnePerson", "cacheManyPersons");
       caffeineCacheManager.setCaffeine(caffeine);
 
       return caffeineCacheManager;

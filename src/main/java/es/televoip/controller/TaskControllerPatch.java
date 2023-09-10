@@ -101,7 +101,7 @@ public class TaskControllerPatch {
    public ResponseEntity<TaskDto> updateTask(@Parameter(description = "id of task to be updated") @PathVariable Long id,
           @Valid @RequestBody TaskDto taskDto) {
       // Valid debe tener anotaciones de validación adecuadas, como @NotBlank, @NotNull, @Size, etc., en su capa DTO
-      TaskDto updatedTask = service.update(id, taskDto);
+      TaskDto updatedTask = service.updateTask(id, taskDto);
       return new ResponseEntity<>(updatedTask, HttpStatus.OK);
    }
 
