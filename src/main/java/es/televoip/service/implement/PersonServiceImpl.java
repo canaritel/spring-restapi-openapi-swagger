@@ -1,5 +1,6 @@
 package es.televoip.service.implement;
 
+import es.televoip.aspects.LogExecutionTime;
 import es.televoip.exceptions.DataException;
 import es.televoip.model.Person;
 import es.televoip.model.dto.PersonDto;
@@ -39,6 +40,7 @@ public class PersonServiceImpl implements PersonService {
       this.repository = repository;
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheOnePerson")
    @Override
    public PersonDto getPersonById(Long id) {
@@ -58,6 +60,7 @@ public class PersonServiceImpl implements PersonService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheManyPersons")
    @Override
    public List<PersonDto> getAllPersons() {
@@ -72,6 +75,7 @@ public class PersonServiceImpl implements PersonService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheManyPersons")
    @Override
    public Page<PersonDto> getPersonsPaged(Pageable page) {
@@ -87,6 +91,7 @@ public class PersonServiceImpl implements PersonService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheManyPersons")
    @Override
    public List<PersonDto> getPersonsSorted(SortFieldPerson sortBy, Sort.Direction sortOrder) {
@@ -103,6 +108,7 @@ public class PersonServiceImpl implements PersonService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheManyPersons")
    @Override
    public Page<PersonDto> getPersonsSortedAndPaged(SortFieldPerson sortBy, Sort.Direction sortOrder, Pageable pageable) {
@@ -122,6 +128,7 @@ public class PersonServiceImpl implements PersonService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheManyPersons")
    @Override
    public List<PersonDto> getPersonsByFilter(String filter) {
@@ -140,6 +147,7 @@ public class PersonServiceImpl implements PersonService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheManyPersons")
    @Override
    public Page<PersonDto> getPersonsByFilterPageable(String filter, Pageable page) {
@@ -158,6 +166,7 @@ public class PersonServiceImpl implements PersonService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheOnePerson")
    @Override
    public PersonDto getPersonByDni(String dni) {
@@ -177,6 +186,7 @@ public class PersonServiceImpl implements PersonService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheOnePerson")
    @Override
    public PersonDto getPersonByEmail(String email) {
@@ -196,6 +206,7 @@ public class PersonServiceImpl implements PersonService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheOnePerson")
    @Override
    public PersonDto getPersonByUserAccessUserName(String username) {

@@ -1,5 +1,6 @@
 package es.televoip.service.implement;
 
+import es.televoip.aspects.LogExecutionTime;
 import es.televoip.constant.TaskConstant;
 import es.televoip.exceptions.DataException;
 import es.televoip.model.Task;
@@ -42,6 +43,7 @@ public class TaskServiceImpl implements TaskService {
       this.repository = repository;
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheOneTask")
    @Override
    public TaskDto getTaskById(Long id) {
@@ -61,6 +63,7 @@ public class TaskServiceImpl implements TaskService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheManyTasks")
    @Override
    public List<TaskDto> getAllTasks() {
@@ -75,6 +78,7 @@ public class TaskServiceImpl implements TaskService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheManyTasks")
    @Override
    public Page<TaskDto> getTasksPaged(Pageable page) {
@@ -90,6 +94,7 @@ public class TaskServiceImpl implements TaskService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheManyTasks")
    @Override
    public List<TaskDto> getTasksSorted(SortFieldTask sortBy, Sort.Direction sortOrder) {
@@ -106,6 +111,7 @@ public class TaskServiceImpl implements TaskService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheManyTasks")
    @Override
    public Page<TaskDto> getTasksSortedAndPaged(SortFieldTask sortBy, Sort.Direction sortOrder, Pageable pageable) {
@@ -125,6 +131,7 @@ public class TaskServiceImpl implements TaskService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheManyTasks")
    @Override
    public List<TaskDto> getTasksByFilter(String filter) {
@@ -143,6 +150,7 @@ public class TaskServiceImpl implements TaskService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheManyTasks")
    @Override
    public Page<TaskDto> getTasksByFilterPageable(String filter, Pageable page) {
@@ -161,6 +169,7 @@ public class TaskServiceImpl implements TaskService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheManyTasks")
    @Override
    public List<TaskDto> getTasksByTitleContaining(String title) {
@@ -176,6 +185,7 @@ public class TaskServiceImpl implements TaskService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheManyTasks")
    @Override
    public List<TaskDto> getTasksByTaskStatus(TaskStatus status) {
@@ -191,6 +201,7 @@ public class TaskServiceImpl implements TaskService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Cacheable("cacheManyTasks")
    @Override
    public List<TaskDto> getTasksByCompletion(boolean isCompleted) {
@@ -212,6 +223,7 @@ public class TaskServiceImpl implements TaskService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Caching(evict = {
       @CacheEvict(value = "cacheOneTask", allEntries = true),
       @CacheEvict(value = "cacheManyTasks", allEntries = true)})
@@ -233,6 +245,7 @@ public class TaskServiceImpl implements TaskService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Caching(evict = {
       @CacheEvict(value = "cacheOneTask", allEntries = true),
       @CacheEvict(value = "cacheManyTasks", allEntries = true)})
@@ -262,6 +275,7 @@ public class TaskServiceImpl implements TaskService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Caching(evict = {
       @CacheEvict(value = "cacheOneTask", allEntries = true),
       @CacheEvict(value = "cacheManyTasks", allEntries = true)})
@@ -283,6 +297,7 @@ public class TaskServiceImpl implements TaskService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Caching(evict = {
       @CacheEvict(value = "cacheOneTask", allEntries = true),
       @CacheEvict(value = "cacheManyTasks", allEntries = true)})
@@ -309,6 +324,7 @@ public class TaskServiceImpl implements TaskService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Caching(evict = {
       @CacheEvict(value = "cacheOneTask", allEntries = true),
       @CacheEvict(value = "cacheManyTasks", allEntries = true)})
@@ -330,6 +346,7 @@ public class TaskServiceImpl implements TaskService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Caching(evict = {
       @CacheEvict(value = "cacheOneTask", allEntries = true),
       @CacheEvict(value = "cacheManyTasks", allEntries = true)})
@@ -351,6 +368,7 @@ public class TaskServiceImpl implements TaskService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Caching(evict = {
       @CacheEvict(value = "cacheOneTask", allEntries = true),
       @CacheEvict(value = "cacheManyTasks", allEntries = true)})
@@ -372,6 +390,7 @@ public class TaskServiceImpl implements TaskService {
       }
    }
 
+   @LogExecutionTime // medimos el tiempo de ejecución
    @Caching(evict = {
       @CacheEvict(value = "cacheOneTask", allEntries = true),
       @CacheEvict(value = "cacheManyTasks", allEntries = true)})

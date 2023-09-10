@@ -46,7 +46,7 @@ public class TodoApiSpringApplication {
          // Insertamos datos en nuestra BD, solo si está vacía y no es la BD en memoria usada para los Test
          if (repository.count() == 0L && !"jdbc:h2:mem:testdb".equals(dataSourceUrl)) {
             // Recorremos el bucle for para crear 1000 tareas
-            for (int i = 1; i < 1000; i++) {
+            for (int i = 1; i < 800; i++) {
                Task task = Task.builder()
                       .description("description" + i)
                       .title("title" + i)
@@ -62,20 +62,6 @@ public class TodoApiSpringApplication {
             repository.saveAll(tasks);
          }
 
-         // Insertamos datos en nuestra BD, solo si está vacía y no es la BD en memoria usada para los Test
-//         if (repository.count() == 0L && !"jdbc:h2:mem:testdb".equals(dataSourceUrl)) {
-//            // Añadir lógica para crear y guardar las tareas en la base de datos
-//            Task task1 = Task.builder().description("description1").title("title1").priority(1)
-//                   .taskStatus(TaskStatus.ON_TIME).isCompleted(false).taskDateCreation(LocalDateTime.now()).build();
-//
-//            Task task2 = Task.builder().description("description2").title("title2").priority(2)
-//                   .taskStatus(TaskStatus.ON_TIME).isCompleted(false).taskDateCreation(LocalDateTime.now()).build();
-//
-//            Task task3 = Task.builder().description("description3").title("title3").priority(3)
-//                   .taskStatus(TaskStatus.ON_TIME).isCompleted(false).taskDateCreation(LocalDateTime.now()).build();
-//
-//            repository.saveAll(Arrays.asList(task1, task2, task3));
-//         }
          log.info("************************   DataSource URL: {}" + dataSourceUrl);
       };
    }
